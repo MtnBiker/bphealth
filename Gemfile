@@ -54,9 +54,17 @@ gem "bootsnap", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'amazing_print' #  https://github.com/amazing-print/amazing_print which claims to be follow on to awesome_print
+  # gem "awesome_print", require: false # the following may want it
+  gem "puts_debuggerer" # enhances puts, but isn't working for me https://github.com/AndyObtiva/puts_debuggerer
 end
 
 group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller' # helps better_errors
+
+  gem 'annotate' # https://github.com/ctran/annotate_models, on command line `annotate`
+
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 

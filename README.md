@@ -1,24 +1,13 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+➜ rails new rails700c --database=postgresql --css bootstrap
 
-Things you may want to cover:
+But got esbuild by default.
 
-* Ruby version
+Going to copy in bloodpressure
 
-* System dependencies
+Brought in some error handling and annotating gems
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Needed to add
+    "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules"
+to package.json. But I need to find out how to have this added
