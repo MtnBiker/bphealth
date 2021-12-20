@@ -16,3 +16,5 @@ to package.json. But I need to find out how to have this added
 
 Table is loading. Charts are not. Import is (still can't grab location.)
 
+All working in 7.0.0 which I couldn't make happen in original app. Still need to grap location of export.zip
+
