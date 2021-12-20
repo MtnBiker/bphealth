@@ -11,9 +11,9 @@
     </div>
   <% end %>
 
-    <div class="field form-label" for="formControlReadonly">
-      For <strong><%= blood_pressure.statdate.strftime("%a %d %b %Y-%_I:%M %P")%></strong>
-    </div>
+  <div class="field form-label" for="formControlReadonly">
+    For <strong><%= blood_pressure.statdate.localtime.strftime("%a %d %b %Y-%_I:%M %P")%></strong>
+  </div>
 
   <div class="form-outline">
     <div class="field">
