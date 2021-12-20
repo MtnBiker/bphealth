@@ -67,6 +67,7 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     awesome_print (1.9.2)
+    bcrypt (3.1.16)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -206,6 +207,7 @@ PLATFORMS
 DEPENDENCIES
   amazing_print
   annotate
+  bcrypt (~> 3.1.7)
   better_errors
   binding_of_caller
   bootsnap

@@ -1,0 +1,10 @@
+<p id="notice"><%= notice %></p>
+
+<%= render @blood_pressure %>
+
+<div>
+  <%= link_to "Edit Comment", edit_blood_pressure_path(@blood_pressure) %> |
+  <%= link_to "Back to blood stats", blood_pressures_path %>
+
+  <%= button_to "Destroy this blood stat", blood_pressure_path(@blood_pressure), method: :delete %>
+</div>

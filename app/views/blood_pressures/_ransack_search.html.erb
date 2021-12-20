@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="row justify-content-center"> 
+    <div class="col-xs-12 col-sm-6 border rounded-pill border-3 p-2">
+      <%= search_form_for @q, class:"d-lg-inline-flex mt-2 mt-md-0" do |f| %>
+        <%= f.search_field :systolic_cont, placeholder: "Search for …", class: "form-control mr-sm-2" %>
+        <%= f.submit "Search!", class: "btn btn-primary" %>
+      <% end %>
+      <%= link_to "Show all", blood_pressures_path, class: "btn btn-outline-warning my-2 my-sm-0" %> <!-- Need to hide this when all are showing TODO -->
+    </div>
+  </div>
+</div>

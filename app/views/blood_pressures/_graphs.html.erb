@@ -1,0 +1,73 @@
+<!-- Variables for use in charts -->
+<%
+  current_date = Time.now
+  begin_tracking = Time.zone.parse('2021-03-24 18:33:00-07')
+  start_of_meds =  Time.zone.parse('2021-04-20 11:34:00-07')
+  last_record = BloodPressure.last.statdate  # last_record: 2021-10-29 19:27:39 UTC
+  # puts "last_record.class: #{last_record.class}" # BloodPressure.last.statdate. last_record.class: Time
+%>
+
+<!-- Since started tracking -->
+<div class="text-center font-weight-bold">
+ <%= line_chart  BloodPressure.where(statdate: begin_tracking..start_of_meds).pluck(:statdate, :systolic),
+       title: "Before Started Meds",
+       xtitle: "Date",
+       ytitle: "Systolic",
+       min: 100, max: 200,
+       dataset: {borderWidth: 1},
+       colors: ["#b00", "#666"]  %>
+</div>
+<hr class="py-1">
+
+<!-- Since started meds -->
+<div class="text-center font-weight-bold">
+  <%= line_chart BloodPressure.where(statdate: start_of_meds..current_date).pluck(:statdate, :systolic), 
+    title: "After Started Meds", 
+    ytitle: "Systolic", min: 100, max: 200, colors: ["#b00", "#666"],
+    dataset: { 
+      scales: {
+        x: {
+         display: false,
+        },
+        y: {
+         display: true,
+         font: {
+            size: 12,
+            weight: 500
+        }
+        }
+      }
+    }
+  %>
+</div>
+<hr class="py-1">
+
+<!-- Previous 30 days -->
+<div class="text-center font-weight-bold">
+<%= line_chart BloodPressure.where(statdate: Time.now - 1.month..Time.now).pluck(:statdate, :systolic), title: "Previous 30 days", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+</div>
+<hr class="py-1">
+
+<!-- Last 24 hours of data loaded -->
+<!-- Can't easily render others because variables aren't passed. -->
+<%=  render 'last_24_hours' %>
+<hr class="py-1">
+
+<!-- Trend during the day. Did more or less manually and didn't see much. Maybe increase midday -->
+<!-- <div class="text-center font-weight-bold"> -->
+  <!-- line_chart ViewBpTimeOnly.where(statdate: start_of_meds..current_date).pluck(:stattime, :systolic), -->
+  <!-- <%= line_chart ViewBpTimeWithZone.where(statdate: start_of_meds..current_date).pluck(:stattime, :systolic),
+      title: "Change during the day since start of meds. NOT WORKING YET",
+      ytitle: "Systolic", min: 90, max: 200, color: "#D9A1FF" %>
+</div> -->
+
+<!-- Credits -->
+<hr class="py-1">
+<div class=" text-center">Charts created with <%= link_to "Chartkick", "https://chartkick.com" %> and <%= link_to "High Charts", "http://www.highcharts.com" %>. <%#= link_to "Chart.js" , "https://www.chartjs.org/" %></div>
+<hr class="py-1">
+
+<!-- tooltip: {
+                            headerFormat: '<b>{series.name}</b><br>',
+                            pointFormat: 'Time {point.x} , €{point.y} '
+                        }
+https://api.highcharts.com/highcharts/tooltip.formatter -->

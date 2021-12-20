@@ -1,0 +1,27 @@
+<%= form_with(model: blood_pressure) do |form| %>
+  <% if blood_pressure.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(blood_pressure.errors.count, "error") %> prohibited this blood_pressure from being saved:</h2>
+
+      <ul>
+        <% blood_pressure.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <div class="field form-label" for="formControlReadonly">
+      For <strong><%= blood_pressure.statdate.strftime("%a %d %b %Y-%_I:%M %P")%></strong>
+    </div>
+
+  <div class="form-outline">
+    <div class="field">
+      <%= form.label "Edit comment" %>
+      <%= form.text_field  :comment, class: "form-label" %>
+    </div>
+  </div>
+  <div class="actions">
+    <%= form.submit "Update comment" %>
+  </div>
+<% end %>

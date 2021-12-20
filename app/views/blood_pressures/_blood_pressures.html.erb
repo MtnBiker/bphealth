@@ -1,0 +1,30 @@
+<div id="<%= dom_id blood_pressure %>" class="scaffold_record">
+  <p>
+    <strong>Date:</strong>
+    <%= blood_pressure.statdate %>
+  </p>
+
+  <p>
+    <strong>Time Only:</strong>
+    <%= blood_pressure.stattime %>
+  </p>
+
+  <p>
+    <strong>Systolic/Diastolic:</strong>
+    <%= blood_pressure.systolic %> / <%= blood_pressure.diastolic %>
+  </p>
+
+  <p>
+    <strong>Source Name-Version:</strong>
+    <%= blood_pressure.sourceName %>-<%= blood_pressure.sourceVersion %>
+  </p>
+
+  <p>
+    <strong>Comment:</strong>
+    <%= blood_pressure.comment %>
+  </p>
+
+  <p>
+    <!-- <%#= link_to "Show this data", blood_pressure %> This is where we are already -->
+  </p>
+</div>

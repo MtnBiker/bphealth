@@ -1,0 +1,34 @@
+//// https://stackoverflow.com/questions/21168521/table-fixed-header-and-scrollable-body
+//// This sort of worked, but it made the whole table 100px
+//.tableFixHead          { overflow: auto; height: 100px; }
+//.tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
+//
+///* Just common table stuff. Really. */
+//table  { border-collapse: collapse; width: 100%; }
+//th, td { padding: 8px 16px; }
+//th     { background:#eee; }
+
+
+
+.table-fixed tbody {
+height: 200px;
+overflow-y: auto;
+width: 100%;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+display: block;
+}
+.table-fixed tr:after {
+content: "";
+display: block;
+visibility: hidden;
+clear: both;
+}
+.table-fixed tbody td,
+.table-fixed thead > tr > th {
+float: left;
+}

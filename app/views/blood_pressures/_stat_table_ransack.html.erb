@@ -1,0 +1,29 @@
+  <table class="table table-sm table-striped table-hover table-responsive pretty datetimes">
+  <thead>
+    <tr>
+      <th><%= sort_link(@q, :datetime, default_order: :asc) %></th>
+      <th><%= sort_link(@q, :systolic, default_order: :asc) %></th>
+      <th><%= sort_link(@q, :diastolic, default_order: :asc) %></th>
+      <th><%= sort_link(@q, :heartrate, default_order: :asc) %></th>
+      <th></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @blood_pressures.each do |datetime| %>
+      <tr>
+        <!-- <td>< = datetime.id %></td> -->
+        <td><%= datetime.datetime %></td>
+        <td><%= datetime.systolic %></td>
+        <td><%= datetime.diastolic %></td>
+        <td><%= datetime.heartrate %></td>
+        <td class="text-start"> <%= stat.comment %></td>
+        
+        <td><%= link_to 'Show details', datetime %></td>
+        <td><%= link_to 'Edit', edit_datetime_path(datetime) %></td>
+        <td><%= link_to 'Destroy', datetime, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

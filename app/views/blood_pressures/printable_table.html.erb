@@ -1,0 +1,50 @@
+<div class="container">
+  <div id="user_header" class="float-end">
+    <% if current_user %>
+      Logged in as <%= current_user.username %>.
+      <%= link_to "Log Out", logout_path %>
+      <br>
+      <%= link_to "Return to main page", root_path %>
+    <% else %>
+      <%= link_to "Log In", login_path %>. No new sign ups accepted at present.
+    <% end %>
+  </div>
+
+  <h1 class="text-center">
+    <img src="https://img.icons8.com/color/48/000000/heart-with-pulse.png"/>
+     <% if current_user %>
+       <%= current_user.username %>&lsquo;s Blood Pressure
+      <% else %>
+        Blood Pressure Demo
+      <% end %>
+    <img src="https://img.icons8.com/color/48/000000/heart-with-pulse.png"/>
+  </h1>
+
+  <p>Format for printing needs work FIXME</p>
+  <div class="">
+    <table class="">
+      <thead>
+        <tr>
+          <th scope="col" class="text-center" colspan="2">Date</th>
+          <th scope="col" class="text-end">Systolic /</th>
+          <th scope="col" class="text-start">Diastolic</th>
+          <th scope="col" class="1">HR</th>
+          <th scope="col" class="">Comment</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @blood_pressures.each do |stat| %>
+            <tr>
+              <td class=""> <%= stat.statdate.localtime.strftime("%d %b %Y") %><!-- </td>
+              <td class="text-start"> --> <%= stat.statdate.localtime.strftime("%_l:%M %P") %></td> <!-- .strftime("%_l:%M %P") or ("%H:%M")-->
+              <td class="text-end <%= systolic_text_color(stat.systolic) %>"> <%= stat.systolic %> / </td>
+              <td class="text-start"> <%= stat.diastolic %></td>
+              <td class="text-center"><%= stat.heartrate %></td>
+              <td class="text-start"><%= stat.comment %></td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

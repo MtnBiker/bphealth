@@ -1,0 +1,7 @@
+<!-- Variable for use below -->
+<% last_record = BloodPressure.last.statdate  # last_record: 2021-10-29 19:27:39 UTC %>
+
+<!-- Trend during the day -->
+<div class="text-center font-weight-bold">
+ <%= line_chart BloodPressure.where(statdate: last_record-1.day..last_record).pluck(:statdate, :systolic), title: "Last 24 hours of data. Up to #{last_record.strftime("%c")}", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+</div>

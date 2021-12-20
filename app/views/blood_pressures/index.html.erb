@@ -1,0 +1,107 @@
+<p id="notice"><%= notice %></p>
+<!-- <div data-controller="hello">
+  A demo of esbuild and Stimulus from Go Rails and it works
+</div> -->
+<div class="container">
+  <!-- <div id="stashed-buttons">
+
+  Stashed buttons
+  <button type="button" class="btn btn-primary">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
+  </svg>
+  Button
+  </button>
+  <button type="button" class="btn btn-success">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
+  </svg>
+  Button
+  </button>
+  <button type="button" class="btn btn-outline-danger">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"></path>
+  </svg>
+  Button
+  </button>
+  </div> -->
+  <div class="float-beginning">
+    <% if current_user %>
+      <h3>Import new iOS Health Data</h3>
+      <%= render 'import_data' %>
+    <% end %>
+  </div>
+
+  <!--The following ten lines originally on application.html.erb, but this is essentially the only page -->
+  <div id="user_header" class="float-end">
+    <% if current_user %>
+      Logged in as <%= current_user.username %>.
+      <%= link_to "Log Out", logout_path %>
+    <% else %>
+      <%#= link_to "Sign Up", signup_path %> <!-- Uncomment to allow sign ups -->
+      <%= link_to "Log In", login_path %>. No new sign ups accepted at present.
+    <% end %>
+  </div>
+<%= link_to "Printable Table", print_path %>
+  <h1 class="text-center">
+    <img src="https://img.icons8.com/color/48/000000/heart-with-pulse.png"/>
+     <% if current_user %>
+       <%= current_user.username %>&lsquo;s Blood Pressure
+      <% else %>
+        Blood Pressure Demo
+      <% end %>    
+    <img src="https://img.icons8.com/color/48/000000/heart-with-pulse.png"/>
+  </h1>
+
+  <% if current_user %>
+    <!-- Uploading new data buttons, etc. Easy to move this around the page -->
+    <%#= render 'import_data' %>
+    
+    <!-- Graphs/Charts -->
+    <%= render "graphs" %>
+  <% end %>
+
+  <!-- Ransack search -->
+  <%#= render ransack_search %>
+
+  <!-- Login and whether data loads -->
+  <div id="blood_pressures">
+    <% if current_user %>
+        <!-- Only one is needed, can switch between them for testing or whatever -->
+        <%#= render @blood_pressures %>
+        <%#= render 'stat_table_ransack' %> <!-- with Ransack sort -->
+
+        <!-- Data Table -->
+        <div class="text-center">
+          <h3>Tabulated</h3><%= @blood_pressures.count %> records
+        </div>
+        <%= render 'stat_table' %>
+      <% else %>
+        <%= link_to "Sign Up", signup_path %> or
+        <%= link_to "Log In", login_path %>
+      <% end %>
+    </div>
+
+    <!-- Last 24 hours of data loaded. Here again so close to data -->
+    <% if current_user %>
+      <hr class="py-1 h1">
+      <strong><%= render 'last_24_hours' %></strong>
+      <hr class="py-1">
+    <% end  %>
+
+    <div class="float-beginning">
+      <% if current_user %>
+        <h3>Import new iOS Health Data</h3>
+        <%= render 'import_data' %>
+      <% end %>
+
+      <%= link_to "Printable Table", print_path %>
+    </div>
+</div> 
+<img src="https://img.icons8.com/ios/48/000000/heart-with-pulse.png"/>
+<!-- container -->
+<i class="bi bi-heart"></i> Cornflower supposed to show<i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>--<svg class="bi bi-exclamation-triangle text-success" width="32" height="32" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  ...
+</svg>
+
+<%#= link_to "New blood stat", new_blood_pressure_path %>

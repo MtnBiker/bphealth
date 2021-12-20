@@ -1,0 +1,60 @@
+<div class="table-responsive ">
+  <table class="table table-sm table-hover align-middle">  <!-- table-striped table-responsive pretty datetimes --> 
+    <!-- Add .table-sm to make any .table more compact by cutting all cell padding in half. -->
+    <thead>  <!-- class="sticky-header" -->
+      <tr>
+        <!-- Col widths go in the th -->
+        <!--Not sure what scope is about -->
+        <!-- <th scope="col" class="col-sm-1 text-end">ID</th> -->
+        <th scope="col" class="text-center col-lg-2" colspan="2">Date</th>
+        <th scope="col" class="text-end col-lg-1">Systolic /</th><!-- text-uppercase is to see if bootstrap is working -->
+        <th scope="col" class="text-start col-lg-1">Diastolic</th>
+        <th scope="col" class="col-lg-1">HR</th>
+        <!-- <th scope="col" class="text-center col-lg-2" colspan="2">Time only</th>  --><!-- Only need for debugging 24 hour chart -->
+        <!-- <th scope="col" class="col-md-1">Weight</th> -->
+        <th scope="col" class="col-lg-3">Comment</th>
+        <th scope="col" class="col-lg-2" colspan="2"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @blood_pressures.each do |stat| %>
+          <tr>
+            <!-- <td class="text-end"><%= stat.id %></th> -->
+            <!-- <%#= stat.statdate.strftime("%a %-m %b %Y  %_I:%M %P")  %> -m gives wrong number -->
+            <!-- <%#= stat.statdate.strftime("%c") %> Mon Oct 19 17:47:23 2015 This works -->
+            <!-- %u - Day of the week (Monday is 1, 1..7) Started with Sunday, but Monday is easier for me
+            %w - Day of the week (Sunday is 0, 0..6) -->
+            <!-- <%#= time_length = Time.now.to_s.length %> always 25 -->
+            <%# offset= -Time.now.to_s[20..22].to_i %> <!-- Grabbing time zone offset. Note minus sign, don't thing hours ago takes negative. Not used. Changed to .localtime which should be better-->
+            <td class="text-end background-color-day-<%= stat.statdate.strftime("%u") %>"> <%= stat.statdate.localtime.strftime("%a %d %b %Y") %></td>
+            <td class="text-start"> <%= stat.statdate.localtime.strftime("%_l:%M %P") %></td> <!-- .strftime("%_l:%M %P") or ("%H:%M")-->
+            <td class="text-end <%= systolic_text_color(stat.systolic) %>"> <%= stat.systolic %> / </td> <!-- /helpers/blood_pressures_helper.rb -->
+            <td class="text-start">  <%= stat.diastolic %></td>
+            <td class="text-center"> <%= stat.heartrate %></td>
+            <!-- <#% if stat.stattime? %>
+             <td class="text-center"> <%#= stat.stattime.localtime.strftime("%_l:%M %P") %></td>
+            <%# end %> -->
+            <!-- <td class="text-center"> <%#= stat.weight %></td> -->
+            <td><%= link_to edit_blood_pressure_path(stat) do %><%= stat.comment %><% end %></td>
+            <!-- <td class="text-start"> <%= stat.comment %></td> -->
+            <td><%= link_to 'Edit comment', edit_blood_pressure_path(stat) %></td>
+            <td><%= link_to 'Delete this record', stat, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Precise control, must add to 100%. An example below -->
+<!-- <table>
+  <thead>
+    <tr>
+        <th style="width:10%">Size</th>
+        <th style="width:30%">Bust</th>
+        <th style="width:50%">Waist</th>
+        <th style="width:10%">Hips</th>
+    </tr>
+    <tr>table body</tr>
+  </thead>
+</table> -->
