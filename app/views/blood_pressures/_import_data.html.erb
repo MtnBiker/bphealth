@@ -1,19 +1,24 @@
 <!-- Importing new data -->
 <% if current_user %>
   <div class="container">
-    <%= form_tag( action: :import_data, controller: :blood_pressures ) do %> <!-- Started POST "/import_data" for ::1 at 2021-11-12 20:39:24 -0800 but variable doesn't make it -->
-    <%#= form_tag @blood_pressure do %>
-    <%#= form_tag(model: :blood_pressure, url: 'import_data_blood_pressure_path ) do %> <!-- ActionController::RoutingError (No route matches [POST] "/"): -->
-      <%= file_field_tag(:health_exported_zip) %>
+    
+    <!-- https://guides.rubyonrails.org/form_helpers.html#uploading-files A common task is uploading some sort of file, whether it's a picture of a person or a CSV file containing data to process. File upload fields can be rendered with the file_field helper. -->
+
+    <!-- form_with is more modern. Seems to work, but no better than the above and url is confusing to me. This is just an alternate. Pick on or the other FIXME -->
+    <%= form_with model: @blood_pressures, url: { action: "import_data" } do |form| %>
+      <%= form.file_field :health_exported_zip %> <!-- Below example the :xxx is linked to a field in the model, but not in this case, do I need to specify better.  -->
       <%= submit_tag( "Import" ) %>
+      
     <% end %>
   </div>
 <% end %>
 
-<!-- form_with is more modern. Seems to work, but no better than the above and url is confusing to me. This is just an alternate. Pick on or the other FIXME -->
-<%= form_with model: @blood_pressures, url: { action: "import_data" } do |form| %>
-  <%= form.file_field :health_exported_zip %>
-<% end %>
+
+
+<!--       The following is for adding a document to the database. Not needed a special action as I'm trying to do. From crores -->
+<!--  <%#= f.label :documents, "Select document(s) or image that support this information." %>
+      <%#= f.file_field :documents %>
+      <button type="button" class="btn btn-primary btn-lg active"><%#= f.submit %></button> -->
 
 
 <%#= form_with action: :import_data do %>
