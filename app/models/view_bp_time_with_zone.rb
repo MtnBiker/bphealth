@@ -3,6 +3,9 @@ class BpTimeWithZonesController  < ApplicationRecord
 
   belongs_to :blood_pressure
 
+  def index # a swag to see if error uploading to Heroku would go away
+  end
+
   def readonly?
     true
   end
