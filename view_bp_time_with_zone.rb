@@ -1,4 +1,4 @@
-class BpTimeWithZonesController  < ApplicationRecord
+class BpTimeWithZones < ApplicationRecord
   self.primary_key = :id
 
   belongs_to :blood_pressure
