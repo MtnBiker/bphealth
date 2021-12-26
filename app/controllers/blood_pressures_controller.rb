@@ -78,6 +78,7 @@ class BloodPressuresController < ApplicationController
     puts "#{lineNum}. params: #{params}" # params: {"authenticity_token"=>"zDyBm6XJD6HZusFWIfNRKJP3NteiIf9mcAQLq2SvTZx4LHg9tGHJtNdYZzLIzvsXH1cjd6CUnrMQesOEpSwfOg", "blood_pressure"=>{"health_exported_zip"=>#<ActionDispatch::Http::UploadedFile:0x00007fbe22a55338 @tempfile=#<Tempfile:/var/folders/f6/59hv1f7923z2rx7yl3hjl8pm0000gn/T/RackMultipart20211224-13925-75ug17.zip>, @original_filename="export 2.zip", @content_type="application/zip", @headers="Content-Disposition: form-data; name=\"blood_pressure[health_exported_zip]\"; filename=\"export 2.zip\"\r\nContent-Type: application/zip\r\n">}, "commit"=>"Import", "controller"=>"blood_pressures", "action"=>"import_data"}
     # puts "#{lineNum} params.to_s.slice!(0..450): #{params.to_s.slice!(0..450)}"
     # puts "#{lineNum}. params.to_s.index('Tempfile:'): #{params.to_s.index('Tempfile:')} of class #{params.to_s.index('Tempfile:').class}"
+    # puts "#{lineNum}params[:health_exported_zip].path: #{params[:health_exported_zip].path}" # SO poster thought this should work
     indexTempfile = params.to_s.index('/var/folders') # setting start of Tempfile location
     # paramSlice will become the path to Tempfile
     tempfile_path = params.to_s.slice!(indexTempfile..450) # slice off the beginning of params
