@@ -108,7 +108,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 -- Name: view_bp_time_with_zones; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.view_bp_time_with_zones AS
+CREATE VIEW public.bp_time_with_zones AS
  SELECT blood_pressures.id,
     blood_pressures.statdate,
     (blood_pressures.statdate)::time with time zone AS stattime,
