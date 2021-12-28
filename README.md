@@ -30,7 +30,7 @@ Make sure works on empty database for new set ups
 
 Refresh index.html.erb after Import
 
-Daily overlay chart. All 7 days in one chart. Abcissa is GMT. Should be local
+Daily overlay chart. All 7 days in one chart. Abcissa is GMT. Should be local. (_last_week_by_days.html.erb)
 
 Should have a pop up after selecting the export.zip asking if want to import.
 

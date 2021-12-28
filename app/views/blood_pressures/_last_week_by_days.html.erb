@@ -7,7 +7,7 @@
 <!-- xmin: "2021-01-01", xmax: "2022-01-01" How do you tell Rails 3am to 12 pm or similar-->
 
 <!-- Stack 7 daily records, then maybe put on one graph when I figure it out -->
-<!-- :stattime is a symbol, so can't use .localtime to get the time showing right -->
+<!-- :stattime is a symbol and comes through as GMT, so can't use .localtime to get the time showing right -->
 <!-- The order of the variables and methods in the following matters -->
 <div class="text-center font-weight-bold">
   <%= line_chart BpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-1.day..last_record).pluck(:stattime, :systolic), title: "Last week by days (Most recent at top). Up to #{last_record.strftime("%c")}. The x-axis is GMT", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>

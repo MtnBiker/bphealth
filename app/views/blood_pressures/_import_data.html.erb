@@ -1,41 +1,11 @@
 <!-- Importing new data -->
 <% if current_user %>
-  <div class="container">
-    
-    <!-- https://guides.rubyonrails.org/form_helpers.html#uploading-files A common task is uploading some sort of file, whether it's a picture of a person or a CSV file containing data to process. File upload fields can be rendered with the file_field helper. -->
-
-    <!-- form_with is more modern. Seems to work, but no better than the above and url is confusing to me. This is just an alternate. Pick on or the other FIXME -->
+  <div class="container border border-secondary border-3 rounded-3 p-2">
+    <!-- form_with is more modern, although url is not intuitive to me. -->
     <%= form_with model: @blood_pressures, url: { action: "import_data" } do |form| %>
-      <%= form.file_field :health_exported_zip %> <!-- Below example the :xxx is linked to a field in the model, but not in this case, do I need to specify better.  -->
+      <%= form.label :statdate, "Import iOS Health Data: ", class: "fs-3" %>
+      <%= form.file_field :health_exported_zip %>
       <%= submit_tag( "Import" ) %>
-      
     <% end %>
   </div>
 <% end %>
-
-
-
-<!--       The following is for adding a document to the database. Not needed a special action as I'm trying to do. From crores -->
-<!--  <%#= f.label :documents, "Select document(s) or image that support this information." %>
-      <%#= f.file_field :documents %>
-      <button type="button" class="btn btn-primary btn-lg active"><%#= f.submit %></button> -->
-
-
-<%#= form_with action: :import_data do %>
-  <%#= file_field_tag :health_exported_zip %>
-<%# end %>
-
-
-<!-- Look at https://discuss.hotwired.dev/t/where-is-the-hello-world-of-tubo/3436
-Maybe not terribly relevant?
-
-<form action="/action_page.php" method="get">
-  <input  type="text" id="qty" name="qty" class="input">
-  <input  type="text" id="discount" name="discount" class="input">
-  <input type="submit" value="Submit">
-</form>
-
-But the answer wasn't clear to me. Does is need a turbo wrapper
-The example is for a  form submits/validations to work which is less complicated than what I'm looking for
- -->
-

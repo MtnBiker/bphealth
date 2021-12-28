@@ -25,13 +25,6 @@
   Button
   </button>
   </div> -->
-  <div class="float-beginning">
-    <% if current_user %>
-      <h3>Import new iOS Health Data</h3>
-      <%= render 'import_data' %>
-    <% end %>
-  </div>
-
   <!--The following ten lines originally on application.html.erb, but this is essentially the only page -->
   <div id="user_header" class="float-end">
     <% if current_user %>
@@ -42,7 +35,16 @@
       <%= link_to "Log In", login_path %>. No new sign ups accepted at present.
     <% end %>
   </div>
-<%= link_to "Printable Table", print_path %>
+  <br>
+  <div class="float-beginning">
+    <% if current_user %>
+      <%= render 'import_data' %>
+    <% end %>
+  </div>
+
+  <br>
+  <%= link_to "Printable Table", print_path, class:" border border-secondary border-3 rounded-3 p-2 m-3" %>
+  <hr>
   <h1 class="text-center">
     <img src="https://img.icons8.com/color/48/000000/heart-with-pulse.png"/>
      <% if current_user %>
@@ -96,17 +98,18 @@
 
     <div class="float-beginning">
       <% if current_user %>
-        <h3>Import new iOS Health Data</h3>
         <%= render 'import_data' %>
       <% end %>
-
-      <%= link_to "Printable Table", print_path %>
+      <hr>
+      <%= link_to "Printable Table", print_path, class:" border border-secondary border-3 rounded-3 p-2 m-3" %>
+      <hr>
     </div>
-</div> 
+</div>
+
+<!-- Credits -->
+
+<div class="">Charts created with <%= link_to "Chartkick", "https://chartkick.com" %> and <%= link_to "High Charts", "http://www.highcharts.com" %>. <%#= link_to "Chart.js" , "https://www.chartjs.org/" %></div>
+
 <img src="https://img.icons8.com/ios/48/000000/heart-with-pulse.png"/>
-<!-- container -->
-<i class="bi bi-heart"></i> Cornflower supposed to show<i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>--<svg class="bi bi-exclamation-triangle text-success" width="32" height="32" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-  ...
-</svg>
 
 <%#= link_to "New blood stat", new_blood_pressure_path %>
