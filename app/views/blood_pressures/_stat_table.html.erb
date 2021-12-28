@@ -27,7 +27,7 @@
             %w - Day of the week (Sunday is 0, 0..6) -->
             <!-- <%#= time_length = Time.now.to_s.length %> always 25 -->
             <%# offset= -Time.now.to_s[20..22].to_i %> <!-- Grabbing time zone offset. Note minus sign, don't thing hours ago takes negative. Not used. Changed to .localtime which should be better-->
-            <td class="text-end background-color-day-<%= stat.statdate.strftime("%u") %>"> <%= stat.statdate.localtime.strftime("%a %d %b %Y") %></td>
+            <td class="text-end background-color-day-<%= stat.statdate.localtime.strftime("%u") %>"> <%= stat.statdate.localtime.strftime("%a %d %b %Y") %></td>
             <td class="text-start"> <%= stat.statdate.localtime.strftime("%_l:%M %P") %></td> <!-- .strftime("%_l:%M %P") or ("%H:%M")-->
             <td class="text-end <%= systolic_text_color(stat.systolic) %>"> <%= stat.systolic %> / </td> <!-- /helpers/blood_pressures_helper.rb -->
             <td class="text-start">  <%= stat.diastolic %></td>

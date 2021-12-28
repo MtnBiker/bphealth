@@ -19,6 +19,13 @@ I'm using (Withings) Health Mate and getting data from Withings to iOS Health is
 Only Systolic Blood Pressure, Diastolic Blood Pressure and Heart Rate supported. Data is automatically added to the iOS Health app from a Withings ...
 
 ## ToDo
+
+Make sure works on empty database
+
+Refresh index.html.erb after Import
+
+Date coloring is using GMT I think
+
 Daily overlay chart. All 7 days in one chart. Abcissa is GMT. Should be local
 
 Should have a pop up after selecting the export.zip asking if want to import.

@@ -57,8 +57,11 @@
     <!-- Uploading new data buttons, etc. Easy to move this around the page -->
     <%#= render 'import_data' %>
     
-    <!-- Graphs/Charts -->
-    <%= render "graphs" %>
+    <!-- Graphs/Charts. If no data get an error and need to be able to load. Could fix in the partial-->
+    <% if BloodPressure.count > 0 %>
+      <%= render "graphs" %>
+    <% end  %>
+
   <% end %>
 
   <!-- Ransack search -->
@@ -82,10 +85,12 @@
       <% end %>
     </div>
 
-    <!-- Trying to stack 7 days of data. Have separate plots, not on one chart yet -->
+    <!-- Trying to stack 7 days of data. Have separate plots, not on one chart yet. Error if no data -->
     <% if current_user %>
       <hr class="py-1 h1">
-      <strong><%= render 'last_week_by_days' %></strong>
+      <% if BloodPressure.count > 0 %>
+        <strong><%= render 'last_week_by_days' %></strong>
+      <% end %>
       <hr class="py-1">
     <% end  %>
 

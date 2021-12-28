@@ -77,7 +77,7 @@ class BloodPressuresController < ApplicationController
     end # definitely has to be here for this method to work
     # params show up anyway
     # puts "#{lineNum}. params: #{params}" # params: {"authenticity_token"=>"zDyBm6XJD6HZusFWIfNRKJP3NteiIf9mcAQLq2SvTZx4LHg9tGHJtNdYZzLIzvsXH1cjd6CUnrMQesOEpSwfOg", "blood_pressure"=>{"health_exported_zip"=>#<ActionDispatch::Http::UploadedFile:0x00007fbe22a55338 @tempfile=#<Tempfile:/var/folders/f6/59hv1f7923z2rx7yl3hjl8pm0000gn/T/RackMultipart20211224-13925-75ug17.zip>, @original_filename="export 2.zip", @content_type="application/zip", @headers="Content-Disposition: form-data; name=\"blood_pressure[health_exported_zip]\"; filename=\"export 2.zip\"\r\nContent-Type: application/zip\r\n">}, "commit"=>"Import", "controller"=>"blood_pressures", "action"=>"import_data"}
-    puts "#{lineNum}. params[:health_exported_zip].path: #{params[:health_exported_zip].path}" # masa-sakano thought this should work and it might if before_actions were correct
+    # puts "#{lineNum}. params[:health_exported_zip].path: #{params[:health_exported_zip].path}" # masa-sakano thought this should work and it might if before_actions were correct
     indexTempfile = params.to_s.index('/var/folders') # setting start of Tempfile location
     # paramSlice will become the path to Tempfile
     tempfile_path = params.to_s.slice!(indexTempfile..450) # slice off the beginning of params
@@ -94,7 +94,8 @@ class BloodPressuresController < ApplicationController
     # export_zip = params[:health_exported_zip]
     # puts "export_zip: #{export_zip}" # blank now, although are getting to the controller
 
-    export_xml =  "#{ENV['PWD']}/import_staging/apple_health_export/export.xml" # location set in blood_pressure_controller during unzip. Had trouble using /tmp so set. Could I use a /var/folders/ like Tempfile? 
+    export_xml =  "#{ENV['PWD']}/import_staging/apple_health_export/export.xml" # location set in blood_pressure_controller during unzip. Had trouble using /tmp so set. Could I use a /var/folders/ like Tempfile?
+    redirect_to blood_pressures_url # To rerender page after import
   def lineNum()
     caller_infos = caller.first.split(":")
     # Note caller_infos[0] is file name

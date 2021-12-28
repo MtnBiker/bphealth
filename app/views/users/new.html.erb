@@ -35,7 +35,7 @@
         <%= f.label :password_confirmation %><br />
         <%= f.password_field :password_confirmation, class: 'form-control' %>
       </div>
-      <!-- <div class="actions"><%#= f.submit "Sign Up" %></div> -->
+      <div class="actions"><%= f.submit "Sign Up" %></div>
       <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 
     <% end %>
