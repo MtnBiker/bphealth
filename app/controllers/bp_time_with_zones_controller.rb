@@ -1,7 +1,7 @@
-class ViewBpTimeWithZone < ApplicationController
+class BpTimeWithZone < ApplicationController
   def index
-    @view_bp_time_with_zones = ViewBpTimeWithZone.all.order("stattime") # Same with or without this.  data in table is sorted by statdate
+    @bp_time_with_zones = BpTimeWithZone.all.order("stattime") # Same with or without this.  data in table is sorted by statdate
   end
 end
 
-# expected file /tmp/build_75125510/app/controllers/bp_time_with_zones_controller.rb to define constant BpTimeWithZonesController, but didn't (Zeitwerk::NameError)
+# bp_time_with_zones_controller.rb:1:in `<main>': superclass mismatch for class ViewBpTimeWithZone (TypeError)

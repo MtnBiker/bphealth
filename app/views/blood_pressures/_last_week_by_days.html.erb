@@ -10,11 +10,11 @@
 <!-- :stattime is a symbol, so can't use .localtime to get the time showing right -->
 <!-- The order of the variables and methods in the following matters -->
 <div class="text-center font-weight-bold">
-  <%= line_chart ViewBpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-1.day..last_record).pluck(:stattime, :systolic), title: "Last week by days (Most recent at top). Up to #{last_record.strftime("%c")}. The x-axis is GMT", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
-  <%= line_chart ViewBpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-2.day..last_record+timeZoneNeg-1.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
-  <%= line_chart ViewBpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-3.day..last_record+timeZoneNeg-2.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
-  <%= line_chart ViewBpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-4.day..last_record+timeZoneNeg-3.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
-  <%= line_chart ViewBpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-5.day..last_record+timeZoneNeg-4.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
-  <%= line_chart ViewBpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-6.day..last_record+timeZoneNeg-5.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
-  <%= line_chart ViewBpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-7.day..last_record+timeZoneNeg-6.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-1.day..last_record).pluck(:stattime, :systolic), title: "Last week by days (Most recent at top). Up to #{last_record.strftime("%c")}. The x-axis is GMT", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-2.day..last_record+timeZoneNeg-1.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-3.day..last_record+timeZoneNeg-2.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-4.day..last_record+timeZoneNeg-3.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-5.day..last_record+timeZoneNeg-4.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-6.day..last_record+timeZoneNeg-5.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BpTimeWithZone.where(statdate: last_record+timeZoneNeg.hour-7.day..last_record+timeZoneNeg-6.day).pluck(:stattime, :systolic), ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
 </div>
