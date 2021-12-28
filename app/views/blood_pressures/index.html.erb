@@ -88,6 +88,13 @@
       <strong><%= render 'last_24_hours' %></strong>
       <hr class="py-1">
     <% end  %>
+    
+    <!-- Trying to stack 7 days of data -->
+    <% if current_user %>
+      <hr class="py-1 h1">
+      <strong><%= render 'last_week_by_days' %></strong> <!-- Testing -->
+      <hr class="py-1">
+    <% end  %>
 
     <div class="float-beginning">
       <% if current_user %>

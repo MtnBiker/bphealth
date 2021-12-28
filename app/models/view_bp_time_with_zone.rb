@@ -1,4 +1,4 @@
-class BpTimeWithZone < ApplicationRecord
+class ViewBpTimeWithZone < ApplicationRecord
   self.primary_key = :id
 
   belongs_to :blood_pressure
