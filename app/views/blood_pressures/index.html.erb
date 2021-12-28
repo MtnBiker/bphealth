@@ -82,17 +82,10 @@
       <% end %>
     </div>
 
-    <!-- Last 24 hours of data loaded. Here again so close to data -->
+    <!-- Trying to stack 7 days of data. Have separate plots, not on one chart yet -->
     <% if current_user %>
       <hr class="py-1 h1">
-      <strong><%= render 'last_24_hours' %></strong>
-      <hr class="py-1">
-    <% end  %>
-    
-    <!-- Trying to stack 7 days of data -->
-    <% if current_user %>
-      <hr class="py-1 h1">
-      <strong><%= render 'last_week_by_days' %></strong> <!-- Testing -->
+      <strong><%= render 'last_week_by_days' %></strong>
       <hr class="py-1">
     <% end  %>
 

@@ -9,7 +9,7 @@ Here's how the app works in regular use
 Step #1. Launch Health app on your iPhone.
 Step #2. Tap on your Profile Picture on the top right.
 Step #3. Tap on Export All Health Data → Export to somewhere on your hard drive.
-Step #4. Launch the app and click the button to select the downloaded export.zip file. [currently only importing from /Downloads. This selection isn't doing anything]
+Step #4. Launch the app and click the button to select the downloaded export.zip file.
 Step #5. Click Import.
 
 ### Issues
@@ -19,9 +19,7 @@ I'm using (Withings) Health Mate and getting data from Withings to iOS Health is
 Only Systolic Blood Pressure, Diastolic Blood Pressure and Heart Rate supported. Data is automatically added to the iOS Health app from a Withings ...
 
 ## ToDo
-Only can import export.zip from my /Downloads folder. The selection is not being passed. LOOK AT STACKOVERFLOW
-
-Daily overlay chart- quick manual evaluation in Numbers didn't show much. But didn't isolate individual days
+Daily overlay chart. All 7 days in one chart. Abcissa is GMT. Should be local
 
 Should have a pop up after selecting the export.zip asking if want to import.
 
@@ -33,7 +31,7 @@ Toggles for charts, i.e., so you can pick which ones
 
 Check that sign up creates a new account that doesn't allow access to others' data.
 
-stattime record not being used. Can remove
+stattime record not being used in main db. Can remove or change so it is updated
 
 Had to use CDN in application.html.erb. 
 
@@ -43,7 +41,7 @@ Consider converting to an app using [Electron](https://www.electronjs.org "Thous
 
 https://github.com/effkay/convert_apple_health_export Ruby script to convert Apple iOS Health file export.xml to export.csv for blood pressure records. Modified and incorporated.
 
-Charts are built with [High Charts](http://www.highcharts.com/) and [Chartkick](https://chartkick.com). Fusion Charts will probably work too in place of High Charts.
+Charts are built with [High Charts](http://www.highcharts.com/) and [Chartkick](https://chartkick.com). Fusion Charts would probably work in place of High Charts.
 
 
 #### Notes
@@ -70,6 +68,5 @@ Needed to add
     "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules"
 to package.json. But I need to find out how to have this added
 
-Table is loading. Charts are not. Import is (still can't grab location.)
 
-All working in 7.0.0 which I couldn't make happen in original app. Still need to grap location of export.zip
+All working in 7.0.0 which I couldn't make happen in original app.
