@@ -1,5 +1,5 @@
 class BloodPressuresController < ApplicationController
-  before_action :set_blood_pressure , only: %i[ show edit update destroy import_data ]
+  before_action :set_blood_pressure , only: %i[ show edit update destroy ] # if add import_data, import fails
   # helper_method :systolic_text_color # checks here first, then goes to helpers which is what I'm using
 
   # GET /blood_pressures or /blood_pressures.json

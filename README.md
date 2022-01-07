@@ -17,6 +17,7 @@ Step #5. Click Import.
 Rails 7.0.0
 Ruby 3.0.3
 Postgres. Using a view, but that may be not necessary if use Rails 7 changes. Would require add stattime to main table. But this change would probably make it easier to use other databases.
+Sprockets, not Webpacker or Import Maps. 3 JavaScript handled by CDN in application.html.erb
 
 ### Issues
 
