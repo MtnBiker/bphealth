@@ -14,7 +14,7 @@ Step #3. Tap on Export All Health Data → Export to somewhere on your hard driv
 Step #4. Launch the app and click the button to select the downloaded export.zip file.
 Step #5. Click Import.
 
-Rails 7.0.0
+Rails 7.0.1
 Ruby 3.0.3
 Postgres. Using a view, but that may be not necessary if use Rails 7 changes. Would require add stattime to main table. But this change would probably make it easier to use other databases.
 Sprockets, not Webpacker or Import Maps. 3 JavaScript handled by CDN in application.html.erb
