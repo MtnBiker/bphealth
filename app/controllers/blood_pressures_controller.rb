@@ -67,7 +67,7 @@ class BloodPressuresController < ApplicationController
     end
   end
 
-  # Import button triggers this. For importing from export.zip. Although button triggers this, the location of export.zip is hardwired. Havne't figured out how to grap the location for use here FIXME
+  # Import button triggers this. For importing from export.zip.
   def import_data
     def lineNum()
       caller_infos = caller.first.split(":")
@@ -75,18 +75,23 @@ class BloodPressuresController < ApplicationController
       # caller_infos[1]
       return "#{caller_infos[1]}"
     end # definitely has to be here for this method to work
+    blood_pressure_params
     # params show up anyway
     # puts "#{lineNum}. params: #{params}" # params: {"authenticity_token"=>"zDyBm6XJD6HZusFWIfNRKJP3NteiIf9mcAQLq2SvTZx4LHg9tGHJtNdYZzLIzvsXH1cjd6CUnrMQesOEpSwfOg", "blood_pressure"=>{"health_exported_zip"=>#<ActionDispatch::Http::UploadedFile:0x00007fbe22a55338 @tempfile=#<Tempfile:/var/folders/f6/59hv1f7923z2rx7yl3hjl8pm0000gn/T/RackMultipart20211224-13925-75ug17.zip>, @original_filename="export 2.zip", @content_type="application/zip", @headers="Content-Disposition: form-data; name=\"blood_pressure[health_exported_zip]\"; filename=\"export 2.zip\"\r\nContent-Type: application/zip\r\n">}, "commit"=>"Import", "controller"=>"blood_pressures", "action"=>"import_data"}
-    # puts "#{lineNum}. params[:health_exported_zip].path: #{params[:health_exported_zip].path}" # masa-sakano thought this should work and it might if before_actions were correct
-    indexTempfile = params.to_s.index('/var/folders') # setting start of Tempfile location
-    # paramSlice will become the path to Tempfile
-    tempfile_path = params.to_s.slice!(indexTempfile..450) # slice off the beginning of params
-    # puts "#{lineNum}: tempfile_path: #{tempfile_path}"
-    indexEnd = tempfile_path.to_s.index('>') - 1 # get end of Tempfile location. Can't do all at once because some `>` at the beginning. Could of course, but this is simpler
-    tempfile_path = tempfile_path.to_s.slice!(0..indexEnd) # slice off the end of params and left with path
-    puts "\n#{lineNum}: tempfile_path is now the path to the Tempfile for export.zip: #{tempfile_path}"
-    # health_exported_zip_file = params[:health_exported_zip].path # need to look at Better if worked using Rails https://api.rubyonrails.org/v7.0.0/classes/ActionDispatch/Http/UploadedFile.html to get this right
-    # health_exported_zip_file = "/Users/gscar/Downloads/export.zip" # changed to 
+    # At Heroku: Tempfile:/tmp/RackMultipart20220109-4-4a864y.zip
+    puts "#{lineNum}. params[:blood_pressure][:health_exported_zip]: #{params[:blood_pressure][:health_exported_zip]}" # #<ActionDispatch::Http::UploadedFile:0x00007fef60a042e8>
+    puts "#{lineNum}. params[:blood_pressure][:health_exported_zip.tempfile.path]: #{params[:blood_pressure][:health_exported_zip].tempfile.path}"  # 
+    tempfile_path = params[:blood_pressure][:health_exported_zip].tempfile.path
+    # indexTempfile = params.to_s.index('/var/folders') # setting start of Tempfile location
+  #   puts "#{lineNum}. indexTempfile: #{indexTempfile}"
+  #   # paramSlice will become the path to Tempfile
+  #   tempfile_path = params.to_s.slice!(indexTempfile..450) # slice off the beginning of params
+  #   # puts "#{lineNum}: tempfile_path: #{tempfile_path}"
+  #   indexEnd = tempfile_path.to_s.index('>') - 1 # get end of Tempfile location. Can't do all at once because some `>` at the beginning. Could of course, but this is simpler
+  #   tempfile_path = tempfile_path.to_s.slice!(0..indexEnd) # slice off the end of params and left with path
+  #   puts "\n#{lineNum}: tempfile_path is now the path to the Tempfile for export.zip: #{tempfile_path}"
+  #   # health_exported_zip_file = params[:health_exported_zip].path # need to look at Better if worked using Rails https://api.rubyonrails.org/v7.0.0/classes/ActionDispatch/Http/UploadedFile.html to get this right
+  #   # health_exported_zip_file = "/Users/gscar/Downloads/export.zip" # changed to
     unzip_import_data(tempfile_path)
     puts "#{lineNum}. request.request_parameters: #{request.request_parameters}" #  78. request.request_parameters: {"authenticity_token"=>"oCFXN0yI-Pbu0V1cQSVyaFxB61LmBcYAEqPF2sWUeCcSYELXwwME3WOsmfbT5QDzuG9JPkNKLFhx9g0iRhp0dg", "commit"=>"Import"}
     # puts "params: #{params}" #  params: {"authenticity_token"=>"NBP3…tvOg", "commit"=>"Import", "controller"=>"blood_pressures", "action"=>"import_data"}
@@ -191,21 +196,23 @@ private
 
   # Only allow a list of trusted parameters through.
   def blood_pressure_params
-    params.require(:blood_pressure).permit(:statdate, :systolic, :diastolic, :heartrate, :sourceName, :sourceVersion, :comment, :file, :filename, :health_exported_zip) # added :health_exported_zip hoping would pass to controller
+    params.require(:blood_pressure).permit(:statdate, :systolic, :diastolic, :heartrate, :sourceName, :sourceVersion, :comment, :file, :filename,  :health_exported_zip)
   end
 
   def unzip_import_data(health_exported_zip)
     require 'zip' # and this does what it needs to do here
     # health_exported_zip = "/Users/gscar/Downloads/export.zip" # Now set in call to this from line 79
-    unzip_to =  "import_staging" # "/tmp/import/"
-    export_xml = unzip_to + "/apple_health_export/export.xml" # see below for original
+    # unzip_to = "import_staging" # "/tmp/import/"
+    unzip_to = "tmp"
+    # export_xml = unzip_to + "/apple_health_export/export.xml" # see below for original
+    export_xml = unzip_to # see below for original
     File.delete(export_xml) if File.exist?(export_xml) # delete old files since apparently won't overwrite, at least on macOS
 
     # unzipping to one folder, but the file of interest ends up one dir down
     def extract_zip(file, destination)
       puts "#{lineNum}. Hello from the top of extract_zip in unzip_import_data in blood_pressures_controller. \nfile: #{file}. \ndestination: #{destination}"
       # Create folder for the export.xml which goes to /apple_health_export. The original iOS export file, export.zip, has the file of interest 'apple_health_export/export.xml'
-      final_destination = destination + "/apple_health_export/"
+      final_destination = destination # + "/apple_health_export/"
       puts "final_destination: #{final_destination}"
       # FileUtils.mkdir(destination) unless File.exist?(destination) # I thought the following would create this dir, but
       FileUtils.mkdir(final_destination) unless File.exist?(final_destination)

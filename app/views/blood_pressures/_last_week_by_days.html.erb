@@ -1,5 +1,11 @@
 <!-- Variable for use below -->
 <%# last_record = BloodPressure.order('statdate asc').last.statdate %><br>  <!-- 2022-01-06 16:14:48 UTC -->
+<%= Rails.root.join("tmp/") %><br>
+
+Time.current: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.current %> (recommended?)<br>
+Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.now %> <br> 
+Time.now.localtime: <%= Time.now.localtime %><br>
+
 <% last_record = BloodPressure.order('statdate asc').last.statdate %><br> <!-- last_record: 2021-12-26 04:40:23 UTC, but in db as 2021-12-25 20:40:23-08, Although ended up with last not being the most current if since sorting by id. How was an id reused? -->
 <!-- 3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %><br>
 4. Midnight     :  <%= last_record.beginning_of_day %><br> -->
@@ -9,7 +15,6 @@
 6. timeZone.hour: <%= timeZone.hour %> converts to seconds<br><%= timeZone.hour.class %><br>
 6.1 <%= last_record %> Time is local with time zone shown<br>
 7. last_record + timeZone.hour : <%= last_record + timeZone.hour %><br> -->
-
 <% timeZoneNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %> <!-- Just because I'm substracting it and it may be easier to use a positive number or not. Don't need to, but had problems at beginning so left it, but could change sign and variable<br> -->
 <%# last_record_minus_zone = last_record - timeZone %>
 <!-- xmin: "2021-01-01", xmax: "2022-01-01" How do you tell Rails 3am to 12 pm or similar-->
