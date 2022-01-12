@@ -81,18 +81,20 @@ class BloodPressuresController < ApplicationController
     # puts "#{lineNum}. Hello from the top of extract_zip in unzip_import_data in blood_pressures_controller. \nfile: #{file}. \ndestination: #{destination}"
     # # Create folder for the export.xml which goes to /apple_health_export. That's the way the zipped file is structured
     # FileUtils.mkdir(destination) unless File.exist?(destination) # I thought the following would create this dir, but, and it won't exist now that Rails is creating a special folder for where selected files are moved to (and given a new name)
-    puts "#{lineNum}. file: #{file}.\ndestination: #{destination}"
+    puts "#{lineNum}. file: #{file}.\n   destination: #{destination}"
     FileUtils.mkdir(destination) unless File.exist?(destination)
     Zip::File.open(file) do |zip_file|
       zip_file.each do |f|
-        # puts "#{lineNum}. Extracting f.name: #{f.name}" # assume the name method is part of zip gem
+        puts "#{lineNum}. Extracting f.name: #{f.name}" # assume the name method is part of zip gem
         fpath = File.join(destination, f.name)
         # fpath is the output filepath and the first file will be export.xml
-        # puts "#{lineNum}. fpath: #{fpath}" # /Users/gscar/Documents iMac only/Ruby/Rails 7 Trials/bloodpressure/app//tmp/import/apple_health_export/export.xml
+        puts "#{lineNum}. Next step is 'zip_file.extract(f, fpath)' where f: #{f} and fpath: #{fpath}" # /Users/gscar/Documents iMac only/Ruby/Rails 7 Trials/bloodpressure/app//tmp/import/apple_health_export/export.xml
         zip_file.extract(f, fpath) unless File.exist?(fpath)
         if f.name == "apple_health_export/export.xml" # Stopping once create the export.xml which is all I need
           puts "#{lineNum}. export.xml was extracted to #{fpath}"
           break
+        else
+          puts "#{lineNum}. Something went wrong."
         end
       end
     end
