@@ -1,10 +1,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.0.2" # I can't run 3.0.3. Tried and tried. Is it chruby or?. 3.1 not compatibable with Rails 7.0.0
+ruby "3.1.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.0"
+gem "rails", "~> 7.0.1"
 
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"

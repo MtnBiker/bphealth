@@ -81,7 +81,7 @@ GEM
     bindex (0.8.1)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
-    bootsnap (1.9.3)
+    bootsnap (1.9.4)
       msgpack (~> 1.0)
     builder (3.2.4)
     capybara (3.36.0)
@@ -234,6 +234,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
@@ -253,7 +254,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (~> 5.0)
   puts_debuggerer
-  rails (~> 7.0.0)
+  rails (~> 7.0.1)
   redis (~> 4.0)
   rubyzip
   selenium-webdriver
@@ -265,7 +266,7 @@ DEPENDENCIES
   webdrivers
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.1.0p0
 
 BUNDLED WITH
-   2.2.30
+   2.3.3
