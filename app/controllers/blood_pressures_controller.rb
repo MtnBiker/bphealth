@@ -88,7 +88,10 @@ class BloodPressuresController < ApplicationController
         puts "#{lineNum}. Extracting f.name: #{f.name}" # assume the name method is part of zip gem
         fpath = File.join(destination, f.name)
         # fpath is the output filepath and the first file will be export.xml
-        puts "#{lineNum}. Next step is 'zip_file.extract(f, fpath)' where f: #{f} and fpath: #{fpath}" # /Users/gscar/Documents iMac only/Ruby/Rails 7 Trials/bloodpressure/app//tmp/import/apple_health_export/export.xml
+        puts "#{lineNum}. File.exist?(file in zip_file): #{File.exist?(file)}"
+        puts "#{lineNum}. Next step is 'zip_file.extract(f, fpath)' where f: #{f} and \n  fpath: #{fpath}" # /Users/gscar/Documents iMac only/Ruby/Rails 7 Trials/bloodpressure/app//tmp/import/apple_health_export/export.xml
+        puts "#{lineNum}. File.exist?(destination), i.e., some sort of tmp folder: #{File.exist?(destination)}"
+        puts "#{lineNum}. File.exist?(fpath): #{File.exist?(fpath)}. How can it not exist. It shows up a couple of lines ago."
         zip_file.extract(f, fpath) unless File.exist?(fpath)
         if f.name == "apple_health_export/export.xml" # Stopping once create the export.xml which is all I need
           puts "#{lineNum}. export.xml was extracted to #{fpath}"
