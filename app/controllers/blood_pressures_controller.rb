@@ -83,7 +83,7 @@ class BloodPressuresController < ApplicationController
     # FileUtils.mkdir(destination) unless File.exist?(destination) # I thought the following would create this dir, but, and it won't exist now that Rails is creating a special folder for where selected files are moved to (and given a new name)
     puts "#{lineNum}. file: #{file}.\n   destination: #{destination}"
     FileUtils.mkdir(destination) unless File.exist?(destination)
-    Zip::File.open(file) do |zip_file|
+    Zip::File.open(file) do |zip_file| # I think this meets ruby_zip 3.0 syntax
       zip_file.each do |f|
         puts "#{lineNum}. Extracting f.name: #{f.name}" # assume the name method is part of zip gem
         fpath = File.join(destination, f.name)

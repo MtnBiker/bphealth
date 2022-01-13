@@ -1,16 +1,19 @@
 <!-- Variable for use below -->
 <%# last_record = BloodPressure.order('statdate asc').last.statdate %><br>  <!-- 2022-01-06 16:14:48 UTC -->
-<%= Rails.root.join("tmp/") %><br>
 
 Time.current: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.current %> (recommended?)<br>
 Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.now %> <br> 
 Time.now.localtime: <%= Time.now.localtime %><br>
 Time.now(in: zone): <%#= Time.now(in: zone) %> # undefined local variable or method `zone' Supposed to be an option in Ruby 3.1, does Rails not know this.
 Time.now(in: zone).zone: <%#= Time.now(in: zone).zone %>
+Time.zone.now.inspect:    <%= Time.zone.now.inspect %><br>
+Time.now.in_time_zone("America/Los_Angeles"): <%= Time.now.in_time_zone("America/Los_Angeles") %>
 
 <% last_record = BloodPressure.order('statdate asc').last.statdate %><br> <!-- last_record: 2021-12-26 04:40:23 UTC, but in db as 2021-12-25 20:40:23-08, Although ended up with last not being the most current if since sorting by id. How was an id reused? -->
-<!-- 3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %><br>
-4. Midnight     :  <%= last_record.beginning_of_day %><br> -->
+3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %><br>
+<!-- last_record: <%= last_record %><br>
+last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %><br> -->
+4. Midnight     :  <%= last_record.beginning_of_day %><br>
 <% timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %> <!-- Correct, but not using it, see next line -->
 <% midnight = last_record.beginning_of_day - timeZone.hour %>
 <!-- 5. Midnight UTC?: <%= midnight %><br>
