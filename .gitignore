@@ -7,11 +7,13 @@
 # Ignore bundler config.
 /.bundle
 
-# Ignore all logfiles and tempfiles.
+# Ignore all logfiles and tempfiles. Except trying to add /tmp for processing
 /log/*
-/tmp/*
+# /tmp/*
+# Except commenting out above, got all the cache
+/tmp/cache/*
 !/log/.keep
-!/tmp/.keep
+# !/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
