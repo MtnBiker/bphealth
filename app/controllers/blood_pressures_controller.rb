@@ -92,6 +92,7 @@ class BloodPressuresController < ApplicationController
         puts "#{lineNum}. File.exist?(file in zip_file): #{File.exist?(file)}"
         puts "#{lineNum}. Next step is 'zip_file.extract(f, fpath)' where f: #{f} and \n  fpath: #{fpath}" # /Users/gscar/Documents iMac only/Ruby/Rails 7 Trials/bloodpressure/app//tmp/import/apple_health_export/export.xml
         puts "#{lineNum}. File.exist?(destination), i.e., some sort of tmp folder: #{File.exist?(destination)}"
+        puts "#{lineNum}. fpath: #{fpath}"
         puts "#{lineNum}. File.exist?(fpath): #{File.exist?(fpath)}. How can it not exist. It shows up a couple of lines ago."
         zip_file.extract(f, fpath) unless File.exist?(fpath)
         if f.name == "apple_health_export/export.xml" # Stopping once create the export.xml which is all I need
