@@ -77,23 +77,24 @@ class BloodPressuresController < ApplicationController
   # unzipping to one folder, but the file of interest ends up one dir down
   # extract_zip(zip_path, extract_destination)
   # Above from https://stackoverflow.com/questions/9204423/how-to-unzip-a-file-in-ruby-on-rails
-  def extract_zip(file, destination)
-    # puts "#{lineNum}. Hello from the top of extract_zip in unzip_import_data in blood_pressures_controller. \nfile: #{file}. \ndestination: #{destination}"
+  def extract_zip(file, unzip_dir, destination)
+    # puts "#{lineNum}. Hello from the top of extract_zip in unzip_import_data in blood_pressures_controller. \nfile: #{file}. \nunzip_dir: #{unzip_dir}"
     # # Create folder for the export.xml which goes to /apple_health_export. That's the way the zipped file is structured
-    # FileUtils.mkdir(destination) unless File.exist?(destination) # I thought the following would create this dir, but, and it won't exist now that Rails is creating a special folder for where selected files are moved to (and given a new name)
-    # destination = destination + "/apple_health_export/"
-    puts "#{lineNum}. file: #{file} \n   destination: #{destination}"
-    FileUtils.mkdir(destination) unless File.exist?(destination)
+    # FileUtils.mkdir(unzip_dir) unless File.exist?(unzip_dir) # I thought the following would create this dir, but, and it won't exist now that Rails is creating a special folder for where selected files are moved to (and given a new name)
+    # unzip_dir = unzip_dir + "/apple_health_export/"
+    puts "#{lineNum}. file: #{file} \n   unzip_dir: #{unzip_dir}"
+    FileUtils.mkdir(unzip_dir) unless File.exist?(unzip_dir)
     Zip::File.open(file) do |zip_file| # I think this meets ruby_zip 3.0 syntax
       zip_file.each do |f|
         puts "#{lineNum}. Extracting f.name: #{f.name}" # assume the name method is part of zip gem
-        fpath = File.join(destination, f.name)
+        fpath = File.join(unzip_dir, f.name)
         # fpath is the output filepath and the first file will be export.xml
         puts "#{lineNum}. File.exist?(file in zip_file): #{File.exist?(file)}"
         puts "#{lineNum}. Next step is 'zip_file.extract(f, fpath)' where f: #{f} and \n  fpath: #{fpath}" # /Users/gscar/Documents iMac only/Ruby/Rails 7 Trials/bloodpressure/app//tmp/import/apple_health_export/export.xml
-        puts "#{lineNum}. File.exist?(destination), i.e., some sort of tmp folder: #{File.exist?(destination)}"
-        puts "#{lineNum}. fpath: #{fpath}"
-        puts "#{lineNum}. File.exist?(fpath): #{File.exist?(fpath)}. How can it not exist. It shows up a couple of lines ago."
+        puts "#{lineNum}. File.exist?(unzip_dir), i.e., some sort of tmp folder: #{File.exist?(unzip_dir)}"
+        FileUtils.mkdir(destination) unless File.exist?(destination)
+        puts "#{lineNum}. destination: #{destination}"
+        puts "#{lineNum}. File.exist?(destination): #{File.exist?(destination)}"
         zip_file.extract(f, fpath) unless File.exist?(fpath)
         if f.name == "apple_health_export/export.xml" # Stopping once create the export.xml which is all I need
           puts "#{lineNum}. export.xml was extracted to #{fpath}"
@@ -204,13 +205,13 @@ class BloodPressuresController < ApplicationController
     require 'zip' # and this does what it needs to do here
 
     # https://ruby-doc.org/stdlib-2.4.1/libdoc/fileutils/rdoc/FileUtils.html#method-i-makedirs
-    zip_dir = File.dirname(tempfile_path) # try to use same directory
-    destination = zip_dir + "/apple_health_export/"
+    unzip_dir = File.dirname(tempfile_path) # try to use same directory
+    destination = unzip_dir + "/apple_health_export/"
     export_xml = destination + "/export.xml" # see below for original
     File.delete(export_xml) if File.exist?(export_xml) # delete old files since apparently won't overwrite, at least on macOS, but now in a new tmp folder so won't exist
-    puts "#{lineNum}. zip_dir: #{zip_dir} \ndestination. #{destination} \nexport_xml: #{export_xml}"
+    puts "#{lineNum}. unzip_dir: #{unzip_dir} \ndestination. #{destination} \nexport_xml: #{export_xml}"
     # extract_zip(health_exported_zip, unzip_to)
-    extract_zip(tempfile_path, zip_dir) # since this is how the gem is set up or at least the sample
+    extract_zip(tempfile_path, unzip_dir, destination) # since this is how the gem is set up or at least the sample
     puts "#{lineNum}. Hello from the end of unzip_import_data in blood_pressures_controller. So now unzipped and need to read and import."
     convert_xml(export_xml)
     puts "#{lineNum}. tempfile_path (working location of copy of export.zip): #{tempfile_path}" # Repeating the tempfile_path so if needed for debugging, although can get lost because log is filled up by the page refresh
