@@ -81,7 +81,8 @@ class BloodPressuresController < ApplicationController
     # puts "#{lineNum}. Hello from the top of extract_zip in unzip_import_data in blood_pressures_controller. \nfile: #{file}. \ndestination: #{destination}"
     # # Create folder for the export.xml which goes to /apple_health_export. That's the way the zipped file is structured
     # FileUtils.mkdir(destination) unless File.exist?(destination) # I thought the following would create this dir, but, and it won't exist now that Rails is creating a special folder for where selected files are moved to (and given a new name)
-    puts "#{lineNum}. file: #{file}.\n   destination: #{destination}"
+    destination = zip_dir + "/apple_health_export/"
+    puts "#{lineNum}. file: #{file} \n   destination: #{destination}"
     FileUtils.mkdir(destination) unless File.exist?(destination)
     Zip::File.open(file) do |zip_file| # I think this meets ruby_zip 3.0 syntax
       zip_file.each do |f|
@@ -206,7 +207,7 @@ class BloodPressuresController < ApplicationController
     destination = zip_dir + "/apple_health_export/"
     export_xml = destination + "/export.xml" # see below for original
     File.delete(export_xml) if File.exist?(export_xml) # delete old files since apparently won't overwrite, at least on macOS, but now in a new tmp folder so won't exist
-    puts "#{lineNum}. zip_dir: #{zip_dir}.\ndestination. #{destination}.\nexport_xml: #{export_xml}"
+    puts "#{lineNum}. zip_dir: #{zip_dir} \ndestination. #{destination} \nexport_xml: #{export_xml}"
     # extract_zip(health_exported_zip, unzip_to)
     extract_zip(tempfile_path, zip_dir) # since this is how the gem is set up or at least the sample
     puts "#{lineNum}. Hello from the end of unzip_import_data in blood_pressures_controller. So now unzipped and need to read and import."
