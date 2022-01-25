@@ -81,7 +81,7 @@ class BloodPressuresController < ApplicationController
     # puts "#{lineNum}. Hello from the top of extract_zip in unzip_import_data in blood_pressures_controller. \nfile: #{file}. \ndestination: #{destination}"
     # # Create folder for the export.xml which goes to /apple_health_export. That's the way the zipped file is structured
     # FileUtils.mkdir(destination) unless File.exist?(destination) # I thought the following would create this dir, but, and it won't exist now that Rails is creating a special folder for where selected files are moved to (and given a new name)
-    destination = zip_dir + "/apple_health_export/"
+    # destination = destination + "/apple_health_export/"
     puts "#{lineNum}. file: #{file} \n   destination: #{destination}"
     FileUtils.mkdir(destination) unless File.exist?(destination)
     Zip::File.open(file) do |zip_file| # I think this meets ruby_zip 3.0 syntax
