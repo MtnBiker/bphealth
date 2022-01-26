@@ -1,0 +1,49 @@
+<p>Some variables and time parsing is in partial debugging</p>
+<p>From referring page <%= @last_record %> doesn't work.</p>
+<p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %><p>
+  <% timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %> 
+<p>last_record_1_day_ago = last_record+timeZone.hour-1.day: <%= last_record-timeZone.hour-1.day %></p>
+<p><% timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
+<p><% timeZoneNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
+<p>Time.current: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.current %> (recommended?)</p>
+<p>Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.now %> </p>
+<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %></p>
+<p>last_record-8.hour : <%= last_record-8.hour %> </p>
+<p>Time.now.localtime: <%= Time.now.localtime %><br>
+<p>Time.now(in: "-08:00"): <%= Time.now(in: "-08:00") %>  # undefined local variable or method `zone' Supposed to be an option in Ruby 3.1, does Rails not know this.<br>
+<p>Time.zone.now.inspect:    <%= Time.zone.now.inspect %><br>
+<p>Time.now.in_time_zone("America/Los_Angeles"): <%= Time.now.in_time_zone("America/Los_Angeles") %><br>
+<p>3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %><br>
+<p>last_record: <%= last_record %><br>
+<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %><br>
+<p>4. Midnight     :  <%= last_record.beginning_of_day %><br>
+<p><% midnight = last_record.beginning_of_day - timeZone.hour %></p>
+<p>5. Midnight UTC?: <%= midnight %><br>
+<p>6. timeZone.hour: <%= timeZone.hour %> converts to seconds<br><%= timeZone.hour.class %></p>
+<p>6.1 <%= last_record %> Time is local with time zone shown<br>
+<p>7. last_record + timeZone.hour : <%= last_record + timeZone.hour %><br>
+
+<%# last_record = BloodPressure.order('statdate asc').last.statdate %><br>  <!-- 2022-01-06 16:14:48 UTC -->
+
+<!-- Time.current: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%#= Time.current %> (recommended?)<br>
+Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%#= Time.now %> <br>
+Time.now.localtime: <%#= Time.now.localtime %><br>
+Time.now(in: "-08:00"): <%#= Time.now(in: "-08:00") %>  # undefined local variable or method `zone' Supposed to be an option in Ruby 3.1, does Rails not know this.
+Time.now(in: zone).zone: <%#= Time.now(in: zone).zone %>
+Time.zone.now.inspect:    <%#= Time.zone.now.inspect %><br>
+Time.now.in_time_zone("America/Los_Angeles"): <%#= Time.now.in_time_zone("America/Los_Angeles") %> -->
+
+<!-- <hr> --><% last_record+timeZoneNeg.hour %> <!-- 2022-01-06 16:14:48 -0800, So still essentially UTC -->
+<!-- <hr><%#= last_record+(timeZoneNeg.hour) %> 2022-01-06 16:14:48 -0800 -->
+<%#= (last_record+timeZoneNeg).hour %> <!-- 8 -->
+<!-- I'm looking for midnight of the day, so for the abscissa, but finding stattime might be a different story. The data is selected correctly, but the abscissa labeling is wrong. The abscissa is in UTC and not local time -->
+<%# last_record-8.hour %> <!-- :: 2022-01-06 00:14:48 -0800 -->
+<%# last_record+8.hour %> <!-- :2022-01-06 16:14:48 -0800  -->
+last_record_0_day_ago = last_record.beginning_of_day+timeZoneNeg.hour-1.day: <%= last_record.beginning_of_day-timeZone.hour-1.day %><br>
+last_record_1_day_ago = last_record-timeZone.hour-1.day:  <%= last_record-timeZone.hour-1.day %> UTM with zone indicated<br>
+last_record_2_day_ago = last_record-timeZone.hour-2.day:  <%= last_record-timeZone.hour-2.day %> <br>
+last_record_3_day_ago = last_record-timeZone.hour-3.day:  <%= last_record-timeZone.hour-3.day %> <br>
+last_record_4_day_ago = last_record-timeZone.hour-4.day:  <%= last_record-timeZone.hour-4.day %> <br>
+last_record_5_day_ago = last_record-timeZone.hour-5.day:  <%= last_record-timeZone.hour-5.day %> <br>
+last_record_6_day_ago = last_record-timeZone.hour-6.day:  <%= last_record-timeZone.hour-6.day %> <br>
+last_record_7_day_ago = last_record-timeZone.hour-7.day:  <%= last_record-timeZone.hour-7.day %> 
