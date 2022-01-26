@@ -16,9 +16,14 @@
 <p>3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %><br>
 <p>last_record: <%= last_record %><br>
 <p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %><br>
+  <br>
 <p>4. Midnight     :  <%= last_record.beginning_of_day %><br>
 <p><% midnight = last_record.beginning_of_day - timeZone.hour %></p>
 <p>5. Midnight UTC?: <%= midnight %><br>
+  <h5>Midnight days before</p>
+  <p>(last_record+timeZone.hour-1.day).beginning_of_day: <%= (last_record-timeZone.hour-1.day).beginning_of_day %>. Looks like UTM</p>
+  <p> ((last_record+timeZone.hour-1.day).beginning_of_day)- timeZone.hour: <%= ((last_record-timeZone.hour-1.day).beginning_of_day) - timeZone.hour %></p>
+  
 <p>6. timeZone.hour: <%= timeZone.hour %> converts to seconds<br><%= timeZone.hour.class %></p>
 <p>6.1 <%= last_record %> Time is local with time zone shown<br>
 <p>7. last_record + timeZone.hour : <%= last_record + timeZone.hour %><br>
