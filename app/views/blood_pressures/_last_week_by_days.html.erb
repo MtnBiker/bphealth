@@ -1,22 +1,10 @@
 <!-- Variable for use below -->
 <% last_record = BloodPressure.order('statdate asc').last.statdate %><br> <!-- last_record: 2021-12-26 04:40:23 UTC, but in db as 2021-12-25 20:40:23-08, Although ended up with last not being the most current if since sorting by id. How was an id reused? -->
 <%#= render 'debugging', locals: {last_record: @last_record} %>
-<% timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %> <!-- Correct, but not using it, see next line -->
+<% timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
 <% midnight = last_record.beginning_of_day - timeZone.hour %>
-<% timeZoneNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %> <!-- Just because I'm substracting it and it may be easier to use a positive number or not. Don't need to, but had problems at beginning so left it, but could change sign and variable<br> -->
 
 <!-- Stack 7 daily records, then maybe put on one graph when I figure it out -->
-<!-- :stattime is a symbol and comes through as GMT, so can't use .localtime to get the time showing right -->
-<!-- The order of the variables and methods in the following matters -->
-
-<!-- <hr> --><% last_record+timeZoneNeg.hour %> <!-- 2022-01-06 16:14:48 -0800, So still essentially UTC -->
-<!-- I'm looking for midnight of the day, so for the abscissa, but finding stattime might be a different story. The data is selected correctly, but the abscissa labeling is wrong. The abscissa is in UTC and not local time -->
-<% last_record-8.hour %> <!-- :: 2022-01-06 00:14:48 -0800 -->
-<% last_record+8.hour %> <!-- :2022-01-06 16:14:48 -0800  -->
-
-<!-- Get local time abscissa -->
- <%#= line_chart BloodPressure.where(statdate: last_record-1.day..last_record).pluck(:statdate, :systolic), title: "Last 24 hours of data. Up to #{last_record.strftime("%c")}", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
-<%# last_record_0_day_ago = last_record.beginning_of_day+timeZoneNeg.hour-1.day %>
  
 <% last_record_1_day_ago = last_record-timeZone.hour-1.day %>
 <% last_record_2_day_ago = last_record-timeZone.hour-2.day %>
@@ -34,30 +22,62 @@
 <% begin_5_day_ago = (last_record-timeZone.hour-5.day).beginning_of_day %>
 <% begin_6_day_ago = (last_record-timeZone.hour-6.day).beginning_of_day %>
 
+<% span00 = last_record.beginning_of_day..last_record %>
+<% span10 = begin_1_day_ago..last_record.beginning_of_day %>
+<% span21 = begin_2_day_ago..begin_1_day_ago %>
+<% span32 = begin_3_day_ago..begin_2_day_ago %>
+<% span43 = begin_4_day_ago..begin_3_day_ago %>
+<% span54 = begin_5_day_ago..begin_4_day_ago %>
+<% span65 = begin_6_day_ago..begin_5_day_ago %>
+
 <!-- Most recent -->
-<div class="h4 text-center">Daily for last seven days (most recent at top)</div>
+<div class="h4 text-center">
+  Daily for last seven days (most recent at top)
+</div>
 <div class="text-center font-weight-bold">
   <!-- Working, but not spaced out over 24 hours. Spaced between first and last -->
-  <%= line_chart BloodPressure.where(statdate: last_record.beginning_of_day..last_record).pluck(:statdate, :systolic), title: "#{last_record.strftime("%a, %b. %-d")}", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BloodPressure.where(statdate: span00).pluck(:statdate, :systolic), title: "#{last_record.strftime("%a, %b. %-d")}", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
 
   <hr class="py-1"> <!-- Day before -->
-  <!-- Works very well except point aren't indicated. Can roll over and see the points. Does this only happen when many points? -->
-  <%= line_chart BloodPressure.where(statdate: last_record_1_day_ago.beginning_of_day..last_record.beginning_of_day).pluck(:statdate, :systolic), title: "#{last_record_1_day_ago.strftime("%a, %b. %-d")}. Yesterday", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% if BloodPressure.where(statdate: span10).pluck(:statdate, :systolic).empty? %>
+    No data for <%= last_record_1_day_ago.strftime("%A, %b %-d") %>
+  <% else %>
+    <%= line_chart BloodPressure.where(statdate: span10).pluck(:statdate, :systolic), title: "#{last_record_1_day_ago.strftime("%a, %b. %-d")}. Yesterday", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% end %>
+
+  <hr class="py-1"> <!-- Deux jours -->
+  <% if BloodPressure.where(statdate: span21).pluck(:statdate, :systolic).empty? %>
+    No data for <%= last_record_2_day_ago.strftime("%A, %b %-d") %>
+  <% else %>
+    <%= line_chart BloodPressure.where(statdate: span21).pluck(:statdate, :systolic), title: "#{last_record_2_day_ago.strftime("%a, %b. %-d")}", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% end %>
 
   <hr class="py-1">
-  <!-- Good except starting points are near the data not the day -->
-  <%= line_chart BloodPressure.where(statdate: begin_2_day_ago..begin_1_day_ago).pluck(:statdate, :systolic), title: "#{last_record_2_day_ago.strftime("%a, %b. %-d")}", xtitle: "Local Time", ytitle: "Systolic", xmin: ((last_record-timeZone.hour-2.day).beginning_of_day), min: 100, max: 200, color: "#D9A1FF" %>
+  <% if BloodPressure.where(statdate: span32).pluck(:statdate, :systolic).empty? %>
+    No data for <%= last_record_3_day_ago.strftime("%A, %b %-d") %>
+  <% else %>
+    <%= line_chart BloodPressure.where(statdate: span32).pluck(:statdate, :systolic), title: "#{last_record_3_day_ago.strftime("%a, %b. %-d")}. Yesterday", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% end %>
 
   <hr class="py-1">
-  <%= line_chart BloodPressure.where(statdate: begin_3_day_ago..begin_2_day_ago).pluck(:statdate, :systolic), title: "#{last_record_3_day_ago.strftime("%a, %b. %-d")}. Yesterday", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% if BloodPressure.where(statdate:span43).pluck(:statdate, :systolic).empty? %>
+    No data for <%= last_record_4_day_ago.strftime("%A, %b %-d") %>
+  <% else %>
+    <%= line_chart BloodPressure.where(statdate: span43).pluck(:statdate, :systolic), title: "#{last_record_4_day_ago.strftime("%A, %b %-d")}", xtitle: "Time UTC", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% end %>
 
   <hr class="py-1">
-  <%= line_chart BloodPressure.where(statdate: begin_4_day_ago..begin_3_day_ago).pluck(:statdate, :systolic), title: "#{last_record_4_day_ago.strftime("%A, %b %-d")}", xtitle: "Time UTC", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% if BloodPressure.where(statdate: span54).pluck(:statdate, :systolic).empty? %>
+    No data for <%= last_record_5_day_ago.strftime("%A, %b %-d") %>
+  <% else %>
+    <%= line_chart BloodPressure.where(statdate: span54).pluck(:statdate, :systolic), title: "#{last_record_5_day_ago.strftime("%A, %b %-d")}", xtitle: "Time UTC", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% end %>
 
   <hr class="py-1">
-  <%= line_chart BloodPressure.where(statdate: begin_5_day_ago..begin_4_day_ago).pluck(:statdate, :systolic), title: "#{last_record_5_day_ago.strftime("%A, %b %-d")}", xtitle: "Time UTC", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
-
-  <hr class="py-1">
-  <%= line_chart BloodPressure.where(statdate: begin_6_day_ago..begin_5_day_ago).pluck(:statdate, :systolic), title: "#{last_record_6_day_ago.strftime("%A, %b %-d")}", xtitle: "Time UTC", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% if BloodPressure.where(statdate: span65).pluck(:statdate, :systolic).empty? %>
+    No data for <%= last_record_6_day_ago.strftime("%A, %b %-d") %>
+  <% else %>
+    <%= line_chart BloodPressure.where(statdate: span65).pluck(:statdate, :systolic), title: "#{last_record_6_day_ago.strftime("%A, %b %-d")}", xtitle: "Time UTC", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <% end %>
 
 </div>
