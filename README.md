@@ -61,6 +61,8 @@ Created login using http://railscasts.com/episodes/250-authentication-from-scrat
 
 [Ruby on Rails](https://rubyonrails.org) of course. [Postgres](https://www.postgresql.org).
 
+[Pagination with Pagy](https://gorails.com/episodes/pagination-with-pagy-gem?autoplay=1 )
+
 #### Notes
 
 

@@ -4,7 +4,8 @@ class BloodPressuresController < ApplicationController
 
   # GET /blood_pressures or /blood_pressures.json
   def index
-    @blood_pressures = BloodPressure.all.order("statdate") # .order for sorting in index.html.erb
+    # @blood_pressures = BloodPressure.all.order("statdate") # .order for sorting in index.html.erb
+    @pagy, @blood_pressures= pagy(@blood_pressures = BloodPressure.all.order("statdate DESC"), items: 25) # items is no. per page(y)
 
     # Ransack search. Ransack gem now breaks bin/dev
     # @q = BloodPressure.ransack(params[:q]) # syntax of

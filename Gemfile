@@ -35,6 +35,8 @@ gem 'groupdate' # used with ChartKick
 
 gem 'rubyzip'
 
+gem 'pagy', '5.9.1'
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 

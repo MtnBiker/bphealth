@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   # All from http://railscasts.com/episodes/250-authentication-from-scratch-revised?view=comments
   protect_from_forgery
+  include Pagy::Backend
+
   private
 
     def current_user
