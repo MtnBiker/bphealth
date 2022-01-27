@@ -1,6 +1,6 @@
 <!-- Variable for use below -->
 <% last_record = BloodPressure.order('statdate asc').last.statdate %><br> <!-- last_record: 2021-12-26 04:40:23 UTC, but in db as 2021-12-25 20:40:23-08, Although ended up with last not being the most current if since sorting by id. How was an id reused? -->
-<%#= render 'debugging', locals: {last_record: @last_record} %>
+<%= render 'debugging', locals: {last_record: @last_record} %>
 <% timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
 <% midnight = last_record.beginning_of_day - timeZone.hour %>
 
