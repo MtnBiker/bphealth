@@ -18,7 +18,8 @@ module Bphealth
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
-    config.time_zone = 'UTC'
+    # config.time_zone = 'UTC'
+    config.time_zone = "America/Los_Angeles"
     # config.time_zone = :local # error
     # config.eager_load_paths << Rails.root.join("extras")
   end
