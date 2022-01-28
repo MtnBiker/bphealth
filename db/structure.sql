@@ -39,7 +39,8 @@ CREATE TABLE public.blood_pressures (
     "sourceVersion" character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    comment character varying
+    comment character varying,
+    statzone integer
 );
 
 
@@ -60,6 +61,21 @@ CREATE SEQUENCE public.blood_pressures_id_seq
 --
 
 ALTER SEQUENCE public.blood_pressures_id_seq OWNED BY public.blood_pressures.id;
+
+
+--
+-- Name: bp_time_with_zones; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.bp_time_with_zones AS
+ SELECT blood_pressures.id,
+    blood_pressures.statdate,
+    (blood_pressures.statdate)::time with time zone AS stattime,
+    blood_pressures.systolic,
+    blood_pressures.diastolic,
+    blood_pressures.heartrate
+   FROM public.blood_pressures
+  ORDER BY blood_pressures.statdate;
 
 
 --
@@ -102,21 +118,6 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
-
---
--- Name: view_bp_time_with_zones; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.bp_time_with_zones AS
- SELECT blood_pressures.id,
-    blood_pressures.statdate,
-    (blood_pressures.statdate)::time with time zone AS stattime,
-    blood_pressures.systolic,
-    blood_pressures.diastolic,
-    blood_pressures.heartrate
-   FROM public.blood_pressures
-  ORDER BY blood_pressures.statdate;
 
 
 --
@@ -198,6 +199,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211111013639'),
 ('20211121214459'),
 ('20211214003254'),
-('20211228045750');
+('20211228045750'),
+('20220128213011');
 
 

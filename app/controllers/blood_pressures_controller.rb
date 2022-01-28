@@ -132,7 +132,7 @@ class BloodPressuresController < ApplicationController
       # puts "#{lineNum}:#{count}. statdate: #{record[3]}. systolic: #{record[0]}"
       # count += 1
       # blood_pressure = BloodPressure.create(statdate: record.time, systolic: record.systolic, diastolic: record.diastolic, heartrate: record.hr, sourceName: record.sourceName, sourceVersion: record.sourceVersion)
-      blood_pressure = BloodPressure.create(statdate: record[3], systolic: record[0], diastolic: record[1], heartrate: record[2]) #, sourceName: record.sourceName, sourceVersion: record.sourceVersion)
+      blood_pressure = BloodPressure.create(statdate: record[3], systolic: record[0], diastolic: record[1], heartrate: record[2], statzone: record[4]) #, sourceName: record.sourceName, sourceVersion: record.sourceVersion)
       # puts "#{lineNum}. BloodPressure: #{blood_pressure}" # obj
       # puts "/lib/tasks/import.rake:#{lineNum}. record.time: #{record.time} after adding to database?"
     end
@@ -146,7 +146,10 @@ class BloodPressuresController < ApplicationController
       countRecords =+ 1
       # You can parse a String and make it a Date object with DateTime.parse
       # But this is creating a csv which probably is a string.
+      # `startDate="2022-01-27 09:05:43 -0800"` in xml and gets into database `2022-01-27 09:05:43-08`
       startDate = DateTime.parse(record['startDate']) # convert to type date and in find_matching_value use datetime comparisons
+      statzone = startDate.localtime.formatted_offset(false).slice!(0, 3).to_i
+      puts "#{lineNum}. startDate: #{startDate}. statzone: #{statzone}"
       pair = find_matching_value(startDate, diastolic_records)
       rhr =  find_matching_value(startDate, resting_hr_records)
       hr =   find_matching_value(startDate, hr_records)
@@ -157,7 +160,7 @@ class BloodPressuresController < ApplicationController
       # puts "#{lineNum}. sys: #{sys}. dia: #{pair}. hr: #{hr}.  startDate: #{startDate}"
       # 151. startDate: 2015-10-19T09:47:00-08:00, dia: 64. hr: . record: {"type"=>"HKQuantityTypeIdentifierBloodPressureSystolic", "sourceName"=>"Health", "sourceVersion"=>"9.0.2", "unit"=>"mmHg", "creationDate"=>"2015-10-19 09:47:23 -0800", "startDate"=>"2015-10-19 09:47:00 -0800", "endDate"=>"2015-10-19 09:47:00-0800", "value"=>"128"}
       # Do I need a hash that looks like  [["statdate", "2021-11-16 16:35:30"], ["hr", 75], ["systolic", 136], ["diastolic", 70]] and forget the accu. NO add_to_db does that
-      accu << [sys, pair, hr, startDate ]
+      accu << [sys, pair, hr, startDate, statzone]
       # puts "#{lineNum}. accu: #{accu}"
       # accu << (record['value'], pair, hr, record['startDate']) # leave startDate as string?
     end
