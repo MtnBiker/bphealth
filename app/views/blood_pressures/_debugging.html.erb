@@ -16,14 +16,18 @@
 <p>Time.zone.now.inspect:    <%= Time.zone.now.inspect %><br>
 <p>Time.now.in_time_zone("America/Los_Angeles"): <%= Time.now.in_time_zone("America/Los_Angeles") %><br>
 <p>3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %><br>
-<p>last_record: <%= last_record %><br>
-<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %><br>
+<p>last_record: <%= last_record %>. Just repeating what's above<br>
+<p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %>. Getting value again<p>
+<p>last_record: <%= last_record %>. Just repeating what's directly above<br>
+<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>
+<p>last_record.in_time_zone("America/Los_Angeles"):  <%#= last_record.in_time_zone("-08:00") %>
+  <br>
   <br>
 <p>4. Midnight     :  <%= last_record.beginning_of_day %><br>
 <p><% midnight = last_record.beginning_of_day - timeZone.hour %></p>
 <p>5. Midnight UTC?: <%= midnight %><br>
   <h5>Midnight days before</p>
-  <p>(last_record+timeZone.hour-1.day).beginning_of_day: <%= (last_record-timeZone.hour-1.day).beginning_of_day %>. Looks like UTM</p>
+  <p>(last_record+timeZone.hour-1.day).beginning_of_day: <%= (last_record-timeZone.hour-1.day).beginning_of_day %>. Looks like UTC</p>
   <p> ((last_record+timeZone.hour-1.day).beginning_of_day)- timeZone.hour: <%= ((last_record-timeZone.hour-1.day).beginning_of_day) - timeZone.hour %></p>
   
 <p>6. timeZone.hour: <%= timeZone.hour %> converts to seconds<br><%= timeZone.hour.class %></p>
@@ -47,7 +51,7 @@ Time.now.in_time_zone("America/Los_Angeles"): <%#= Time.now.in_time_zone("Americ
 <%# last_record-8.hour %> <!-- :: 2022-01-06 00:14:48 -0800 -->
 <%# last_record+8.hour %> <!-- :2022-01-06 16:14:48 -0800  -->
 last_record_0_day_ago = last_record.beginning_of_day+timeZoneNeg.hour-1.day: <%= last_record.beginning_of_day-timeZone.hour-1.day %><br>
-last_record_1_day_ago = last_record-timeZone.hour-1.day:  <%= last_record-timeZone.hour-1.day %> UTM with zone indicated<br>
+last_record_1_day_ago = last_record-timeZone.hour-1.day:  <%= last_record-timeZone.hour-1.day %> UTC with zone indicated<br>
 last_record_2_day_ago = last_record-timeZone.hour-2.day:  <%= last_record-timeZone.hour-2.day %> <br>
 last_record_3_day_ago = last_record-timeZone.hour-3.day:  <%= last_record-timeZone.hour-3.day %> <br>
 last_record_4_day_ago = last_record-timeZone.hour-4.day:  <%= last_record-timeZone.hour-4.day %> <br>
