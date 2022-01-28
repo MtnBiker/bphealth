@@ -16,6 +16,10 @@ class BloodPressuresController < ApplicationController
     @blood_pressures = BloodPressure.all.order("statdate")
   end
 
+  def time_stuff
+    @pagy, @blood_pressures= pagy(@blood_pressures = BloodPressure.all.order("statdate DESC")) # needed because want data to look at
+  end
+
   # GET /blood_pressures/1 or /blood_pressures/1.json
   def show
   end

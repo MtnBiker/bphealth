@@ -44,6 +44,7 @@
 
   <br>
   <%= link_to "Printable Table", print_path, class:" border border-secondary border-3 rounded-3 p-2 m-3" %>
+  <%= link_to "Debug page. Time stuff", time_stuff_path, class:" border border-secondary border-3 rounded-3 p-2 m-3" %>
   <hr>
   <h1 class="text-center">
     <img src="https://img.icons8.com/color/48/000000/heart-with-pulse.png"/>
@@ -72,20 +73,20 @@
   <!-- Login and whether data loads -->
   <div id="blood_pressures">
     <% if current_user %>
-        <!-- Only one is needed, can switch between them for testing or whatever -->
-        <%#= render @blood_pressures %>
-        <%#= render 'stat_table_ransack' %> <!-- with Ransack sort -->
+      <!-- Only one is needed, can switch between them for testing or whatever -->
+      <%#= render @blood_pressures %>
+      <%#= render 'stat_table_ransack' %> <!-- with Ransack sort -->
 
-        <!-- Data Table -->
-        <div class="text-center">
-          <h3>Tabulated</h3><%= @blood_pressures.count %> records
-        </div>
-        <%= render 'stat_table' %>
-      <% else %>
-        <%= link_to "Sign Up", signup_path %> or
-        <%= link_to "Log In", login_path %>
-      <% end %>
-    </div>
+      <!-- Data Table -->
+      <div class="text-center">
+        <h3>Tabulated</h3><%= @blood_pressures.count %> records
+      </div>
+      <%= render 'stat_table' %>
+    <% else %>
+      <%= link_to "Sign Up", signup_path %> or
+      <%= link_to "Log In", login_path %>
+    <% end %>
+  </div>
 
     <!-- Trying to stack 7 days of data. Have separate plots, not on one chart yet. Error if no data -->
     <% if current_user %>
@@ -102,6 +103,7 @@
       <% end %>
       <hr>
       <%= link_to "Printable Table", print_path, class:" border border-secondary border-3 rounded-3 p-2 m-3" %>
+      <%= link_to "Debug page. Time stuff", time_stuff_path, class:" border border-secondary border-3 rounded-3 p-2 m-3" %>
       <hr>
     </div>
 </div>

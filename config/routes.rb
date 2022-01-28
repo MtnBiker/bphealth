@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   get 'login',  to: 'sessions#new'
   get 'logout', to: 'sessions#destroy'
   get 'print',  to: 'blood_pressures#printable_table'
-  get 'printable_table',  to: 'blood_pressures#printable_table'
+  get 'printable_table', to: 'blood_pressures#printable_table'
+  get 'time_stuff',      to: 'blood_pressures#time_stuff'
 
   resources :users
   resources :sessions
