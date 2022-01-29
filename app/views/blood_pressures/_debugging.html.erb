@@ -1,23 +1,26 @@
 <p>Some variables and time parsing is in partial debugging</p>
-<p>From referring page <%= @last_record %> doesn't work.</p>
-<p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %><p>
-  <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
-  <% timeZone = BloodPressure.order('statdate asc').last.statzone %>
-<p>last_record_1_day_ago = last_record+timeZone.hour-1.day: <%= last_record-timeZone.hour-1.day %></p>
-<p>timeZone for last_record: <%= timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
-<p><% timeZoneNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
+<h4>Time and Date General</h4>
 <p>Time.current: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.current %> (recommended?)</p>
-<p>Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.now %> </p>
-<p>Time.zone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone%>.</p>
-<p>Time.zone.now:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone.now %>.</p>
-<p>Time.zone.now.to_datetime <%= Time.zone.now.to_datetime %>. See https://api.rubyonrails.org/classes/DateTime.html#method-c-current </p>
-<p>Time.now.to_datetime: <%= Time.now.to_datetime %></p>
-<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %></p>
-<p>last_record-8.hour : <%= last_record-8.hour %> </p>
-<p>Time.now.localtime: <%= Time.now.localtime %><br>
+<p>Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.now %>. <strong>Shows local time and zone as number</strong>. </p>
+<p>Time.zone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone %>. UTC 0 in -8 or Heroku</p>
+<p>Time.zone.now:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone.now %>. Same in -8 or Heroku-UTC</p>
+<p>Time.zone.now.to_datetime <%= Time.zone.now.to_datetime %>. UTC at both. See <%= link_to "DateTime current-Rails", "https://api.rubyonrails.org/classes/DateTime.html#method-c-current" %></p>
+<p>Time.now.to_datetime: <%= Time.now.to_datetime %>. <strong>Shows local time and zone as number.</strong></p>
+<p>Time.now.localtime: <%= Time.now.localtime %>. <strong>Shows local time and zone as number.</strong><br>
 <p>Time.now(in: "-08:00"): <%= Time.now(in: "-08:00") %>. :::: Time.now(in: "-00:00"): <%= Time.now(in: "-08:00") %>  <!-- undefined local variable or method `zone' Supposed to be an option in Ruby 3.1, does Rails not know this. --><br>
 <p>Time.zone.now.inspect:    <%= Time.zone.now.inspect %><br>
 <p>Time.now.in_time_zone("America/Los_Angeles"): <%= Time.now.in_time_zone("America/Los_Angeles") %><br>
+<p>Many of the above are UTC even on localhost in "America/Los_Angeles"</p>
+<h4>Related to last_record since used as the reference for daily graphs</h4>
+<p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %><p>
+<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %></p>
+<p>last_record-8.hour : <%= last_record-8.hour %> </p>
+<p>From referring page <%= @last_record %> doesn't work.</p>
+  <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
+  <% zoneLastRecord = BloodPressure.order('statdate asc').last.statzone %>
+<p>last_record_1_day_ago = last_record+zoneLastRecord.hour-1.day: <%= last_record-zoneLastRecord.hour-1.day %></p>
+<p>zoneLastRecord for last_record: <%= zoneLastRecord = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
+<p><% zoneLastRecordNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
 <p>3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %><br>
 <p>last_record: <%= last_record %>. Just repeating what's above<br>
 <p>last_record.zone: <%= last_record.zone %><br>
@@ -28,16 +31,16 @@
 <p>last_record.in_time_zone("America/Los_Angeles"):  <%#= last_record.in_time_zone("-08:00") %>
   <br>
   <br>
-<p>4. Midnight     :  <%= last_record.beginning_of_day %><br>
-<p><% midnight = last_record.beginning_of_day - timeZone.hour %></p>
+<p>4. Midnight (last_record)     :  <%= last_record.beginning_of_day %><br>
+<p>midnight: <% midnight = last_record.beginning_of_day - zoneLastRecord.hour %></p>
 <p>5. Midnight UTC?: <%= midnight %><br>
   <h5>Midnight days before</p>
-  <p>(last_record+timeZone.hour-1.day).beginning_of_day: <%= (last_record-timeZone.hour-1.day).beginning_of_day %>. Looks like UTC</p>
-  <p> ((last_record+timeZone.hour-1.day).beginning_of_day)- timeZone.hour: <%= ((last_record-timeZone.hour-1.day).beginning_of_day) - timeZone.hour %></p>
+  <p>(last_record+zoneLastRecord.hour-1.day).beginning_of_day: <%= (last_record-zoneLastRecord.hour-1.day).beginning_of_day %>. Looks like UTC</p>
+  <p> ((last_record+zoneLastRecord.hour-1.day).beginning_of_day)- zoneLastRecord.hour: <%= ((last_record-zoneLastRecord.hour-1.day).beginning_of_day) - zoneLastRecord.hour %></p>
   
-<p>6. timeZone.hour: <%= timeZone.hour %> converts to seconds<br><%= timeZone.hour.class %></p>
+<p>6. zoneLastRecord.hour: <%= zoneLastRecord.hour %> converts to seconds<br><%= zoneLastRecord.hour.class %></p>
 <p>6.1 <%= last_record %> Time is local with time zone shown<br>
-<p>7. last_record + timeZone.hour : <%= last_record + timeZone.hour %><br>
+<p>7. last_record + zoneLastRecord.hour : <%= last_record + zoneLastRecord.hour %><br>
 
 <%# last_record = BloodPressure.order('statdate asc').last.statdate %><br>  <!-- 2022-01-06 16:14:48 UTC -->
 
@@ -49,29 +52,29 @@ Time.now(in: zone).zone: <%#= Time.now(in: zone).zone %>
 Time.zone.now.inspect:    <%#= Time.zone.now.inspect %><br>
 Time.now.in_time_zone("America/Los_Angeles"): <%#= Time.now.in_time_zone("America/Los_Angeles") %> -->
 
-<!-- <hr> --><% last_record+timeZoneNeg.hour %> <!-- 2022-01-06 16:14:48 -0800, So still essentially UTC -->
-<!-- <hr><%#= last_record+(timeZoneNeg.hour) %> 2022-01-06 16:14:48 -0800 -->
-<%#= (last_record+timeZoneNeg).hour %> <!-- 8 -->
+<!-- <hr> --><% last_record+zoneLastRecordNeg.hour %> <!-- 2022-01-06 16:14:48 -0800, So still essentially UTC -->
+<!-- <hr><%#= last_record+(zoneLastRecordNeg.hour) %> 2022-01-06 16:14:48 -0800 -->
+<%#= (last_record+zoneLastRecordNeg).hour %> <!-- 8 -->
 <!-- I'm looking for midnight of the day, so for the abscissa, but finding stattime might be a different story. The data is selected correctly, but the abscissa labeling is wrong. The abscissa is in UTC and not local time -->
 <%# last_record-8.hour %> <!-- :: 2022-01-06 00:14:48 -0800 -->
 <%# last_record+8.hour %> <!-- :2022-01-06 16:14:48 -0800  -->
-last_record_0_day_ago = last_record.beginning_of_day+timeZoneNeg.hour-1.day: <%= last_record.beginning_of_day-timeZone.hour-1.day %><br>
-last_record_1_day_ago = last_record-timeZone.hour-1.day:  <%= last_record-timeZone.hour-1.day %> UTC with zone indicated<br>
-last_record_2_day_ago = last_record-timeZone.hour-2.day:  <%= last_record-timeZone.hour-2.day %> <br>
-last_record_3_day_ago = last_record-timeZone.hour-3.day:  <%= last_record-timeZone.hour-3.day %> <br>
-last_record_4_day_ago = last_record-timeZone.hour-4.day:  <%= last_record-timeZone.hour-4.day %> <br>
-last_record_5_day_ago = last_record-timeZone.hour-5.day:  <%= last_record-timeZone.hour-5.day %> <br>
-last_record_6_day_ago = last_record-timeZone.hour-6.day:  <%= last_record-timeZone.hour-6.day %> <br>
-last_record_7_day_ago = last_record-timeZone.hour-7.day:  <%= last_record-timeZone.hour-7.day %> <br>
+last_record_0_day_ago = last_record.beginning_of_day+zoneLastRecordNeg.hour-1.day: <%= last_record.beginning_of_day-zoneLastRecord.hour-1.day %><br>
+last_record_1_day_ago = last_record-zoneLastRecord.hour-1.day:  <%= last_record-zoneLastRecord.hour-1.day %> UTC with zone indicated<br>
+last_record_2_day_ago = last_record-zoneLastRecord.hour-2.day:  <%= last_record-zoneLastRecord.hour-2.day %> <br>
+last_record_3_day_ago = last_record-zoneLastRecord.hour-3.day:  <%= last_record-zoneLastRecord.hour-3.day %> <br>
+last_record_4_day_ago = last_record-zoneLastRecord.hour-4.day:  <%= last_record-zoneLastRecord.hour-4.day %> <br>
+last_record_5_day_ago = last_record-zoneLastRecord.hour-5.day:  <%= last_record-zoneLastRecord.hour-5.day %> <br>
+last_record_6_day_ago = last_record-zoneLastRecord.hour-6.day:  <%= last_record-zoneLastRecord.hour-6.day %> <br>
+last_record_7_day_ago = last_record-zoneLastRecord.hour-7.day:  <%= last_record-zoneLastRecord.hour-7.day %> <br>
 
 
 <!-- Could base these on above -->
-<br>begin_1_day_ago = (last_record-timeZone.hour-1.day).beginning_of_day: <%= begin_1_day_ago = (last_record-timeZone.hour-1.day).beginning_of_day %>
-<br>begin_2_day_ago = (last_record-timeZone.hour-2.day).beginning_of_day: <%= begin_2_day_ago = (last_record-timeZone.hour-2.day).beginning_of_day %>
-<br>begin_3_day_ago = (last_record-timeZone.hour-3.day).beginning_of_day: <%= begin_3_day_ago = (last_record-timeZone.hour-3.day).beginning_of_day %>
-<br>begin_4_day_ago = (last_record-timeZone.hour-4.day).beginning_of_day: <%= begin_4_day_ago = (last_record-timeZone.hour-4.day).beginning_of_day %>
-<br>begin_5_day_ago = (last_record-timeZone.hour-5.day).beginning_of_day: <%= begin_5_day_ago = (last_record-timeZone.hour-5.day).beginning_of_day %>
-<br>begin_6_day_ago = (last_record-timeZone.hour-6.day).beginning_of_day: <%= begin_6_day_ago = (last_record-timeZone.hour-6.day).beginning_of_day %>
+<br>begin_1_day_ago = (last_record-zoneLastRecord.hour-1.day).beginning_of_day: <%= begin_1_day_ago = (last_record-zoneLastRecord.hour-1.day).beginning_of_day %>
+<br>begin_2_day_ago = (last_record-zoneLastRecord.hour-2.day).beginning_of_day: <%= begin_2_day_ago = (last_record-zoneLastRecord.hour-2.day).beginning_of_day %>
+<br>begin_3_day_ago = (last_record-zoneLastRecord.hour-3.day).beginning_of_day: <%= begin_3_day_ago = (last_record-zoneLastRecord.hour-3.day).beginning_of_day %>
+<br>begin_4_day_ago = (last_record-zoneLastRecord.hour-4.day).beginning_of_day: <%= begin_4_day_ago = (last_record-zoneLastRecord.hour-4.day).beginning_of_day %>
+<br>begin_5_day_ago = (last_record-zoneLastRecord.hour-5.day).beginning_of_day: <%= begin_5_day_ago = (last_record-zoneLastRecord.hour-5.day).beginning_of_day %>
+<br>begin_6_day_ago = (last_record-zoneLastRecord.hour-6.day).beginning_of_day: <%= begin_6_day_ago = (last_record-zoneLastRecord.hour-6.day).beginning_of_day %>
 <br><br>
  span00 = last_record.beginning_of_day..last_record : <% span00 = last_record.beginning_of_day..last_record %>               <br>
  span10 = begin_1_day_ago..last_record.beginning_of_day: <%= span10 = begin_1_day_ago..last_record.beginning_of_day %>           <br>
