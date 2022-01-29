@@ -1,12 +1,15 @@
 <p>Some variables and time parsing is in partial debugging</p>
 <p>From referring page <%= @last_record %> doesn't work.</p>
 <p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %><p>
-  <% timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %> 
+  <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
+  <% timeZone = BloodPressure.order('statdate asc').last.statzone %>
 <p>last_record_1_day_ago = last_record+timeZone.hour-1.day: <%= last_record-timeZone.hour-1.day %></p>
 <p>timeZone for last_record: <%= timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
 <p><% timeZoneNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
 <p>Time.current: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.current %> (recommended?)</p>
 <p>Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.now %> </p>
+<p>Time.zone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone%>.</p>
+<p>Time.zone.now:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone.now %>.</p>
 <p>Time.zone.now.to_datetime <%= Time.zone.now.to_datetime %>. See https://api.rubyonrails.org/classes/DateTime.html#method-c-current </p>
 <p>Time.now.to_datetime: <%= Time.now.to_datetime %></p>
 <p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %></p>
@@ -17,6 +20,8 @@
 <p>Time.now.in_time_zone("America/Los_Angeles"): <%= Time.now.in_time_zone("America/Los_Angeles") %><br>
 <p>3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %><br>
 <p>last_record: <%= last_record %>. Just repeating what's above<br>
+<p>last_record.zone: <%= last_record.zone %><br>
+<!-- <p>last_record.zone: <%#= zone(last_record) %><br> -->
 <p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %>. Getting value again<p>
 <p>last_record: <%= last_record %>. Just repeating what's directly above<br>
 <p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>
@@ -57,4 +62,21 @@ last_record_3_day_ago = last_record-timeZone.hour-3.day:  <%= last_record-timeZo
 last_record_4_day_ago = last_record-timeZone.hour-4.day:  <%= last_record-timeZone.hour-4.day %> <br>
 last_record_5_day_ago = last_record-timeZone.hour-5.day:  <%= last_record-timeZone.hour-5.day %> <br>
 last_record_6_day_ago = last_record-timeZone.hour-6.day:  <%= last_record-timeZone.hour-6.day %> <br>
-last_record_7_day_ago = last_record-timeZone.hour-7.day:  <%= last_record-timeZone.hour-7.day %> 
+last_record_7_day_ago = last_record-timeZone.hour-7.day:  <%= last_record-timeZone.hour-7.day %> <br>
+
+
+<!-- Could base these on above -->
+<br>begin_1_day_ago = (last_record-timeZone.hour-1.day).beginning_of_day: <%= begin_1_day_ago = (last_record-timeZone.hour-1.day).beginning_of_day %>
+<br>begin_2_day_ago = (last_record-timeZone.hour-2.day).beginning_of_day: <%= begin_2_day_ago = (last_record-timeZone.hour-2.day).beginning_of_day %>
+<br>begin_3_day_ago = (last_record-timeZone.hour-3.day).beginning_of_day: <%= begin_3_day_ago = (last_record-timeZone.hour-3.day).beginning_of_day %>
+<br>begin_4_day_ago = (last_record-timeZone.hour-4.day).beginning_of_day: <%= begin_4_day_ago = (last_record-timeZone.hour-4.day).beginning_of_day %>
+<br>begin_5_day_ago = (last_record-timeZone.hour-5.day).beginning_of_day: <%= begin_5_day_ago = (last_record-timeZone.hour-5.day).beginning_of_day %>
+<br>begin_6_day_ago = (last_record-timeZone.hour-6.day).beginning_of_day: <%= begin_6_day_ago = (last_record-timeZone.hour-6.day).beginning_of_day %>
+<br><br>
+ span00 = last_record.beginning_of_day..last_record : <% span00 = last_record.beginning_of_day..last_record %>               <br>
+ span10 = begin_1_day_ago..last_record.beginning_of_day: <%= span10 = begin_1_day_ago..last_record.beginning_of_day %>           <br>
+ span21 = begin_2_day_ago..begin_1_day_ago %>          : <%= span21 = begin_2_day_ago..begin_1_day_ago %>                        <br>
+ span32 = begin_3_day_ago..begin_2_day_ago %>          : <%= span32 = begin_3_day_ago..begin_2_day_ago %>                        <br>
+ span43 = begin_4_day_ago..begin_3_day_ago %>          : <%= span43 = begin_4_day_ago..begin_3_day_ago %>                        <br>
+ span54 = begin_5_day_ago..begin_4_day_ago %>          : <%= span54 = begin_5_day_ago..begin_4_day_ago %>                        <br>
+ span65 = begin_6_day_ago..begin_5_day_ago %>          : <%= span65 = begin_6_day_ago..begin_5_day_ago %>                        <br>

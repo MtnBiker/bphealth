@@ -239,7 +239,7 @@ end
 
   # Only allow a list of trusted parameters through.
   def blood_pressure_params
-    params.require(:blood_pressure).permit(:statdate, :systolic, :diastolic, :heartrate, :sourceName, :sourceVersion, :comment,:health_exported_zip, :file, :filename)
+    params.require(:blood_pressure).permit(:statdate, :statzone, :systolic, :diastolic, :heartrate, :sourceName, :sourceVersion, :comment,:health_exported_zip, :file, :filename)
   end
 
   # Not being used. Using helpers as seems more logical to me at the moment.  commented out helper_method at top stops this from being used, but does work if uncommented. Controller is checked first for method
