@@ -1,0 +1,1 @@
+UPDATE blood_pressures SET statzone = cast (substr(statdate, 20, 3)) as integer;
