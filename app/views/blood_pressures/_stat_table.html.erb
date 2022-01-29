@@ -32,10 +32,6 @@
             <td class="text-end background-color-day-<%#= stat.statdate.localtime.strftime("%u") %>"> <%#= stat.statdate.localtime.strftime("%a %d %b %Y") %></td>
             <td class="text-start"> <%= stat.statdate.localtime.strftime("%_l:%M %P") %></td>  -->
 
-            <!-- Setting the color background to denote days of the week -->
-            <!-- The date -->
-            <td class="text-end background-color-day-<%= stat.statdate.localtime.strftime("%u") %>"> <%= stat.statdate.localtime.strftime("%a %d %b %Y") %></td>
-            <!-- The Time -->
             <%
               timeZone = stat.statzone
               zoneShift = case timeZone
@@ -43,6 +39,9 @@
               when -7 then "PDT"
               end
             %>
+            <!-- The date and Setting the color background to denote days of the week -->
+            <td class="text-end background-color-day-<%= stat.statdate.in_time_zone(zoneShift).strftime("%u") %>"> <%= stat.statdate.in_time_zone(zoneShift).strftime("%a %d %b %Y") %></td>
+            <!-- The Time -->
             <td class="text-start"> <%= stat.statdate.in_time_zone(zoneShift).strftime("%_l:%M %P") %></td>
             <td class="text-start"> (<%= stat.statzone %>)</td>
             <td class="text-end <%= systolic_text_color(stat.systolic) %>"> <%= stat.systolic %> / </td> <!-- /helpers/blood_pressures_helper.rb -->
