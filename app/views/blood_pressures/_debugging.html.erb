@@ -2,15 +2,19 @@
 <h4>Time and Date General</h4>
 <p>Time.current: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.current %> (recommended?)</p>
 <p>Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.now %>. <strong>Shows local time and zone as number</strong>. </p>
-<p>Time.zone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone %>. UTC 0 in -8 or Heroku</p>
-<p>Time.zone.now:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone.now %>. Same in -8 or Heroku-UTC</p>
-<p>Time.zone.now.to_datetime <%= Time.zone.now.to_datetime %>. UTC at both. See <%= link_to "DateTime current-Rails", "https://api.rubyonrails.org/classes/DateTime.html#method-c-current" %></p>
 <p>Time.now.to_datetime: <%= Time.now.to_datetime %>. <strong>Shows local time and zone as number.</strong></p>
 <p>Time.now.localtime: <%= Time.now.localtime %>. <strong>Shows local time and zone as number.</strong><br>
-<p>Time.now(in: "-08:00"): <%= Time.now(in: "-08:00") %>. :::: Time.now(in: "-00:00"): <%= Time.now(in: "-08:00") %>  <!-- undefined local variable or method `zone' Supposed to be an option in Ruby 3.1, does Rails not know this. --><br>
-<p>Time.zone.now.inspect:    <%= Time.zone.now.inspect %><br>
+<p>Time.zone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone %>. <strong>UTC</strong> 0 in -8 or Heroku</p>
+<p>Time.zone.now:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone.now %>. <strong>Same</strong> in -8 or Heroku-UTC</p>
+<p>Time.zone.now.to_datetime <%= Time.zone.now.to_datetime %>. <strong>UTC</strong> at both. See <%= link_to "DateTime current-Rails", "https://api.rubyonrails.org/classes/DateTime.html#method-c-current" %></p>
+<p>Time.zone.now.inspect:    <%= Time.zone.now.inspect %>. <strong>UTC</strong> at both.</p>
+
+<h5>Time in specific zone. And works as expected, irrespective of server</h5>
 <p>Time.now.in_time_zone("America/Los_Angeles"): <%= Time.now.in_time_zone("America/Los_Angeles") %><br>
+<p>Time.now(in: "-08:00"): <%= Time.now(in: "-08:00") %>.
+<p>Time.now(in: "-00:00"): <%= Time.now(in: "-00:00") %>.  <!-- undefined local variable or method `zone' Supposed to be an option in Ruby 3.1, does Rails not know this. --></p>
 <p>Many of the above are UTC even on localhost in "America/Los_Angeles"</p>
+
 <h4>Related to last_record since used as the reference for daily graphs</h4>
 <p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %><p>
 <p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %></p>
