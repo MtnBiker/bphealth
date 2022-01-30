@@ -49,7 +49,8 @@
 
 <p> Midnight (last_record.beginning_of_day+zoneLastRecord)   :  <%= last_record.beginning_of_day+zoneLastRecord %>. UTC on both and rounding error problems</p>
 <p>last_record_zone_seconds = last_record_zone*3600: <%= last_record_zone_seconds = last_record_zone*3600 %></p>
-<p><strong>last_record + last_record_zone_seconds</strong> : <%= last_record + last_record_zone_seconds %>.  </p>
+<p>last_record + last_record_zone_seconds : <%= last_record + last_record_zone_seconds %>. Now need to subtract hMS</p>
+<p><strong>last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec): </strong> : <%= last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec) %>. </p>
 
 
 <br>
