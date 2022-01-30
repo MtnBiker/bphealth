@@ -4,32 +4,32 @@
 <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
 <!-- timeZone is hours as integer -->
 <% timeZone =BloodPressure.order('statdate asc').last.statzone %>
-
-
-<!-- Stack 7 daily records, then maybe put on one graph when I figure it out -->
 <% last_record_zone = BloodPressure.order('statdate asc').last.statzone  %>
 <% last_record_zone_in_seconds = last_record_zone*3600 %>
 <% last_record_midnight = last_record + last_record_zone_in_seconds - (last_record.min*60) - (last_record.sec) %>
 
-<!-- Used only for chart titles -->
-<%# last_record_1_day_ago = last_record+last_record_zone_in_seconds-0.day %>
+<!-- Stack 7 daily records, then maybe put on one graph when I figure it out -->
+
+<!-- Variables for chart titles and trying for abscissa (so far that hasn't worked) -->
+<% last_record_0_day_ago = last_record.strftime("%a, %b. %-d") %>
 <% last_record_1_day_ago = last_record-1.day %>
 <% last_record_2_day_ago = last_record-2.day %>
 <% last_record_3_day_ago = last_record-3.day %>
 <% last_record_4_day_ago = last_record-4.day %>
 <% last_record_5_day_ago = last_record-5.day %>
 <% last_record_6_day_ago = last_record-6.day %>
+<!-- <% last_record_6_day_ago.class %> Time -->
 
-<!-- Giving right numbers but naming is wacked or is is the naming above is off. Date and in days before in words-->
+<!-- Date and in days before in words -->
 <% title0 = "#{last_record.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record)} ago" %>
-<% title1 = "#{last_record_1_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_1_day_ago)} before last" %>
-<% title2 = "#{last_record_2_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_2_day_ago)} before last" %>
-<% title3 = "#{last_record_3_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_3_day_ago)} before last" %>
-<% title4 = "#{last_record_4_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_4_day_ago)} before last" %>
-<% title5 = "#{last_record_5_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_5_day_ago)} before last" %>
-<% title6 = "#{last_record_6_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_6_day_ago)} before last" %>
-                                                                                               1
+<% title1 = "#{last_record_1_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_1_day_ago)} before last</em>" %>
+<% title2 = "#{last_record_2_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_2_day_ago)} before last</em>" %>
+<% title3 = "#{last_record_3_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_3_day_ago)} before last</em>" %>
+<% title4 = "#{last_record_4_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_4_day_ago)} before last</em>" %>
+<% title5 = "#{last_record_5_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_5_day_ago)} before last</em>" %>
+<% title6 = "#{last_record_6_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_6_day_ago)} before last</em>" %>
 
+<!-- The range for each day -->
 <% span00 = last_record_midnight-0.day..last_record %>
 <% span10 = last_record_midnight-1.day..last_record_midnight-0.day %>
 <% span21 = last_record_midnight-2.day..last_record_midnight-1.day %>
@@ -50,7 +50,7 @@
   <% if BloodPressure.where(statdate: span10).pluck(:statdate, :systolic).empty? %>
     No data for <%= last_record_1_day_ago.strftime("%A, %b %-d") %>
   <% else %>
-    <%= line_chart BloodPressure.where(statdate: span10).pluck(:statdate, :systolic), title: title1, xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+    <%= line_chart BloodPressure.where(statdate: span10).pluck(:statdate, :systolic), title: title1, xtitle: "Local Time", ytitle: "Systolic", ymin: last_record_1_day_ago, ymax: last_record_0_day_ago,  min: 100, max: 200, color: "#D9A1FF" %>
   <% end %>
 
   <hr class="py-1"> <!-- Deux jours -->
