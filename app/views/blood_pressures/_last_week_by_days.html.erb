@@ -22,12 +22,12 @@
 
 <!-- Date and in days before in words -->
 <% title0 = "#{last_record.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record)} ago" %>
-<% title1 = "#{last_record_1_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_1_day_ago)} before last</em>" %>
-<% title2 = "#{last_record_2_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_2_day_ago)} before last</em>" %>
-<% title3 = "#{last_record_3_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_3_day_ago)} before last</em>" %>
-<% title4 = "#{last_record_4_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_4_day_ago)} before last</em>" %>
-<% title5 = "#{last_record_5_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_5_day_ago)} before last</em>" %>
-<% title6 = "#{last_record_6_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_6_day_ago)} before last</em>" %>
+<% title1 = "#{last_record_1_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_1_day_ago)} before last reading</em>" %>
+<% title2 = "#{last_record_2_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_2_day_ago)} before last reading</em>" %>
+<% title3 = "#{last_record_3_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_3_day_ago)} before last reading</em>" %>
+<% title4 = "#{last_record_4_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_4_day_ago)} before last reading</em>" %>
+<% title5 = "#{last_record_5_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_5_day_ago)} before last reading</em>" %>
+<% title6 = "#{last_record_6_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_6_day_ago)} before last reading</em>" %>
 
 <!-- The range for each day -->
 <% span00 = last_record_midnight-0.day..last_record %>
@@ -40,24 +40,27 @@
 
 <!-- Most recent -->
 <div class="h4 text-center">
-  Daily for last seven days (most recent at top) of imported data.
+  Daily for last seven days of imported data (most recent at top)
 </div>
 <div class="text-center font-weight-bold">
-  <!-- Working, but not spaced out over 24 hours. Spaced between first and last -->
-  <%= line_chart BloodPressure.where(statdate: span00).pluck(:statdate, :systolic), title: title0, xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <!-- Working, but not spaced out over 24 hours. Spaced between first and last. Note curve: false-->
+  <%= line_chart BloodPressure.where(statdate: span00).pluck(:statdate, :systolic), title: title0, xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF", curve: false %>
 
   <hr class="py-1"> <!-- Day before -->
+  <!-- Also could use `, empty: "No data"` which may be the dafault -->
   <% if BloodPressure.where(statdate: span10).pluck(:statdate, :systolic).empty? %>
     No data for <%= last_record_1_day_ago.strftime("%A, %b %-d") %>
   <% else %>
-    <%= line_chart BloodPressure.where(statdate: span10).pluck(:statdate, :systolic), title: title1, xtitle: "Local Time", ytitle: "Systolic", ymin: last_record_1_day_ago, ymax: last_record_0_day_ago,  min: 100, max: 200, color: "#D9A1FF" %>
+  <!-- Setting xmin and xmax having no affect even if wrong numbers. https://chartkick.com shows this syntax. Ignored completely -->
+    <%= line_chart BloodPressure.where(statdate: span10).pluck(:statdate, :systolic), title: title1, xtitle: "Local Time", ytitle: "Systolic", xmin: last_record_2_day_ago, xmax: last_record_1_day_ago,  min: 100, max: 200, color: "#D9A1FF" %>
   <% end %>
 
   <hr class="py-1"> <!-- Deux jours -->
   <% if BloodPressure.where(statdate: span21).pluck(:statdate, :systolic).empty? %>
     No data for <%= last_record_2_day_ago.strftime("%A, %b %-d") %>
   <% else %>
-    <%= line_chart BloodPressure.where(statdate: span21).pluck(:statdate, :systolic), title: title2, xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <!-- Setting xmin and xmax having no affect even if wrong numbers. Goes back a year -->
+    <%= line_chart BloodPressure.where(statdate: span21).pluck(:statdate, :systolic), title: title2, xtitle: "Local Time", ytitle: "Systolic", xmin: "2021-01-27", xmax: "2022-01-30", min: 100, max: 200, color: "#D9A1FF" %>
   <% end %>
 
   <hr class="py-1">
