@@ -31,7 +31,8 @@
              <!-- Was late Jan
             <td class="text-end background-color-day-<%#= stat.statdate.localtime.strftime("%u") %>"> <%#= stat.statdate.localtime.strftime("%a %d %b %Y") %></td>
             <td class="text-start"> <%= stat.statdate.localtime.strftime("%_l:%M %P") %></td>  -->
-
+               
+               <!-- statzone needs to be in text style and in zone of data which isn't necessarily the server -->
             <%
               timeZone = case stat.statzone
                 when -8 then "America/Los_Angeles"

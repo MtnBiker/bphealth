@@ -17,7 +17,9 @@
 
 <h4>Related to last_record since used as the reference for daily graphs</h4>
 <p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %><p>
-<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %></p>
+<p>last_record_zone = BloodPressure.order('statdate asc').last.statzone: <%= last_record_zone = BloodPressure.order('statdate asc').last.statzone %></p>
+<p>last_record.in_time_zone(last_record_zone):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <%= last_record.in_time_zone("America/Los_Angeles") %>.  Same on both of course. Zone as text.</p>
+<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>.  </p>
 <p>last_record-8.hour : <%= last_record-8.hour %> </p>
 <p>From referring page <%= @last_record %> doesn't work.</p>
   <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
@@ -31,11 +33,24 @@
 <!-- <p>last_record.zone: <%#= zone(last_record) %><br> -->
 <p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %>. Getting value again<p>
 <p>last_record: <%= last_record %>. Just repeating what's directly above<br>
-<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>
-<p>last_record.in_time_zone("America/Los_Angeles"):  <%#= last_record.in_time_zone("-08:00") %>
+<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>. Zone as text from text column
+<p>last_record.in_time_zone("PST"):  <%#= last_record.in_time_zone("PST") %>. Invalid Timezone: PST. Zone as abbreviation (per Postgres) doesn't work.
   <br>
   <br>
-<p>4. Midnight (last_record)     :  <%= last_record.beginning_of_day %><br>
+  
+ <h4> Maybe get hours, minutes, seconds and do the math</h4>
+  <p>last_record.hour: <%= last_record.hour %></p>
+  <p>last_record.min: <%= last_record.min %></p>
+  <p>last_record.sec: <%= last_record.sec %></p>
+  <p>last_record.hour - zoneLastRecord: <%= last_record.hour-zoneLastRecord %></p>
+  
+<h5><strong>Midnight</strong>. Need in UTC. E.g. if data a 8:30 PST, need 08:00 for that day, i.e. 8:30 before</h5>
+
+<p><strong> Midnight (last_record.beginning_of_day+zoneLastRecord)</strong>     :  <%= last_record.beginning_of_day+zoneLastRecord %>. UTC on both</p>
+
+<br>
+<h5>None of the following works for Midnight. </h5>
+<p>4.<strong> Midnight (last_record.beginning_of_day)</strong>     :  <%= last_record.beginning_of_day %>. UTC on both</p>
 <p>midnight: <% midnight = last_record.beginning_of_day - zoneLastRecord.hour %></p>
 <p>5. Midnight UTC?: <%= midnight %><br>
   <h5>Midnight days before</p>
@@ -44,7 +59,7 @@
   
 <p>6. zoneLastRecord.hour: <%= zoneLastRecord.hour %> converts to seconds<br><%= zoneLastRecord.hour.class %></p>
 <p>6.1 <%= last_record %> Time is local with time zone shown<br>
-<p>7. last_record + zoneLastRecord.hour : <%= last_record + zoneLastRecord.hour %><br>
+<p>7. last_record + zoneLastRecord.hour : <%= last_record + zoneLastRecord.hour %>. <br>
 
 <%# last_record = BloodPressure.order('statdate asc').last.statdate %><br>  <!-- 2022-01-06 16:14:48 UTC -->
 
@@ -62,7 +77,17 @@ Time.now.in_time_zone("America/Los_Angeles"): <%#= Time.now.in_time_zone("Americ
 <!-- I'm looking for midnight of the day, so for the abscissa, but finding stattime might be a different story. The data is selected correctly, but the abscissa labeling is wrong. The abscissa is in UTC and not local time -->
 <%# last_record-8.hour %> <!-- :: 2022-01-06 00:14:48 -0800 -->
 <%# last_record+8.hour %> <!-- :2022-01-06 16:14:48 -0800  -->
+<h4>All relative to last record: (starting over)</h4>
+<p>lookin for beginning of day in GMT in whatever zone the data is in. </p>
+<p>last_record_0_day_ago = last_record.beginning_of_day+zoneLastRecordNeg.hour-1.day: 
+  <%= last_record.beginning_of_day-zoneLastRecord.hour-1.day %></p>
+
+
+  
+<h4>All relative to last record: And all are wrong either on localhost or server</h4>
+<h5>on localhost still has minutes past beginning of day. On server except for first are 8:whatever mins ahead</h5>
 last_record_0_day_ago = last_record.beginning_of_day+zoneLastRecordNeg.hour-1.day: <%= last_record.beginning_of_day-zoneLastRecord.hour-1.day %><br>
+<h6>Should just be able to add a day rather than the following nonsense</h6>
 last_record_1_day_ago = last_record-zoneLastRecord.hour-1.day:  <%= last_record-zoneLastRecord.hour-1.day %> UTC with zone indicated<br>
 last_record_2_day_ago = last_record-zoneLastRecord.hour-2.day:  <%= last_record-zoneLastRecord.hour-2.day %> <br>
 last_record_3_day_ago = last_record-zoneLastRecord.hour-3.day:  <%= last_record-zoneLastRecord.hour-3.day %> <br>
@@ -73,6 +98,8 @@ last_record_7_day_ago = last_record-zoneLastRecord.hour-7.day:  <%= last_record-
 
 
 <!-- Could base these on above -->
+<h5>localhost, wrong time, wrong day. server: right day, wrong time</h5>
+<br>begin_0_day_ago = (last_record-zoneLastRecord.hour-0.day).beginning_of_day: <%= begin_0_day_ago = (last_record-zoneLastRecord.hour-0.day).beginning_of_day %>
 <br>begin_1_day_ago = (last_record-zoneLastRecord.hour-1.day).beginning_of_day: <%= begin_1_day_ago = (last_record-zoneLastRecord.hour-1.day).beginning_of_day %>
 <br>begin_2_day_ago = (last_record-zoneLastRecord.hour-2.day).beginning_of_day: <%= begin_2_day_ago = (last_record-zoneLastRecord.hour-2.day).beginning_of_day %>
 <br>begin_3_day_ago = (last_record-zoneLastRecord.hour-3.day).beginning_of_day: <%= begin_3_day_ago = (last_record-zoneLastRecord.hour-3.day).beginning_of_day %>
@@ -80,6 +107,7 @@ last_record_7_day_ago = last_record-zoneLastRecord.hour-7.day:  <%= last_record-
 <br>begin_5_day_ago = (last_record-zoneLastRecord.hour-5.day).beginning_of_day: <%= begin_5_day_ago = (last_record-zoneLastRecord.hour-5.day).beginning_of_day %>
 <br>begin_6_day_ago = (last_record-zoneLastRecord.hour-6.day).beginning_of_day: <%= begin_6_day_ago = (last_record-zoneLastRecord.hour-6.day).beginning_of_day %>
 <br><br>
+<h5>wrong because based on above</h5>
  span00 = last_record.beginning_of_day..last_record : <% span00 = last_record.beginning_of_day..last_record %>               <br>
  span10 = begin_1_day_ago..last_record.beginning_of_day: <%= span10 = begin_1_day_ago..last_record.beginning_of_day %>           <br>
  span21 = begin_2_day_ago..begin_1_day_ago %>          : <%= span21 = begin_2_day_ago..begin_1_day_ago %>                        <br>
