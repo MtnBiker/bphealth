@@ -20,7 +20,8 @@
 <p>last_record_zone = BloodPressure.order('statdate asc').last.statzone: <%= last_record_zone = BloodPressure.order('statdate asc').last.statzone %></p>
 <p>last_record.in_time_zone(last_record_zone):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <%= last_record.in_time_zone("America/Los_Angeles") %>.  Same on both of course. Zone as text.</p>
 <p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>.  </p>
-<p>last_record-8.hour : <%= last_record-8.hour %> </p>
+<p>last_record-8.hour : <%= last_record-8.hour %>. This is just taking 8 hours off UTC. </p>
+
 <p>From referring page <%= @last_record %> doesn't work.</p>
   <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
   <% zoneLastRecord = BloodPressure.order('statdate asc').last.statzone %>
@@ -46,7 +47,10 @@
   
 <h5><strong>Midnight</strong>. Need in UTC. E.g. if data a 8:30 PST, need 08:00 for that day, i.e. 8:30 before</h5>
 
-<p><strong> Midnight (last_record.beginning_of_day+zoneLastRecord)</strong>     :  <%= last_record.beginning_of_day+zoneLastRecord %>. UTC on both</p>
+<p> Midnight (last_record.beginning_of_day+zoneLastRecord)   :  <%= last_record.beginning_of_day+zoneLastRecord %>. UTC on both and rounding error problems</p>
+<p>last_record_zone_seconds = last_record_zone*3600: <%= last_record_zone_seconds = last_record_zone*3600 %></p>
+<p><strong>last_record + last_record_zone_seconds</strong> : <%= last_record + last_record_zone_seconds %>.  </p>
+
 
 <br>
 <h5>None of the following works for Midnight. </h5>
@@ -59,7 +63,7 @@
   
 <p>6. zoneLastRecord.hour: <%= zoneLastRecord.hour %> converts to seconds<br><%= zoneLastRecord.hour.class %></p>
 <p>6.1 <%= last_record %> Time is local with time zone shown<br>
-<p>7. last_record + zoneLastRecord.hour : <%= last_record + zoneLastRecord.hour %>. <br>
+<p>7. last_record + zoneLastRecord.hour : <%= last_record + zoneLastRecord.hour %>. Differs on localhost and server<br>
 
 <%# last_record = BloodPressure.order('statdate asc').last.statdate %><br>  <!-- 2022-01-06 16:14:48 UTC -->
 
@@ -77,10 +81,11 @@ Time.now.in_time_zone("America/Los_Angeles"): <%#= Time.now.in_time_zone("Americ
 <!-- I'm looking for midnight of the day, so for the abscissa, but finding stattime might be a different story. The data is selected correctly, but the abscissa labeling is wrong. The abscissa is in UTC and not local time -->
 <%# last_record-8.hour %> <!-- :: 2022-01-06 00:14:48 -0800 -->
 <%# last_record+8.hour %> <!-- :2022-01-06 16:14:48 -0800  -->
+  
 <h4>All relative to last record: (starting over)</h4>
 <p>lookin for beginning of day in GMT in whatever zone the data is in. </p>
-<p>last_record_0_day_ago = last_record.beginning_of_day+zoneLastRecordNeg.hour-1.day: 
-  <%= last_record.beginning_of_day-zoneLastRecord.hour-1.day %></p>
+<p>last_record_0_day_ago = last_record.beginning_of_day+zoneLastRecordNeg.hour: 
+  <%= last_record.beginning_of_day-zoneLastRecord.hour %>. Nope. beginning of days is OO UTC on server</p>
 
 
   
