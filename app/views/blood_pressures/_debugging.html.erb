@@ -50,7 +50,9 @@
 <p> Midnight (last_record.beginning_of_day+zoneLastRecord)   :  <%= last_record.beginning_of_day+zoneLastRecord %>. UTC on both and rounding error problems</p>
 <p>last_record_zone_seconds = last_record_zone*3600: <%= last_record_zone_seconds = last_record_zone*3600 %></p>
 <p>last_record + last_record_zone_seconds : <%= last_record + last_record_zone_seconds %>. Now need to subtract hMS</p>
-<p><strong>last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec): </strong> : <%= last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec) %>. </p>
+<p><strong>last_record_midnight = last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec): </strong> : <%= last_record_midnight = last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec) %>. </p>
+<h4>previous midnight</h4>
+<p>last_record_midnight-1.day: <%= last_record_midnight-1.day %> </p>
 
 
 <br>

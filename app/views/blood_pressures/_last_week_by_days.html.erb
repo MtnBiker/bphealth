@@ -2,34 +2,36 @@
 <% last_record = BloodPressure.order('statdate asc').last.statdate %><br> <!-- last_record: 2021-12-26 04:40:23 UTC, but in db as 2021-12-25 20:40:23-08, Although ended up with last not being the most current if since sorting by id. How was an id reused? -->
 <%#= render 'debugging', locals: {last_record: @last_record} %>
 <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
+<!-- timeZone is hours as integer -->
 <% timeZone =BloodPressure.order('statdate asc').last.statzone %>
-<% midnight = last_record.beginning_of_day - timeZone.hour %>
+
 
 <!-- Stack 7 daily records, then maybe put on one graph when I figure it out -->
- 
-<% last_record_1_day_ago = last_record-timeZone.hour-1.day %>
-<% last_record_2_day_ago = last_record-timeZone.hour-2.day %>
-<% last_record_3_day_ago = last_record-timeZone.hour-3.day %>
-<% last_record_4_day_ago = last_record-timeZone.hour-4.day %>
-<% last_record_5_day_ago = last_record-timeZone.hour-5.day %>
-<% last_record_6_day_ago = last_record-timeZone.hour-6.day %>
-<% last_record_7_day_ago = last_record-timeZone.hour-7.day %>
+<% last_record_zone = BloodPressure.order('statdate asc').last.statzone  %>
+<% last_record_zone_in_seconds = last_record_zone*3600 %>
+<% last_record_midnight = last_record + last_record_zone_in_seconds - (last_record.min*60) - (last_record.sec) %>
 
-<!-- Could base these on above -->
-<% begin_1_day_ago = (last_record-timeZone.hour-1.day).beginning_of_day %>
-<% begin_2_day_ago = (last_record-timeZone.hour-2.day).beginning_of_day %>
-<% begin_3_day_ago = (last_record-timeZone.hour-3.day).beginning_of_day %>
-<% begin_4_day_ago = (last_record-timeZone.hour-4.day).beginning_of_day %>
-<% begin_5_day_ago = (last_record-timeZone.hour-5.day).beginning_of_day %>
-<% begin_6_day_ago = (last_record-timeZone.hour-6.day).beginning_of_day %>
+<% last_record_1_day_ago = last_record+last_record_zone_in_seconds-0.day %>
+<% last_record_2_day_ago = last_record-1.day %>
+<% last_record_3_day_ago = last_record-2.day %>
+<% last_record_4_day_ago = last_record-3.day %>
+<% last_record_5_day_ago = last_record-4.day %>
+<% last_record_6_day_ago = last_record-5.day %>
+<% last_record_7_day_ago = last_record-6.day %>
 
-<% span00 = last_record.beginning_of_day..last_record %>
-<% span10 = begin_1_day_ago..last_record.beginning_of_day %>
-<% span21 = begin_2_day_ago..begin_1_day_ago %>
-<% span32 = begin_3_day_ago..begin_2_day_ago %>
-<% span43 = begin_4_day_ago..begin_3_day_ago %>
-<% span54 = begin_5_day_ago..begin_4_day_ago %>
-<% span65 = begin_6_day_ago..begin_5_day_ago %>
+<!-- Giving right numbers but naming is wacked -->
+<% title0 = "#{last_record.strftime("%a, %b. %-d")} . #{time_ago_in_words(last_record)} ago" %>
+<% title1 = "#{last_record_2_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_2_day_ago)} before last" %>
+<% title2 = "#{last_record_3_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_3_day_ago)} before last" %>
+
+
+<% span00 = last_record_midnight-0.day..last_record %>
+<% span10 = last_record_midnight-1.day..last_record_midnight-0.day %>
+<% span21 = last_record_midnight-2.day..last_record_midnight-1.day %>
+<% span32 = last_record_midnight-3.day..last_record_midnight-2.day %>
+<% span43 = last_record_midnight-4.day..last_record_midnight-3.day %>
+<% span54 = last_record_midnight-5.day..last_record_midnight-4.day %>
+<% span65 = last_record_midnight-6.day..last_record_midnight-5.day %>
 
 <!-- Most recent -->
 <div class="h4 text-center">
@@ -37,20 +39,20 @@
 </div>
 <div class="text-center font-weight-bold">
   <!-- Working, but not spaced out over 24 hours. Spaced between first and last -->
-  <%= line_chart BloodPressure.where(statdate: span00).pluck(:statdate, :systolic), title: "#{last_record.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record)} ago", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BloodPressure.where(statdate: span00).pluck(:statdate, :systolic), title: title0, xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
 
   <hr class="py-1"> <!-- Day before -->
   <% if BloodPressure.where(statdate: span10).pluck(:statdate, :systolic).empty? %>
     No data for <%= last_record_1_day_ago.strftime("%A, %b %-d") %>
   <% else %>
-    <%= line_chart BloodPressure.where(statdate: span10).pluck(:statdate, :systolic), title: "#{last_record_1_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_1_day_ago)} before last", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+    <%= line_chart BloodPressure.where(statdate: span10).pluck(:statdate, :systolic), title: title1, xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
   <% end %>
 
   <hr class="py-1"> <!-- Deux jours -->
   <% if BloodPressure.where(statdate: span21).pluck(:statdate, :systolic).empty? %>
     No data for <%= last_record_2_day_ago.strftime("%A, %b %-d") %>
   <% else %>
-    <%= line_chart BloodPressure.where(statdate: span21).pluck(:statdate, :systolic), title: "#{last_record_2_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_2_day_ago)} before last", xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+    <%= line_chart BloodPressure.where(statdate: span21).pluck(:statdate, :systolic), title: title2, xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
   <% end %>
 
   <hr class="py-1">
