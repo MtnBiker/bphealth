@@ -33,6 +33,7 @@
             <td class="text-start"> <%= stat.statdate.localtime.strftime("%_l:%M %P") %></td>  -->
                
                <!-- statzone needs to be in text style and in zone of data which isn't necessarily the server -->
+               <!-- This needs to be done when statzone or its word equivalent is written -->
             <%
               timeZone = case stat.statzone
                 when -8 then "America/Los_Angeles"

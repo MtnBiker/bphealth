@@ -1,6 +1,5 @@
 class BloodPressuresController < ApplicationController
   before_action :set_blood_pressure , only: %i[ show edit update destroy ] # if add import_data, import fails
-  # helper_method :systolic_text_color # checks here first, then goes to helpers which is what I'm using
 
   # GET /blood_pressures or /blood_pressures.json
   def index
@@ -239,20 +238,7 @@ end
 
   # Only allow a list of trusted parameters through.
   def blood_pressure_params
-    params.require(:blood_pressure).permit(:statdate, :statzone, :systolic, :diastolic, :heartrate, :sourceName, :sourceVersion, :comment,:health_exported_zip, :file, :filename)
+    params.require(:blood_pressure).permit(:statdate, :statzone, :zonename, :systolic, :diastolic, :heartrate, :sourceName, :sourceVersion, :comment,:health_exported_zip, :file, :filename)
   end
 
-  # Not being used. Using helpers as seems more logical to me at the moment.  commented out helper_method at top stops this from being used, but does work if uncommented. Controller is checked first for method
-  def systolic_text_color (systolic)
-    case systolic
-    when 0..120
-      "text-success"
-    when 121..139
-      "text-danger"
-    when 139..200
-      "text-secondary" # should be danger, but using as a test to see if this method being used
-    else
-      "text-danger"
-    end
-  end
 end

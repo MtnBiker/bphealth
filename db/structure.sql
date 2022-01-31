@@ -40,7 +40,8 @@ CREATE TABLE public.blood_pressures (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     comment character varying,
-    statzone integer
+    statzone integer,
+    zonename character varying
 );
 
 
@@ -200,6 +201,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211121214459'),
 ('20211214003254'),
 ('20211228045750'),
-('20220128213011');
+('20220128213011'),
+('20220131162328'),
+('20220131162913'),
+('20220131163056');
 
 
