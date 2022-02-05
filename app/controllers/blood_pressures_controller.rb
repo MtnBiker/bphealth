@@ -14,6 +14,12 @@ class BloodPressuresController < ApplicationController
   def printable_table # needed for page to work
     @blood_pressures = BloodPressure.all.order("statdate")
   end
+  
+  def time_zone_names
+    sql = <<-SQL
+    select * from pg_timezone_names
+    SQL
+  end
 
   def time_stuff
     @pagy, @blood_pressures= pagy(@blood_pressures = BloodPressure.all.order("statdate DESC")) # needed because want data to look at
@@ -138,6 +144,14 @@ class BloodPressuresController < ApplicationController
   end
 
   def zone_name(statdate, statzone) # passing in startDate from original, but it becomes statdate, so using that name
+    # puts ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier
+    zone_name = time_zone_names #.where(utc_offset: '-08:00:00')
+    puts "#{lineNum}. zone_name: #{zone_name}"
+    
+    
+    sql = "select * from pg_timezone_names"
+    records_array = ActiveRecord::Base.connection.execute(sql) 
+    puts "#{lineNum}. records_array[25]:  #{records_array[25]}"
     
   end
 
@@ -152,7 +166,7 @@ class BloodPressuresController < ApplicationController
       # `startDate="2022-01-27 09:05:43 -0800"` in xml and gets into database `2022-01-27 09:05:43-08`
       startDate = DateTime.parse(record['startDate']) # convert to type date and in find_matching_value use datetime comparisons
       statzone = startDate.localtime.formatted_offset(false).slice!(0, 3).to_i
-      # Need to lookup based on statzone and DST or not?
+      # Need to lookup based on statzone and DST or not?      
       zonename = zone_name(startDate, statzone)
       puts "#{lineNum}. startDate: #{startDate}. statzone: #{statzone}"
       pair = find_matching_value(startDate, diastolic_records)

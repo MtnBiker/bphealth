@@ -9,6 +9,45 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: jan_and_jul_tz_abbrevs_and_offsets(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.jan_and_jul_tz_abbrevs_and_offsets() RETURNS TABLE(name text, jan_abbrev text, jul_abbrev text, jan_offset interval, jul_offset interval)
+    LANGUAGE plpgsql
+    AS $_$
+declare
+  set_timezone constant text not null := $$set timezone = '%s'$$;
+  tz_set                text not null := '';
+  tz_on_entry           text not null := '';
+begin
+  show timezone into tz_on_entry;
+
+  for tz_set in (
+    select pg_timezone_names.name as a
+    from pg_timezone_names
+  ) loop
+    execute format(set_timezone, tz_set);
+    select
+      current_setting('timezone'),
+      to_char('2021-01-01 12:00:00 UTC'::timestamptz, 'TZ'),
+      to_char('2021-07-01 12:00:00 UTC'::timestamptz, 'TZ'),
+      to_char('2021-01-01 12:00:00 UTC'::timestamptz, 'TZH:TZM')::interval,
+      to_char('2021-07-01 12:00:00 UTC'::timestamptz, 'TZH:TZM')::interval
+    into
+      name,
+      jan_abbrev,
+      jul_abbrev,
+      jan_offset,
+      jul_offset;
+    return next;
+  end loop;
+
+  execute format(set_timezone, tz_on_entry);
+end;
+$_$;
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -204,6 +243,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220128213011'),
 ('20220131162328'),
 ('20220131162913'),
-('20220131163056');
+('20220131163056'),
+('20220203210247');
 
 
