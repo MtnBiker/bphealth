@@ -38,7 +38,7 @@
             <tr>
               <td class=""> <%= stat.statdate.localtime.strftime("%d %b %Y") %><!-- </td>
               <td class="text-start"> --> <%= stat.statdate.localtime.strftime("%_l:%M %P") %></td> <!-- .strftime("%_l:%M %P") or ("%H:%M")-->
-              <td class="text-end <%= systolic_text_color(stat.systolic) %>"> <%= stat.systolic %> / </td>
+              <td class="text-end <%= systolic_icon_level(stat.systolic) %> <%= systolic_text_color(stat.systolic) %>"> <%= stat.systolic %> / </td>
               <td class="text-start"> <%= stat.diastolic %></td>
               <td class="text-center"><%= stat.heartrate %></td>
               <td class="text-start"><%= stat.comment %></td>

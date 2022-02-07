@@ -6,7 +6,8 @@
         <!-- Col widths go in the th -->
         <!--Not sure what scope is about -->
         <!-- <th scope="col" class="col-sm-1 text-end">ID</th> -->
-        <th scope="col" class="text-center col-lg-2" colspan="2">Date</th>
+        <th scope="col" class="text-center col-lg-2" colspan="2"><i class="bi bi-emoji-smile">Date</th>
+        </i>
          <th scope="col" class="text-end col-lg-1">Systolic /</th><!-- text-uppercase is to see if bootstrap is working -->
         <th scope="col" class="text-start col-lg-1">Diastolic</th>
         <th scope="col" class="col-lg-1">HR</th>
@@ -44,7 +45,7 @@
             <td class="text-end background-color-day-<%= stat.statdate.in_time_zone(timeZone).strftime("%u") %>"> <%= stat.statdate.in_time_zone(timeZone).strftime("%a %d %b %Y") %></td>
             <!-- The Time -->
             <td class="text-start"> <%= stat.statdate.in_time_zone(timeZone).strftime("%_l:%M %P") %></td>
-            <td class="text-end <%= systolic_text_color(stat.systolic) %>"> <%= stat.systolic %> / </td> <!-- /helpers/blood_pressures_helper.rb -->
+            <td class="text-end <%= systolic_icon_level(stat.systolic) %> <%= systolic_text_color(stat.systolic) %> "> <%= stat.systolic %> / </td> <!-- /helpers/blood_pressures_helper.rb -->
             <td class="text-start">  <%= stat.diastolic %></td>
             <td class="text-center"> <%= stat.heartrate %></td>
             <!-- <#% if stat.stattime? %>
