@@ -23,7 +23,8 @@ module BloodPressuresHelper
     when 140..150
       "bi bi-emoji-frown"
     when 151..220
-      "bi bi-emoji-angry"
+      "bi bi-emoji-frown-fill"
+      # "bi bi-emoji-angry"
     else
        "bi bi-question-lg"
     end
