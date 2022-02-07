@@ -14,12 +14,6 @@ class BloodPressuresController < ApplicationController
   def printable_table # needed for page to work
     @blood_pressures = BloodPressure.all.order("statdate")
   end
-  
-  def time_zone_names
-    sql = <<-SQL
-    select * from pg_timezone_names
-    SQL
-  end
 
   def time_stuff
     @pagy, @blood_pressures= pagy(@blood_pressures = BloodPressure.all.order("statdate DESC")) # needed because want data to look at
@@ -144,14 +138,10 @@ class BloodPressuresController < ApplicationController
   end
 
   def zone_name(statdate, statzone) # passing in startDate from original, but it becomes statdate, so using that name
-    # puts ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier
-    zone_name = time_zone_names #.where(utc_offset: '-08:00:00')
-    puts "#{lineNum}. zone_name: #{zone_name}"
-    
-    
     sql = "select * from pg_timezone_names"
-    records_array = ActiveRecord::Base.connection.execute(sql) 
-    puts "#{lineNum}. records_array[25]:  #{records_array[25]}"
+    time_zone_names = ActiveRecord::Base.connection.execute(sql) 
+    # The following works, just need to look for the name for a specific utc_offset
+    puts "#{lineNum}. time_zone_names[25]:  #{time_zone_names[25]}" # {"name"=>"US/Alaska", "abbrev"=>"AKST", "utc_offset"=>"PT-9H", "is_dst"=>false}
     
   end
 

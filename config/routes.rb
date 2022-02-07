@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :time_zone_names
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root 'blood_pressures#index'
   post 'import_data', to: 'blood_pressures#import_data'

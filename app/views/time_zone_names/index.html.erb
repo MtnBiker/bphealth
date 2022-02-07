@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Time zone names</h1>
+
+<div id="time_zone_names">
+  <% @time_zone_names.each do |time_zone_name| %>
+    <%= render time_zone_name %>
+    <p>
+      <%= link_to "Show this time zone name", time_zone_name %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New time zone name", new_time_zone_name_path %>

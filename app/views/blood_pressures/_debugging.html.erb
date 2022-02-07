@@ -1,15 +1,16 @@
 <h3>SQL in Rails</h3>
 <% sql = "select * from pg_timezone_names" %>
 <%# sql = "SELECT name FROM pg_timezone_names WHERE utc_offset = '-08:00:00';" %>
-<% records_array = ActiveRecord::Base.connection.execute(sql) %> <!-- an object -->
-<p><%= "records_array.class: #{records_array.class}" %></p> <!-- >> PG::Result -->
-<p><%= "records_array[1]:  #{records_array[1]}" %></p> <!-- # {"name"=>"Indian/Chagos", "abbrev"=>"+06", "utc_offset"=>"PT6H", "is_dst"=>false} -->
-<p><%= "records_array[135]:  #{records_array[135]}" %></p> 
-<p><%#= "records_array['-08:00:00']:  #{records_array['-08:00:00']}" %></p> 
-<p><%#= records_array[:"#{-08:00:00}" ] %></p> 
-<!-- Customer.find_by first_name: 'Lifo' -->
-<%#= records_array.find_by utc_offset:  '-08:00:00' %>
-<%#= records_array.fetch('-08:00:00') %>
+<% pg_timezone_names = ActiveRecord::Base.connection.execute(sql).to_a %> <!-- an object originally, but changed to an array -->
+<p><%= "pg_timezone_names.class: #{pg_timezone_names.class}" %></p> <!-- >> PG::Result, now array -->
+<p><%= "pg_timezone_names[1]:  #{pg_timezone_names[1]}" %></p> 
+<!-- <p><%#= "pg_timezone_names:  #{pg_timezone_names}" %></p> --> <!-- A long list. An array of arrays? -->
+<p><%= "pg_timezone_names[135]:  #{pg_timezone_names[135]}" %></p>
+<p>pg_timezone_names.find { |h| h['utc_offset'] == 'PT0S' }['name'] : <%=  pg_timezone_names.find { |h| h['utc_offset'] == 'PT0S' }['name'] %></p>
+
+<h5>To save resources—getting different answer. 54 PT0S, so order matters</h5>
+<% name_by_otc_offset= Hash[pg_timezone_names.map { |h| h.values_at('utc_offset', 'name') }] %>
+<p>name_by_otc_offset['PT0S']: <%= name_by_otc_offset['PT0S'] %></p>
 
 <h3>Some variables and time parsing is in partial debugging</h3>
 <h4>Time and Date General</h4>

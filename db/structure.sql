@@ -128,6 +128,40 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: time_zone_names; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.time_zone_names (
+    id bigint NOT NULL,
+    name text,
+    abbrev text,
+    utc_offset interval,
+    is_dst boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: time_zone_names_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.time_zone_names_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: time_zone_names_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.time_zone_names_id_seq OWNED BY public.time_zone_names.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -168,6 +202,13 @@ ALTER TABLE ONLY public.blood_pressures ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
+-- Name: time_zone_names id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.time_zone_names ALTER COLUMN id SET DEFAULT nextval('public.time_zone_names_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -196,6 +237,14 @@ ALTER TABLE ONLY public.blood_pressures
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: time_zone_names time_zone_names_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.time_zone_names
+    ADD CONSTRAINT time_zone_names_pkey PRIMARY KEY (id);
 
 
 --
@@ -244,6 +293,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220131162328'),
 ('20220131162913'),
 ('20220131163056'),
-('20220203210247');
+('20220203210247'),
+('20220207154556');
 
 
