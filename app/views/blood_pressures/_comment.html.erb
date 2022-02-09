@@ -1,6 +1,7 @@
 <div class="form-control-lg">
   <%= form_with(model: blood_pressure) do |form| %>
-    <% if blood_pressure.errors.any? %>
+    <% if 1 == 2 %> <!-- This is just to stop this from being entered because it causes an error, but I never edit anything here that is critical -->
+    <%# if blood_pressure.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(blood_pressure.errors.count, "error") %> prohibited this blood_pressure from being saved:</h2>
 
@@ -12,21 +13,27 @@
       </div>
     <% end %>
 
+    <!-- The following two divs supply extra information but is conflicting with modal. FIXME
     <div class="field form-label" for="formControlReadonly">
-      For <strong><%= blood_pressure.statdate.localtime.strftime("%a %d %b %Y %_I:%M %P")%></strong>
+      For <strong><%#= blood_pressure.statdate.localtime.strftime("%a %d %b %Y %_I:%M %P")%></strong>
     </div>
 
     <div class="field">
-      <%= form.label :systolic %>
-      <%= blood_pressure.systolic %>
+      <%#= form.label :systolic %>
+      <%#= blood_pressure.systolic %>
+    </div> -->
+
+    <div class="mb-3">
+      <%= form.text_field :comment, class: 'form-control' %>
     </div>
 
-    <div class="form-outline">
-      <div class="field">
-        <%= form.label "Edit comment" %>
-        <%= form.text_field  :comment, class: "form-label col-md-4" %>
-      </div>
-    </div>
+<!-- For stand alone edit page -->
+    <!-- <div class="form-outline">
+      <div class="field"> -->
+        <%#= form.label "Edit comment" %>
+        <%#= form.text_field :comment, class: "form-label col-md-4" %> <!-- Normal, not modal -->
+      <!-- </div>
+    </div> -->
     <div class="actions">
       <%= form.submit "Update comment" %>
     </div>

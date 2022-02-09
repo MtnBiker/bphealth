@@ -1,0 +1,15 @@
+<%= turbo_frame_tag :remote_modal, target: :_top do %>
+  <div class="modal fade" data-controller="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit comment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <%= render "blood_pressures/comment", blood_pressure: blood_pressure %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
