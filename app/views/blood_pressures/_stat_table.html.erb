@@ -54,7 +54,7 @@
             <!-- <td class="text-center"> <%#= stat.weight %></td> -->
             <td><%= link_to edit_blood_pressure_path(stat) do %><%= stat.comment %><% end %></td>
             <!-- <td class="text-start"> <%= stat.comment %></td> -->
-            <td><%= link_to 'Edit comment', edit_blood_pressure_path(stat) %></td>
+            <td><%= link_to 'Edit comment', edit_blood_pressure_path(stat), "data-controller": "turbo" %></td>
             <td><%= link_to 'Delete this record', stat, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
       <% end %>

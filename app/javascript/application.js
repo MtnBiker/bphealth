@@ -2,5 +2,6 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import * as bootstrap from "bootstrap"
+window.bootstrap = bootstrap // for modal
 // import "@fortawesome/fontawesome-free/js/all"
 // import "./channels"

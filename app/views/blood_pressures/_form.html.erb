@@ -1,15 +1,4 @@
 <%= form_with(model: blood_pressure) do |form| %>
-  <% if blood_pressure.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(blood_pressure.errors.count, "error") %> prohibited this blood_pressure from being saved:</h2>
-
-      <ul>
-        <% blood_pressure.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
 
   <div class="field">
     <%= form.label :statdate %>
@@ -19,6 +8,11 @@
   <div class="field">
     <%= form.label :systolic %>
     <%= form.number_field :systolic %>
+  </div>
+
+  <div class="field">
+    <%= form.label :comment%>
+    <%= form.text_field :comment%>
   </div>
 
   <div class="field">

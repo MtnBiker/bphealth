@@ -6,3 +6,10 @@ import { application } from "./application"
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+// Following two for edit modal
+import ModalController from "./modal_controller.js"
+application.register("modal", ModalController)
+
+import TurboController from "./turbo_controller.js"
+application.register("turbo", TurboController)
