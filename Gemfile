@@ -35,7 +35,8 @@ gem 'groupdate' # used with ChartKick
 
 gem 'rubyzip'
 
-gem 'pagy', '5.9.1'
+gem 'pagy', '5.9.1' # leave for now
+# gem 'kaminari' # Tried with https://roelbondoc.com/2021/06/02/infinite-scrolling-content-in-rails/ but my setup differs and I couldn't immediately see how to make it work. Simple but my stat page is somehow different
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
