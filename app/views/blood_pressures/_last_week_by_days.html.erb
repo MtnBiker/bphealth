@@ -38,6 +38,16 @@
 <% span54 = last_record_midnight-5.day..last_record_midnight-4.day %>
 <% span65 = last_record_midnight-6.day..last_record_midnight-5.day %>
 
+Trying for start and end of the days for the graphs, but being ignored by Chartkick
+<% last_record_midnight0 = last_record_midnight-0.day %>
+<% last_record_midnight1 = last_record_midnight-1.day %>
+<% last_record_midnight2 = last_record_midnight-2.day %>
+<% last_record_midnight3 = last_record_midnight-3.day %>
+<% last_record_midnight4 = last_record_midnight-4.day %>
+<% last_record_midnight5 = last_record_midnight-5.day %>
+<% last_record_midnight6 = last_record_midnight-6.day %>
+
+
 <!-- Most recent -->
 <div class="h4 text-center">
   Daily for last seven days of imported data (most recent at top)
@@ -60,14 +70,14 @@
     No data for <%= last_record_2_day_ago.strftime("%A, %b %-d") %>
   <% else %>
   <!-- Setting xmin and xmax having no affect even if wrong numbers. Goes back a year -->
-    <%= line_chart BloodPressure.where(statdate: span21).pluck(:statdate, :systolic), title: title2, xtitle: "Local Time", ytitle: "Systolic", xmin: "2021-01-27", xmax: "2022-01-30", min: 100, max: 200, color: "#D9A1FF" %>
+    <%= line_chart BloodPressure.where(statdate: span21).pluck(:statdate, :systolic), title: title2, xtitle: "Local Time", ytitle: "Systolic", xmin: last_record_midnight2, xmax: last_record_midnight1, min: 100, max: 200, color: "#D9A1FF" %>
   <% end %>
 
   <hr class="py-1">
   <% if BloodPressure.where(statdate: span32).pluck(:statdate, :systolic).empty? %>
     No data for <%= last_record_3_day_ago.strftime("%A, %b %-d") %>
   <% else %>
-    <%= line_chart BloodPressure.where(statdate: span32).pluck(:statdate, :systolic), title: title3, xtitle: "Local Time", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+    <%= line_chart BloodPressure.where(statdate: span32).pluck(:statdate, :systolic), title: title3, xtitle: "Local Time", ytitle: "Systolic", xmin: last_record_midnight3, xmax: last_record_midnight2, min: 100, max: 200, color: "#D9A1FF" %>
   <% end %>
 
   <hr class="py-1">

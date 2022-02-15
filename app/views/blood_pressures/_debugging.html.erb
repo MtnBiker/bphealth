@@ -33,6 +33,7 @@
 
 <h4>Related to last_record since used as the reference for daily graphs</h4>
 <p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %><p>
+<p>last_record_1_day_ago <%= last_record-1.day %>. Was trying to use as starting and end point. Why? Makes no sense now. Needs to be a midnigh thing</p>
 <p>last_record_zone = BloodPressure.order('statdate asc').last.statzone: <%= last_record_zone = BloodPressure.order('statdate asc').last.statzone %>. Since recorded as integer</p>
 <!-- Prefer "America/Los_Angeles" other go pot luck. Other zones may have different daylight saving -->
 <p>last_record.utc_offset: <%= last_record.utc_offset %>. >>  0 NOT </p>
@@ -42,9 +43,14 @@
 <p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>.  </p>
 <p>last_record-8.hour : <%= last_record-8.hour %>. This is just taking 8 hours off UTC. </p>
 
+<p><%= timeZone =BloodPressure.order('statdate asc').last.statzone %></p>
+<p><%= last_record_zone = BloodPressure.order('statdate asc').last.statzone  %></p>
+<p><%= last_record_zone_in_seconds = last_record_zone*3600 %></p>
+<p>last_record_midnight: <%=  last_record + last_record_zone_in_seconds - (last_record.min*60) - (last_record.sec) %></p>
+
 <p>From referring page <%= @last_record %> doesn't work.</p>
   <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
-  <% zoneLastRecord = BloodPressure.order('statdate asc').last.statzone %>
+<% zoneLastRecord = BloodPressure.order('statdate asc').last.statzone %>
 <p>last_record_1_day_ago = last_record+zoneLastRecord.hour-1.day: <%= last_record-zoneLastRecord.hour-1.day %></p>
 <p>zoneLastRecord for last_record: <%= zoneLastRecord = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
 <p><% zoneLastRecordNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
