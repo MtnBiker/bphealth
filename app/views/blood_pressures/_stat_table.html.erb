@@ -42,7 +42,9 @@
               end
             %>
             <!-- The date and Setting the color background to denote days of the week -->
-            <td class="text-end <%= systolic_icon_level(stat.systolic) %> background-color-day-<%= stat.statdate.in_time_zone(timeZone).strftime("%u") %> "> <%= stat.statdate.in_time_zone(timeZone).strftime("%a %d %b %Y") %> </td>
+            <td class="text-end <%= systolic_icon_level(stat.systolic) %> background-color-day-<%= stat.statdate.in_time_zone(timeZone).strftime("%u") %> ">
+              <%= stat.statdate.in_time_zone(timeZone).strftime("%a %d %b %Y") %>
+            </td>
             <!-- The Time -->
             <td class="text-start"> <%= stat.statdate.in_time_zone(timeZone).strftime("%_l:%M %P") %></td>
             <td class="text-end <%= systolic_icon_level(stat.systolic) %> <%= systolic_text_color(stat.systolic) %> "> <%= stat.systolic %> / </td> <!-- /helpers/blood_pressures_helper.rb -->

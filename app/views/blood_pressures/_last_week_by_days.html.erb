@@ -39,9 +39,9 @@
 <% span65 = last_record_midnight-6.day..last_record_midnight-5.day %>
 
 Trying for start and end of the days for the graphs, but being ignored by Chartkick
-<% last_record_midnight0 = last_record_midnight-0.day %>
-<% last_record_midnight1 = last_record_midnight-1.day %>
-<% last_record_midnight2 = last_record_midnight-2.day %>
+<%= last_record_midnight0 = last_record_midnight-0.day %>
+<%= last_record_midnight1 = last_record_midnight-1.day %>
+<%= last_record_midnight2 = last_record_midnight-2.day %>
 <% last_record_midnight3 = last_record_midnight-3.day %>
 <% last_record_midnight4 = last_record_midnight-4.day %>
 <% last_record_midnight5 = last_record_midnight-5.day %>
@@ -84,7 +84,7 @@ Trying for start and end of the days for the graphs, but being ignored by Chartk
   <% if BloodPressure.where(statdate:span43).pluck(:statdate, :systolic).empty? %>
     No data for <%= last_record_4_day_ago.strftime("%A, %b %-d") %>
   <% else %>
-    <%= line_chart BloodPressure.where(statdate: span43).pluck(:statdate, :systolic), title:title4, xtitle: "Time UTC", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+    <%= line_chart BloodPressure.where(statdate: span43).pluck(:statdate, :systolic), title:title4, xtitle: "Time UTC", ytitle: "Systolic", xmin: "2022-02-11 13:01:00", xmax: "2022-02-12 12:59:00", min: 100, max: 200, color: "#D9A1FF" %>
   <% end %>
 
   <hr class="py-1">
