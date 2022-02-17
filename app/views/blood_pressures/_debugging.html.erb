@@ -1,47 +1,15 @@
-<h3>SQL in Rails</h3>
-<% sql = "select * from pg_timezone_names" %>
-<%# sql = "SELECT name FROM pg_timezone_names WHERE utc_offset = '-08:00:00';" %>
-<% pg_timezone_names = ActiveRecord::Base.connection.execute(sql).to_a %> <!-- an object originally, but changed to an array -->
-<p><%= "pg_timezone_names.class: #{pg_timezone_names.class}" %></p> <!-- >> PG::Result, now array -->
-<p><%= "pg_timezone_names[1]:  #{pg_timezone_names[1]}" %></p> 
-<!-- <p><%#= "pg_timezone_names:  #{pg_timezone_names}" %></p> --> <!-- A long list. An array of arrays? -->
-<p><%= "pg_timezone_names[135]:  #{pg_timezone_names[135]}" %></p>
-<p>pg_timezone_names.find { |h| h['utc_offset'] == 'PT0S' }['name'] : <%=  pg_timezone_names.find { |h| h['utc_offset'] == 'PT0S' }['name'] %></p>
-
-<h5>To save resources—getting different answer. 54 PT0S, so order matters</h5>
-<% name_by_otc_offset= Hash[pg_timezone_names.map { |h| h.values_at('utc_offset', 'name') }] %>
-<p>name_by_otc_offset['PT0S']: <%= name_by_otc_offset['PT0S'] %></p>
-
-<h3>Some variables and time parsing is in partial debugging</h3>
-<h4>Time and Date General</h4>
-<p>Time.current: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.current %> (recommended?)</p>
-<p>Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.now %>. <strong>Shows local time and zone as number</strong>. </p>
-<p>Time.now.to_datetime: <%= Time.now.to_datetime %>. <strong>Shows local time and zone as number.</strong></p>
-<p>Time.now.localtime: <%= Time.now.localtime %>. <strong>Shows local time and zone as number.</strong><br>
-<p>Time.zone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone %>. <strong>UTC</strong> 0 in -8 or Heroku</p>
-<p>Time.zone.now:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone.now %>. <strong>Same</strong> in -8 or Heroku-UTC</p>
-<p>Time.zone.now.to_datetime <%= Time.zone.now.to_datetime %>. <strong>UTC</strong> at both. See <%= link_to "DateTime current-Rails", "https://api.rubyonrails.org/classes/DateTime.html#method-c-current" %></p>
-<p>Time.zone.now.inspect:    <%= Time.zone.now.inspect %>. <strong>UTC</strong> at both.</p>
-<p>ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier: <%= ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier %>. <strong>UTC</strong></p>
-
-<h5>Time in specific zone. And works as expected, irrespective of server</h5>
-<p>Time.now.in_time_zone("America/Los_Angeles"): <%= Time.now.in_time_zone("America/Los_Angeles") %><br>
-<p>Time.now(in: "-08:00"): <%= Time.now(in: "-08:00") %>.
-<p>Time.now(in: "-00:00"): <%= Time.now(in: "-00:00") %>.  <!-- undefined local variable or method `zone' Supposed to be an option in Ruby 3.1, does Rails not know this. --></p>
-<p>ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier: <%= ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier %>. Etc/UTC probably everywhere</p>
-<p>Many of the above are UTC even on localhost in "America/Los_Angeles"</p>
-
 <h4>Related to last_record since used as the reference for daily graphs</h4>
-<p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %><p>
-<p>last_record_1_day_ago <%= last_record-1.day %>. Was trying to use as starting and end point. Why? Makes no sense now. Needs to be a midnigh thing</p>
-<p>last_record_zone = BloodPressure.order('statdate asc').last.statzone: <%= last_record_zone = BloodPressure.order('statdate asc').last.statzone %>. Since recorded as integer</p>
+<p>&#10062; &#(100<strong>62</strong>): same on both localhost and server. &#10060; &#(100<strong>60</strong>); : Not same</p>
+<p>&#10062; last_record: <strong><%= last_record = BloodPressure.order('statdate asc').last.statdate %></strong>. This is correct and the same on localhost and server.<em>Bolded because important reference to use for debugging.</em><p>
+  <p class="fw-bold">Note that time zone is not shown with last record, but statdate does have timezone in PG</p>
+<p>&#10060; last_record_zone = BloodPressure.order('statdate asc').last.statzone: <%= last_record_zone = BloodPressure.order('statdate asc').last.statzone %>. 8 localhost. 0 server. </p>
 <!-- Prefer "America/Los_Angeles" other go pot luck. Other zones may have different daylight saving -->
 <p>last_record.utc_offset: <%= last_record.utc_offset %>. >>  0 NOT </p>
 <!-- <p>CCCC<%#= last_record_zone_name = pg_timezone_names.where(name: "America/Los_Angeles") %></p> -->
 <!-- <p>ActiveSupport::TimeZone.find_tzinfo(last_record.zone.name).identifier: <%#= ActiveSupport::TimeZone.find_tzinfo(last_record_zone).identifier %>. </p> -->
-<p>last_record.in_time_zone(last_record_zone):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <%= last_record.in_time_zone("America/Los_Angeles") %>.  Same on both of course. Zone as text.</p>
-<p>last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>.  </p>
-<p>last_record-8.hour : <%= last_record-8.hour %>. This is just taking 8 hours off UTC. </p>
+<p>&#10062; last_record.in_time_zone(last_record_zone):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <%= last_record.in_time_zone("America/Los_Angeles") %>.  Same on both of course. Zone as text.</p>
+<p>&#10062; last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>.  </p>
+<p>&#10062; last_record-8.hour : <%= last_record-8.hour %>. This is just taking 8 hours off UTC. </p>
 
 <p><%= timeZone =BloodPressure.order('statdate asc').last.statzone %></p>
 <p><%= last_record_zone = BloodPressure.order('statdate asc').last.statzone  %></p>
@@ -51,12 +19,14 @@
 <p>From referring page <%= @last_record %> doesn't work.</p>
   <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
 <% zoneLastRecord = BloodPressure.order('statdate asc').last.statzone %>
-<p>last_record_1_day_ago = last_record+zoneLastRecord.hour-1.day: <%= last_record-zoneLastRecord.hour-1.day %></p>
-<p>zoneLastRecord for last_record: <%= zoneLastRecord = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
-<p><% zoneLastRecordNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
-<p>3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %><br>
-<p>last_record: <%= last_record %>. Just repeating what's above<br>
-<p><strong>last_record</strong>.zone: <%= last_record.zone %><br>
+<p>&#10060; last_record+zoneLastRecord.hour-1.day: <%= last_record-zoneLastRecord.hour-1.day %>. A mess, 16 hours before on localhost</p>
+<p>         last_record_1_day_ago = last_record-1.day <%= last_record-1.day %>. Was trying to use as starting and end point. Why? Makes no sense now. Needs to be a midnight thing</p>
+
+<p>&#10060; zoneLastRecord for last_record: <%= zoneLastRecord = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %> -8 localhost, 0 on server. So math is wrong</p>
+<p>zoneLastRecordNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i <% zoneLastRecordNeg = -last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %></p>
+<p>&#10060; 3. last_record.localtime.formatted_offset: <%= last_record.localtime.formatted_offset(false) %>. Similar to a couple of lines above<br>
+<p>&#10060; last_record: <%= last_record %>. Just repeating what's above<br>
+<p>&#10060; <strong>last_record</strong>.zone: <%= last_record.zone %>. PST localhost. UTC on server</p>
 <!-- <p>last_record.zone: <%#= zone(last_record) %><br> -->
 <p>last_record: <%= last_record = BloodPressure.order('statdate asc').last.statdate %>. Getting value again<p>
 <p>last_record: <%= last_record %>. Just repeating what's directly above<br>
@@ -72,18 +42,20 @@
   <p>last_record.hour - zoneLastRecord: <%= last_record.hour-zoneLastRecord %></p>
   
 <h5><strong>Midnight</strong>. Need in UTC. E.g. if data a 8:30 PST, need 08:00 for that day, i.e. 8:30 before</h5>
+<p class="fw-bold">For reference.  last_record:  <%= last_record %></p>
 
-<p> Midnight (last_record.beginning_of_day+zoneLastRecord)   :  <%= last_record.beginning_of_day+zoneLastRecord %>. UTC on both and rounding error problems</p>
-<p>last_record_zone_seconds = last_record_zone*3600: <%= last_record_zone_seconds = last_record_zone*3600 %></p>
-<p>last_record + last_record_zone_seconds : <%= last_record + last_record_zone_seconds %>. Now need to subtract hMS</p>
-<p><strong>last_record_midnight = last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec): </strong> : <%= last_record_midnight = last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec) %>. </p>
-<h4>previous midnight</h4>
-<p>last_record_midnight-1.day: <%= last_record_midnight-1.day %> </p>
+<p>&#10062; Midnight (last_record.beginning_of_day+zoneLastRecord)   :  <%= last_record.beginning_of_day+zoneLastRecord %>. &#10062; UTC on both and &#10060; rounding error problems on localhost</p>
 
 
 <br>
-<h5>None of the following works for Midnight. </h5>
-<p>4.<strong> Midnight (last_record.beginning_of_day)</strong>     :  <%= last_record.beginning_of_day %>. UTC on both</p>
+<h5>None of the following works for Midnight.  </h5>
+<p>Midnight for a datetime in PST will be the local datetime minus the time. For example, midnight for 13:30 PST will be (00 PST or) 08:00 UST that day</p>
+<p>&#10060; last_record_zone_seconds = last_record_zone*3600: <%= last_record_zone_seconds = last_record_zone*3600 %></p>
+<p>&#10060; last_record + last_record_zone_seconds : <%= last_record + last_record_zone_seconds %>. Now need to subtract hMS</p>
+<p><strong>&#10060; last_record_midnight = last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec): </strong> : <%= last_record_midnight = last_record + last_record_zone_seconds - (last_record.min*60) - (last_record.sec) %>. Only going back to the top of the hour, not midnightÅ </p>
+<h4>previous midnight</h4>
+<p>&#10060; last_record_midnight-1.day: <%= last_record_midnight-1.day %> </p>
+<p>&#10060; Midnight (last_record.beginning_of_day)    :  <%= last_record.beginning_of_day %>. UTC 00:00 on both. Not correct</p>
 <p>midnight: <% midnight = last_record.beginning_of_day - zoneLastRecord.hour %></p>
 <p>5. Midnight UTC?: <%= midnight %><br>
   <h5>Midnight days before</p>
@@ -148,4 +120,37 @@ last_record_7_day_ago = last_record-zoneLastRecord.hour-7.day:  <%= last_record-
  span32 = begin_3_day_ago..begin_2_day_ago %>          : <%= span32 = begin_3_day_ago..begin_2_day_ago %>                        <br>
  span43 = begin_4_day_ago..begin_3_day_ago %>          : <%= span43 = begin_4_day_ago..begin_3_day_ago %>                        <br>
  span54 = begin_5_day_ago..begin_4_day_ago %>          : <%= span54 = begin_5_day_ago..begin_4_day_ago %>                        <br>
- span65 = begin_6_day_ago..begin_5_day_ago %>          : <%= span65 = begin_6_day_ago..begin_5_day_ago %>                        <br>
+ span65 = begin_6_day_ago..begin_5_day_ago %>          : <%= span65 = begin_6_day_ago..begin_5_day_ago %>                        <br><h3>SQL in Rails</h3>
+<% sql = "select * from pg_timezone_names" %>
+<%# sql = "SELECT name FROM pg_timezone_names WHERE utc_offset = '-08:00:00';" %>
+<% pg_timezone_names = ActiveRecord::Base.connection.execute(sql).to_a %> <!-- an object originally, but changed to an array -->
+<p><%= "pg_timezone_names.class: #{pg_timezone_names.class}" %></p> <!-- >> PG::Result, now array -->
+<p><%= "pg_timezone_names[1]:  #{pg_timezone_names[1]}" %></p> 
+<!-- <p><%#= "pg_timezone_names:  #{pg_timezone_names}" %></p> --> <!-- A long list. An array of arrays? -->
+<p><%= "pg_timezone_names[135]:  #{pg_timezone_names[135]}" %></p>
+<p>pg_timezone_names.find { |h| h['utc_offset'] == 'PT0S' }['name'] : <%=  pg_timezone_names.find { |h| h['utc_offset'] == 'PT0S' }['name'] %></p>
+
+<h5>To save resources—getting different answer. 54 PT0S, so order matters</h5>
+<% name_by_otc_offset= Hash[pg_timezone_names.map { |h| h.values_at('utc_offset', 'name') }] %>
+<p>name_by_otc_offset['PT0S']: <%= name_by_otc_offset['PT0S'] %></p>
+
+<h3>Some variables and time parsing is in partial debugging</h3>
+<h4>Time and Date General</h4>
+<p>Time.current: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.current %> (recommended?)</p>
+<p>Time.now: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= Time.now %>. <strong>Shows local time and zone as number</strong>. </p>
+<p>Time.now.to_datetime: <%= Time.now.to_datetime %>. <strong>Shows local time and zone as number.</strong></p>
+<p>Time.now.localtime: <%= Time.now.localtime %>. <strong>Shows local time and zone as number.</strong><br>
+<p>Time.zone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone %>. <strong>UTC</strong> 0 in -8 or Heroku</p>
+<p>Time.zone.now:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%= Time.zone.now %>. <strong>Same</strong> in -8 or Heroku-UTC</p>
+<p>Time.zone.now.to_datetime <%= Time.zone.now.to_datetime %>. <strong>UTC</strong> at both. See <%= link_to "DateTime current-Rails", "https://api.rubyonrails.org/classes/DateTime.html#method-c-current" %></p>
+<p>Time.zone.now.inspect:    <%= Time.zone.now.inspect %>. <strong>UTC</strong> at both.</p>
+<p>ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier: <%= ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier %>. <strong>UTC</strong></p>
+
+<h5>Time in specific zone. And works as expected, irrespective of server</h5>
+<p>Time.now.in_time_zone("America/Los_Angeles"): <%= Time.now.in_time_zone("America/Los_Angeles") %><br>
+<p>Time.now(in: "-08:00"): <%= Time.now(in: "-08:00") %>.
+<p>Time.now(in: "-00:00"): <%= Time.now(in: "-00:00") %>.  <!-- undefined local variable or method `zone' Supposed to be an option in Ruby 3.1, does Rails not know this. --></p>
+<p>ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier: <%= ActiveSupport::TimeZone.find_tzinfo(Time.zone.name).identifier %>. Etc/UTC probably everywhere</p>
+<p>Many of the above are UTC even on localhost in "America/Los_Angeles"</p>
+
+
