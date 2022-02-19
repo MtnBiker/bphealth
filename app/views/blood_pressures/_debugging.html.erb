@@ -5,7 +5,7 @@
   <p class="fw-bold">Note that time zone is not shown with last record, but statdate does have timezone in PG</p>
 <p>&#10060; last_record_zone = BloodPressure.order('statdate asc').last.statzone: <%= last_record_zone = BloodPressure.order('statdate asc').last.statzone %>. 8 localhost. 0 server. </p>
 <!-- Prefer "America/Los_Angeles" other go pot luck. Other zones may have different daylight saving -->
-<p>last_record.utc_offset: <%= last_record.utc_offset %>. >>  0 NOT </p>
+<p>&#10060; last_record.utc_offset: <%= last_record.utc_offset %>.  0 on both and not doing what would be expected from the name of the method </p>
 <!-- <p>CCCC<%#= last_record_zone_name = pg_timezone_names.where(name: "America/Los_Angeles") %></p> -->
 <!-- <p>ActiveSupport::TimeZone.find_tzinfo(last_record.zone.name).identifier: <%#= ActiveSupport::TimeZone.find_tzinfo(last_record_zone).identifier %>. </p> -->
 <p>&#10060; last_record.in_time_zone(last_record_zone):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <%= last_record.in_time_zone(last_record_zone) %>.  No. Not using the zone which isn't surprising since `last_record_zone` above is wrong.</p>
