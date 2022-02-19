@@ -1,14 +1,14 @@
 <h4>Related to last_record since used as the reference for daily graphs</h4>
 <p>&#10062; &#(100<strong>62</strong>): same on both localhost and server. &#10060; &#(100<strong>60</strong>); : Not same</p>
 
-<p>&#10062; last_record: <strong><%= last_record = BloodPressure.order('statdate asc').last.statdate %></strong>. This is correct and the same on localhost and server.<em>Bolded because important reference to use for debugging.</em><p>
+<p>&#10062; last_record: <strong><%= last_record = BloodPressure.order('statdate asc').last.statdate %></strong>. This is correct and the same on localhost and server. <em>Bolded because used as reference for debugging.</em><p>
   <p class="fw-bold">Note that time zone is not shown with last record, but statdate does have timezone in PG</p>
 <p>&#10060; last_record_zone = BloodPressure.order('statdate asc').last.statzone: <%= last_record_zone = BloodPressure.order('statdate asc').last.statzone %>. 8 localhost. 0 server. </p>
 <!-- Prefer "America/Los_Angeles" other go pot luck. Other zones may have different daylight saving -->
 <p>last_record.utc_offset: <%= last_record.utc_offset %>. >>  0 NOT </p>
 <!-- <p>CCCC<%#= last_record_zone_name = pg_timezone_names.where(name: "America/Los_Angeles") %></p> -->
 <!-- <p>ActiveSupport::TimeZone.find_tzinfo(last_record.zone.name).identifier: <%#= ActiveSupport::TimeZone.find_tzinfo(last_record_zone).identifier %>. </p> -->
-<p>&#10062; last_record.in_time_zone(last_record_zone):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <%= last_record.in_time_zone(last_record_zone) %>.  Same on both of course. Zone as text.</p>
+<p>&#10060; last_record.in_time_zone(last_record_zone):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <%= last_record.in_time_zone(last_record_zone) %>.  No. Not using the zone which isn't surprising since `last_record_zone` above is wrong.</p>
 <p>&#10062; last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>. Works, but is manually entered </p>
 <p>&#10062; last_record-8.hour : <%= last_record-8.hour %>. This is just taking 8 hours off UTC. </p>
 
