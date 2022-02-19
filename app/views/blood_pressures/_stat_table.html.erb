@@ -15,6 +15,7 @@
         <!-- <th scope="col" class="col-md-1">Weight</th> -->
         <th scope="col" class="col-lg-3">Comment</th>
         <th scope="col" class="col-lg-2" colspan="2"></th>
+        <td>Debugging</td>
       </tr>
     </thead>
 
@@ -59,6 +60,7 @@
             <!-- <td><%#= link_to 'Edit comment', edit_blood_pressure_path(stat), "data-controller": "turbo" %></td> Shows modal, but doesn't add info -->
             <td><%= link_to 'Edit comment', edit_blood_pressure_path(stat) %></td>
             <td><%= link_to 'Delete this record', stat, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td>timeZone: <%= timeZone %></td>
           </tr>
       <% end %>
     </tbody>
