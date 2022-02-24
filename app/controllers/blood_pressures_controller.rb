@@ -109,31 +109,31 @@ class BloodPressuresController < ApplicationController
       end
     end
   end
- 
+
   # Called second by ConvertXML
   def parse_xml(path)
+    puts "#{lineNum}. Entered parse_xml and will gather Records with Nokogiri"
     document = File.open(path) { |f| Nokogiri::XML(f) }
     # Couldn't get variable to work with the following, so put in the info directly
-    systolic_records =   document.xpath("//Record[contains(@type,'HKQuantityTypeIdentifierBloodPressureSystolic')]").map(&:to_h)
+    # systolic_records = document.xpath("//Record[contains(@type,'HKQuantityTypeIdentifierBloodPressureSystolic')]", "//Record//MetadataEntry[contains(@key,'HKTimeZone')]").map(&:to_h) # same with or without part after comma
+    systolic_records = document.xpath("//Record[contains(@type,'HKQuantityTypeIdentifierBloodPressureSystolic')]").map(&:to_h)
+    puts "#{lineNum}. systolic_records: #{systolic_records}"
+    # Can  also get the value from: <MetadataEntry key="HKTimeZone" value="America/Los_Angeles"/>  Need to incorporate this into systolic records
+    # The following just stalls out. Some jS errors that don't make sense, i.e, too deep into . .map same stall
     diastolic_records =  document.xpath("//Record[contains(@type,'HKQuantityTypeIdentifierBloodPressureDiastolic')]").map(&:to_h)
     resting_hr_records = document.xpath("//Record[contains(@type,'HKQuantityTypeIdentifierRestingHeartRate')]").map(&:to_h)
     hr_records =         document.xpath("//Record[contains(@type,'HKQuantityTypeIdentifierHeartRate')]").map(&:to_h)
+    # time_zone_records =  document.xpath("//Record//MetadataEntry[contains(@key,'HKTimeZone')]").map(&:to_h)
+    # puts "#{lineNum}. time_zone_records: #{time_zone_records}" # {"key"=>"HKTimeZone", "value"=>"America/Los_Angeles"},  needs start_date. All the same.
 
     [systolic_records, diastolic_records, resting_hr_records, hr_records]
   end
 
   # Called last by ConvertXML. parses the record file add data line by line. Unfortunately going through the entire record and existing are rejected
   def add_to_db(records)
-    count = 1 # only for puts debugging
     records.each do |record|
-      # puts "#{lineNum}. record: #{record}"
-      # puts "#{lineNum}. record.class: #{record.class}"
-      # puts "#{lineNum}:#{count}. statdate: #{record[3]}. systolic: #{record[0]}"
-      # count += 1
       # blood_pressure = BloodPressure.create(statdate: record.time, systolic: record.systolic, diastolic: record.diastolic, heartrate: record.hr, sourceName: record.sourceName, sourceVersion: record.sourceVersion)
-      blood_pressure = BloodPressure.create(statdate: record[3], systolic: record[0], diastolic: record[1], heartrate: record[2], statzone: record[4], zonename: record[5]) #, sourceName: record.sourceName, sourceVersion: record.sourceVersion)
-      # puts "#{lineNum}. BloodPressure: #{blood_pressure}" # obj
-      # puts "/lib/tasks/import.rake:#{lineNum}. record.time: #{record.time} after adding to database?"
+      blood_pressure = BloodPressure.create(statdate: record[3], systolic: record[0], diastolic: record[1], heartrate: record[2], statzone: record[4], zonename: record[5])
     end
   end
 
@@ -147,6 +147,7 @@ class BloodPressuresController < ApplicationController
 
 # Called fourth by ConvertXML
   def join_records(systolic_records, diastolic_records, resting_hr_records, hr_records)
+    puts "#{lineNum}. systolic_records: #{systolic_records}"
     countRecords = 0
     accu = []
     records = systolic_records.each_with_object([]) do |record|
@@ -158,20 +159,20 @@ class BloodPressuresController < ApplicationController
       statzone = startDate.localtime.formatted_offset(false).slice!(0, 3).to_i
       # Need to lookup based on statzone and DST or not?      
       zonename = zone_name(startDate, statzone)
-      puts "#{lineNum}. startDate: #{startDate}. statzone: #{statzone}"
-      pair = find_matching_value(startDate, diastolic_records)
+      # puts "#{lineNum}. startDate: #{startDate}. statzone: #{statzone}" # [{"type"=>"HKQuantityTypeIdentifierBloodPressureSystolic", "sourceName"=>"Health", "sourceVersion"=>"9.0.2", "unit"=>"mmHg", "creationDate"=>"2015-10-19 09:47:23 -0800", "startDate"=>"2015-10-19 09:47:00 -0800", "endDate"=>"2015-10-19 09:47:00 -0800", "value"=>"128"},
+      dias = find_matching_value(startDate, diastolic_records)
       rhr =  find_matching_value(startDate, resting_hr_records)
       hr =   find_matching_value(startDate, hr_records)
       if hr.to_i < rhr.to_i
         hr = rhr
       end
-      sys = record['value']
-      # puts "#{lineNum}. sys: #{sys}. dia: #{pair}. hr: #{hr}.  startDate: #{startDate}"
+      sys = record['value'] # note working through systolic_records
+      # puts "#{lineNum}. sys: #{sys}. dia: #{dias}. hr: #{hr}.  startDate: #{startDate}"
       # 151. startDate: 2015-10-19T09:47:00-08:00, dia: 64. hr: . record: {"type"=>"HKQuantityTypeIdentifierBloodPressureSystolic", "sourceName"=>"Health", "sourceVersion"=>"9.0.2", "unit"=>"mmHg", "creationDate"=>"2015-10-19 09:47:23 -0800", "startDate"=>"2015-10-19 09:47:00 -0800", "endDate"=>"2015-10-19 09:47:00-0800", "value"=>"128"}
       # Do I need a hash that looks like  [["statdate", "2021-11-16 16:35:30"], ["hr", 75], ["systolic", 136], ["diastolic", 70]] and forget the accu. NO add_to_db does that
-      accu << [sys, pair, hr, startDate, statzone, zonename]
+      accu << [sys, dias, hr, startDate, statzone, zonename]
       # puts "#{lineNum}. accu: #{accu}"
-      # accu << (record['value'], pair, hr, record['startDate']) # leave startDate as string?
+      # accu << (record['value'], dias, hr, record['startDate']) # leave startDate as string?
     end
     puts "#{lineNum}. accu.last (accu.count: #{accu.count}): #{accu.last}" # All of accu: [[ … , ["132", "68", "53", Sun, 14 Nov 2021 09:02:23 -0800], ["153", "80", "51", Mon, 15 Nov 2021 07:31:42 -0800], ["128", "66", "60", Mon, 15 Nov 2021 17:03:23 -0800], ["136", "70", "51", Tue, 16 Nov 2021 08:35:30 -0800]]
     # puts "#{lineNum}. countRecords]: #{countRecords}. accu[countRecords]: #{accu[countRecords]}"
@@ -191,6 +192,7 @@ class BloodPressuresController < ApplicationController
 
   # Runs this first
   def convert_xml(input_path)
+    puts "#{lineNum}. Have entered convert_xml and will enter parse_xml"
     systolic_records, diastolic_records, resting_hr_records, hr_records = parse_xml(input_path) # 2
     records = join_records(systolic_records, diastolic_records, resting_hr_records, hr_records) # 3
     # puts "#{lineNum}. records: #{records}" # one record   #<Record:0x00007f9f1c1cbfc0 @systolic="141", @diastolic="62", @hr="50", @time="2021-09-26 07:40:22 -0700">
