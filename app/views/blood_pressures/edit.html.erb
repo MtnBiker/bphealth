@@ -1,7 +1,12 @@
 <div class="m-3">
   <h1>Edit blood stat</h1>
-
+<!-- Before Turbo -->
   <%= render "comment", blood_pressure: @blood_pressure %>
+
+<!-- First trial of Turbo, but this has much wrong -->
+  <%#= turbo_frame_tag "stats" do %>
+   <%#= render "edit", blood_pressure: @blood_pressure %>
+  <%# end %>
 
   <br>
 
