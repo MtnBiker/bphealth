@@ -21,28 +21,14 @@
 
     <tbody>
       <% @blood_pressures.each do |stat| %>
+        <%= turbo_frame_tag stat.id do %> <!-- Ending up at the top level of the table -->
           <tr>
-            <!-- <td class="text-end"><%= stat.id %></th> -->
-            <!-- <%#= stat.statdate.strftime("%a %-m %b %Y  %_I:%M %P")  %> -m gives wrong number -->
-            <!-- <%#= stat.statdate.strftime("%c") %> Mon Oct 19 17:47:23 2015 This works -->
-            <!-- %u - Day of the week (Monday is 1, 1..7) Started with Sunday, but Monday is easier for me
-            %w - Day of the week (Sunday is 0, 0..6) -->
-            <!-- <%#= time_length = Time.now.to_s.length %> always 25 -->
-            <%# offset= -Time.now.to_s[20..22].to_i %> <!-- Grabbing time zone offset. Note minus sign, don't thing hours ago takes negative. Not used. Changed to .localtime which should be better-->
-
-             <!-- Was late Jan
-            <td class="text-end background-color-day-<%#= stat.statdate.localtime.strftime("%u") %>"> <%#= stat.statdate.localtime.strftime("%a %d %b %Y") %></td>
-            <td class="text-start"> <%= stat.statdate.localtime.strftime("%_l:%M %P") %></td>  -->
-               
-               <!-- statzone needs to be in text style and in zone of data which isn't necessarily the server -->
-               <!-- This needs to be done when statzone or its word equivalent is written -->
-               <!-- Not very robust, can statzone be determined with a decent name? This is done in the controller I think -->
-            <%
-              timeZone = case stat.statzone
-                when -8 then "America/Los_Angeles"
-                when -7 then "America/Los_Angeles"
-              end
-            %>
+              <%
+                timeZone = case stat.statzone
+                  when -8 then "America/Los_Angeles"
+                  when -7 then "America/Los_Angeles"
+                end
+              %>
             <!-- The date and Setting the color background to denote days of the week -->
             <td class="text-end <%= systolic_icon_level(stat.systolic) %> background-color-day-<%= stat.statdate.in_time_zone(timeZone).strftime("%u") %> ">
               <%= stat.statdate.in_time_zone(timeZone).strftime("%a %d %b %Y") %>
@@ -52,15 +38,12 @@
             <td class="text-end <%= systolic_icon_level(stat.systolic) %> <%= systolic_text_color(stat.systolic) %> "> <%= stat.systolic %> / </td> <!-- /helpers/blood_pressures_helper.rb -->
             <td class="text-start">  <%= stat.diastolic %></td>
             <td class="text-center"> <%= stat.heartrate %></td>
-            <!-- <#% if stat.stattime? %>
-             <td class="text-center"> <%#= stat.stattime.localtime.strftime("%_l:%M %P") %></td>
-            <%# end %> -->
-            <!-- <td class="text-center"> <%#= stat.weight %></td> -->
             <td><%= link_to edit_blood_pressure_path(stat) do %><%= stat.comment %><% end %></td>
             <td><%= link_to 'Edit comment', edit_blood_pressure_path(stat) %></td>
             <td><%= link_to 'Delete this record', stat, method: :delete, data: { confirm: 'Are you sure?' } %></td>
             <td>timeZone: <%= timeZone %></td>
           </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
