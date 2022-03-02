@@ -1,0 +1,17 @@
+<!-- Cut and paste trial for turbo -->
+<%= turbo_frame_tag blood_pressure do %>
+  <div class="blood_pressure">
+    <%= link_to blood_pressure.name,
+                blood_pressure_path(blood_pressure),
+                data: { turbo_frame: "_top" } %>
+    <div class="blood_pressure__actions">
+      <%= button_to "Delete",
+                    blood_pressure_path(blood_pressure),
+                    method: :delete,
+                    class: "btn btn--light" %>
+      <%= link_to "Edit",
+                  edit_blood_pressure_path(blood_pressure),
+                  class: "btn btn--light" %>
+    </div>
+  </div>
+<% end %>
