@@ -25,6 +25,7 @@
       <thead>
         <tr>
           <th class="text-center col-3">Date & Time</th>
+          <th>Day</th>
           <th class="col-2">Systolic/Diastolic</th>
           <th class="col">HR</th>
           <th class="col">Comment</th>
@@ -38,21 +39,20 @@
             when -7 then "America/Los_Angeles"
           end
         %>
-        
+<!-- Creating a series of vertical lines, one for each number of the day of the week, so can interpret table easier -->
+        <% day_num = blood_pressure.statdate.in_time_zone(timeZone).strftime("%u").to_i 
+          vert_lines = ""
+          char = "|" 
+          n = 0
+        %>
+        <%  while n < day_num
+          vert_lines << char
+          n += 1
+        end %>
+       
             <tr>
-              <td class="text-end"><%= blood_pressure.statdate.localtime.strftime("%d %b %Y %_l:%M%P") %>
-<!-- Trying to put a vertical lines according to number of week. Better if was just fatter. Even better if could set width of svg element equal to day_num or 2x or wider -->
-                <% day_num = blood_pressure.statdate.in_time_zone(timeZone).strftime("%u").to_i %>
-                <% day_line_width = day_num * 3 %>
-                
-                <% n = 0 %>
-                <%  while n < day_num
-                     puts "#{svg 'line_vert'}"
-                     puts "#{day_num}"
-                     n += 1
-                   end %>
-                
-                 </td> <!-- .strftime("%_l:%M %P") or ("%H:%M")-->
+              <td class="text-center"><%= blood_pressure.statdate.localtime.strftime("%d %b %Y %_l:%M%P") %></td> <!-- .strftime("%_l:%M %P") or ("%H:%M")-->
+              <td class="text-center"><%= vert_lines %></td>
               <td class="<%= systolic_icon_level(blood_pressure.systolic) %> <%= systolic_text_color(blood_pressure.systolic) %>"><%= blood_pressure.systolic %> / <%= blood_pressure.diastolic %></td>
               
               <td><%= blood_pressure.heartrate %></td>
