@@ -39,23 +39,12 @@
             when -7 then "America/Los_Angeles"
           end
         %>
-        <!-- Creating a series of vertical lines, one for each number of the day of the week, so can interpret table easier -->
-        <% day_num = blood_pressure.statdate.in_time_zone(timeZone).strftime("%u").to_i
-          vert_lines = ""
-          char = "|"
-          n = 0
-        %>
-        <%  while n < day_num
-          if n == 5
-            vert_lines << "." # A marker for weekend and to make later in the week easier to interpret. Wanted to use a space but caused a line break
-          end
-          vert_lines << char
-          n += 1
-        end %>
+        <!-- Creating a series of vertical lines, one for each number of the day of the week, so can interpret table easier vert_lines is a helper method-->
+        <% day_num = blood_pressure.statdate.in_time_zone(timeZone).strftime("%u").to_i %>
 
             <tr>
               <td class="text-end"><%= blood_pressure.statdate.localtime.strftime("%d %b %Y %_l:%M%P") %></td> <!-- .strftime("%_l:%M %P") or ("%H:%M")-->
-              <td class="text-center">&nbsp;&nbsp;&nbsp;<%= vert_lines %>&nbsp;&nbsp;&nbsp;</td>
+              <td class="text-center">&nbsp;&nbsp;&nbsp;<%= vert_lines(day_num) %>&nbsp;&nbsp;&nbsp;</td>
               <td class="<%= systolic_icon_level(blood_pressure.systolic) %> <%= systolic_text_color(blood_pressure.systolic) %>"><%= blood_pressure.systolic %> / <%= blood_pressure.diastolic %></td>
               
               <td><%= blood_pressure.heartrate %></td>

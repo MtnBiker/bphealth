@@ -32,12 +32,14 @@
                   when -7 then "America/Los_Angeles"
                 end
               %>
+             <% day_num = blood_pressure.statdate.in_time_zone(timeZone).strftime("%u").to_i %>
             <!-- The date and Setting the color background to denote days of the week -->
             <td class="text-end <%= systolic_icon_level(blood_pressure.systolic) %> background-color-day-<%= blood_pressure.statdate.in_time_zone(timeZone).strftime("%u") %> ">
               <%= blood_pressure.statdate.in_time_zone(timeZone).strftime("%a %d %b %Y") %>
             </td>
             <!-- The Time -->
             <td class="text-start"> <%= blood_pressure.statdate.in_time_zone(timeZone).strftime("%_l:%M %P") %></td>
+            <!-- <td><%#= vert_lines(day_num) %></td> -->
             <td class="text-end <%= systolic_icon_level(blood_pressure.systolic) %> <%= systolic_text_color(blood_pressure.systolic) %> "> <%= blood_pressure.systolic %> / </td> <!-- /helpers/blood_pressures_helper.rb -->
             <td class="text-start">  <%= blood_pressure.diastolic %></td>
             <td class="text-center"> <%= blood_pressure.heartrate %></td>
