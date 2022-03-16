@@ -1,0 +1,7 @@
+<svg id="chart" width="2" height="12">
+  <line x="0" y1="0" x2="0" y2="12" 
+  style="
+    stroke:black;
+    stroke-width:1" 
+  />
+</svg>

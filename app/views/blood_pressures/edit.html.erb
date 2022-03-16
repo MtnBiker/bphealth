@@ -1,17 +1,27 @@
+<!-- Before Turbo -->
 <div class="m-3">
   <h1>Edit blood stat</h1>
-<!-- Before Turbo -->
   <%= render "comment", blood_pressure: @blood_pressure %>
-
-<!-- First trial of Turbo, but this has much wrong -->
-  <%#= turbo_frame_tag "stats" do %>
-   <%#= render "edit", blood_pressure: @blood_pressure %>
-  <%# end %>
-
   <br>
 
   <div>
-    <%#= link_to "Show this blood stat", @blood_pressure %>
     <%= link_to "Back to blood stats", blood_pressures_path %>
   </div>
+</div>
+
+Above works, below redirects to the wrong place
+
+<!-- With some Turbo but not rendering correctly -->
+<div class="m-3">
+  <h1>Edit blood stat</h1>
+  <%= turbo_frame_tag @blood_pressure do %>
+    <%= form_with(model: @blood_pressure) do |form| %>
+      <div class="inline-field">
+       <%= render "comment", blood_pressure: @blood_pressure %>
+      </div>
+      <!-- <div class="actions">
+        <%#= form.submit %> This is in the render except that redirect isn't working righ
+      </div> -->
+    <% end %>
+  <% end %>
 </div>

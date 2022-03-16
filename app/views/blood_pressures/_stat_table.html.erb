@@ -6,7 +6,7 @@
         <!-- Col widths go in the th -->
         <!--Not sure what scope is about -->
         <!-- <th scope="col" class="col-sm-1 text-end">ID</th> -->
-        <th scope="col" class="text-center col-lg-2" colspan="2"><i class="bi bi-emoji-smile">Date</th>
+        <th scope="col" class="text-center col-lg-2" colspan="2">Date</th>
         </i>
          <th scope="col" class="text-end col-lg-1">Systolic /</th><!-- text-uppercase is to see if bootstrap is working -->
         <th scope="col" class="text-start col-lg-1">Diastolic</th>
@@ -20,9 +20,11 @@
     </thead>
 
 
+
+
     <tbody>
       <% @blood_pressures.each do |blood_pressure| %>
-        <%= turbo_frame_tag blood_pressure.id do %> <!-- Ending up at the top level of the table -->
+        <%= turbo_frame_tag blood_pressure do %> <!-- Ending up at the top level of the table -->
           <tr>
               <%
                 timeZone = case blood_pressure.statzone
