@@ -43,7 +43,7 @@
 
 <!-- Previous 30 days -->
 <div class="text-center font-weight-bold">
-<%= line_chart BloodPressure.where(statdate: Time.now - 1.month..Time.now).pluck(:statdate, :systolic), title: "Previous 30 days", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %>
+  <%= line_chart BloodPressure.where(statdate: Time.now - 1.month..Time.now).pluck(:statdate, :systolic), title: "Previous 30 days", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %> <!-- , library: { tooltips: { enabled: true, label: :comment } } ignored -->
 </div>
 <hr class="py-1">
 
@@ -57,4 +57,26 @@
       headerFormat: '<b>{series.name}</b><br>',
       pointFormat: 'Time {point.x} , €{point.y} '
   }
+
+ tooltip: {
+        formatter: function () {
+            return 'The value for <b>' + this.x +
+                '</b> is <b>' + this.y + '</b>';
+        }
+    },
 https://api.highcharts.com/highcharts/tooltip.formatter -->
+
+<!-- More complex
+tooltip: {
+        formatter: function () {
+            // The first returned item is the header, subsequent items are the
+            // points
+            return ['<b>' + this.x + '</b>'].concat(
+                this.points ?
+                    this.points.map(function (point) {
+                        return point.series.name + ': ' + point.y + 'm';
+                    }) : []
+            );
+        },
+        split: true
+    }, -->

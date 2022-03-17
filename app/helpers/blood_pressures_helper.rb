@@ -13,7 +13,7 @@ module BloodPressuresHelper
       "text-secondary " # if this shows up something not working right
     end
   end # systolic_text_color
-  
+
   def systolic_icon_level (systolic)
     case systolic
     when 0..120
@@ -30,4 +30,18 @@ module BloodPressuresHelper
     end
   end # systolic_icon_level
 
+  def vert_lines (day_num)
+    vert_lines = ""
+    char = "|"
+    case day_num
+      when 0 then "|"
+      when 1 then "||"
+      when 2 then "||"
+      when 3 then "||||"
+      when 4 then "|||||"
+        # if put in blank, the line wraps, same for &nbsp;, hence the period
+      when 5 then "|||||.|"
+      when 6 then "|||||.||"
+    end
+  end
 end

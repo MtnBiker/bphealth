@@ -25,18 +25,30 @@
       <thead>
         <tr>
           <th class="text-center col-3">Date & Time</th>
+          <th>Day</th>
           <th class="col-2">Systolic/Diastolic</th>
           <th class="col">HR</th>
           <th class="col">Comment</th>
         </tr>
       </thead>
       <tbody>
-        <% @blood_pressures.each do |stat| %>
+        <% @blood_pressures.each do |blood_pressure| %>
+        <%
+          timeZone = case blood_pressure.statzone
+            when -8 then "America/Los_Angeles"
+            when -7 then "America/Los_Angeles"
+          end
+        %>
+        <!-- Creating a series of vertical lines, one for each number of the day of the week, so can interpret table easier vert_lines is a helper method-->
+        <% day_num = blood_pressure.statdate.in_time_zone(timeZone).strftime("%u").to_i %>
+
             <tr>
-              <td> <%= stat.statdate.localtime.strftime("%d %b %Y %_l:%M%P") %></td> <!-- .strftime("%_l:%M %P") or ("%H:%M")-->
-              <td class="<%= systolic_icon_level(stat.systolic) %> <%= systolic_text_color(stat.systolic) %>"> <%= stat.systolic %> / <%= stat.diastolic %></td>
-              <td><%= stat.heartrate %></td>
-              <td><%= stat.comment %></td>
+              <td class="text-end"><%= blood_pressure.statdate.localtime.strftime("%d %b %Y %_l:%M%P") %></td> <!-- .strftime("%_l:%M %P") or ("%H:%M")-->
+              <td class="text-center">&nbsp;&nbsp;&nbsp;<%= vert_lines(day_num) %>&nbsp;&nbsp;&nbsp;</td>
+              <td class="<%= systolic_icon_level(blood_pressure.systolic) %> <%= systolic_text_color(blood_pressure.systolic) %>"><%= blood_pressure.systolic %> / <%= blood_pressure.diastolic %></td>
+              
+              <td><%= blood_pressure.heartrate %></td>
+              <td><%= blood_pressure.comment %></td>
             </tr>
         <% end %>
       </tbody>

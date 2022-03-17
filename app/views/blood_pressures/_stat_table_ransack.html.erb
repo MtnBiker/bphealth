@@ -11,19 +11,21 @@
   </thead>
 
   <tbody>
-    <% @blood_pressures.each do |datetime| %>
-      <tr>
-        <!-- <td>< = datetime.id %></td> -->
-        <td><%= datetime.datetime %></td>
-        <td><%= datetime.systolic %></td>
-        <td><%= datetime.diastolic %></td>
-        <td><%= datetime.heartrate %></td>
-        <td class="text-start"> <%= stat.comment %></td>
+    <%= turbo_frame_tag "stats" do %>
+      <% @blood_pressures.each do |datetime| %>
+        <tr>
+          <!-- <td>< = datetime.id %></td> -->
+          <td><%= datetime.datetime %></td>
+          <td><%= datetime.systolic %></td>
+          <td><%= datetime.diastolic %></td>
+          <td><%= datetime.heartrate %></td>
+          <td class="text-start"> <%= stat.comment %></td>
         
-        <td><%= link_to 'Show details', datetime %></td>
-        <td><%= link_to 'Edit', edit_datetime_path(datetime) %></td>
-        <td><%= link_to 'Destroy', datetime, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+          <td><%= link_to 'Show details', datetime %></td>
+          <td><%= link_to 'Edit', edit_datetime_path(datetime) %></td>
+          <td><%= link_to 'Destroy', datetime, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
