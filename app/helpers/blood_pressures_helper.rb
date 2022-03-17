@@ -34,14 +34,14 @@ module BloodPressuresHelper
     vert_lines = ""
     char = "|"
     case day_num
-      when 0 then "|"
-      when 1 then "||"
+      when 1 then "|"
       when 2 then "||"
-      when 3 then "||||"
-      when 4 then "|||||"
-        # if put in blank, the line wraps, same for &nbsp;, hence the period
-      when 5 then "|||||.|"
-      when 6 then "|||||.||"
+      when 3 then "|||"
+      when 4 then "||||"
+      when 5 then "|||||"
+        # if put in blank, the line wraps, same for &nbsp;, hence the period. A slash through the five would be nice, but that would be graphics
+      when 6 then "|||||.|"
+      when 7 then "|||||.||" # Sunday is 7
     end
   end
 end
