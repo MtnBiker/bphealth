@@ -38,10 +38,11 @@ module BloodPressuresHelper
       when 2 then "||"
       when 3 then "|||"
       when 4 then "||||"
-      when 5 then "|||||"
-        # if put in blank, the line wraps, same for &nbsp;, hence the period. A slash through the five would be nice, but that would be graphics
-      when 6 then "|||||.|"
-      when 7 then "|||||.||" # Sunday is 7
+      when 5 then "卌" # An alternate, but not as good, ||̸||, and doesn't work with 6 or 7  since can't do a blank/space-see next line.
+        # if put in blank, the line wraps, same for &nbsp;, hence the period. Tally hash. Not quite, but is close enough.
+        # Also 𝍤 , but is too small
+      when 6 then "卌|"
+      when 7 then "卌||" # Sunday is 7
     end
   end
 end

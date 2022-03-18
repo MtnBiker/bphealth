@@ -1,0 +1,5 @@
+<!-- All >150 last say 90 days-->
+<div class="text-center font-weight-bold">
+  <%= line_chart BloodPressure.where(statdate: Time.now - 3.month..Time.now).pluck(:statdate, :systolic), title: "Systolic 150 or higher", ytitle: "Systolic", min: 100, max: 200, color: "#D9A1FF" %> <!-- , library: { tooltips: { enabled: true, label: :comment } } ignored -->
+</div>
+<hr class="py-1">

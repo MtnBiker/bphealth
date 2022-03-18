@@ -7,7 +7,7 @@ ruby "3.1.1"
 gem "rails", "~> 7.0.2"
 
 # Use postgresql as the database for Active Record
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.1" #, "~> 1.1" since pgsync was giving errors
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
