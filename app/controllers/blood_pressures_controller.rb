@@ -156,7 +156,7 @@ class BloodPressuresController < ApplicationController
       # But this is creating a csv which probably is a string.
       # `startDate="2022-01-27 09:05:43 -0800"` in xml and gets into database `2022-01-27 09:05:43-08`
       startDate = DateTime.parse(record['startDate']) # convert to type date and in find_matching_value use datetime comparisons
-      statzone = startDate.localtime.formatted_offset(false).slice!(0, 3).to_i
+      statzone = startDate.formatted_offset(false).slice!(0, 3).to_i
       # Need to lookup based on statzone and DST or not?      
       zonename = zone_name(startDate, statzone)
       # puts "#{lineNum}. startDate: #{startDate}. statzone: #{statzone}" # [{"type"=>"HKQuantityTypeIdentifierBloodPressureSystolic", "sourceName"=>"Health", "sourceVersion"=>"9.0.2", "unit"=>"mmHg", "creationDate"=>"2015-10-19 09:47:23 -0800", "startDate"=>"2015-10-19 09:47:00 -0800", "endDate"=>"2015-10-19 09:47:00 -0800", "value"=>"128"},
