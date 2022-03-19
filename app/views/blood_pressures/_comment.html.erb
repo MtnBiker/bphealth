@@ -13,14 +13,14 @@
       </div>
     <% end %>
 
-
-              <%
-                timeZone = case blood_pressure.statzone
-                  when -8 then "America/Los_Angeles"
-                  when -7 then "America/Los_Angeles"
-                  when  0 then "Europe/London"
-                end
-              %>
+<!-- Should be define in a helper or something since used elsewhere. And is there a better way to do this? I'm maintaining the name here. -->
+    <%
+      timeZone = case blood_pressure.statzone
+        when -8 then "America/Los_Angeles"
+        when -7 then "America/Los_Angeles"
+        when  0 then "Europe/London"
+      end
+    %>
 
     <!-- The following two divs supply extra information but is conflicted with modal which had other problems too.  -->
     <div class="field form-label" for="formControlReadonly">
