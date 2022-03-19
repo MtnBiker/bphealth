@@ -12,9 +12,9 @@ Step #1. Launch Health app on your iPhone.
 Step #2. Tap on your Profile Picture on the top right.
 Step #3. Tap on Export All Health Data → Export to somewhere on your hard drive.
 Step #4. Launch the app and click the button to select the downloaded export.zip file.
-Step #5. Click Import.
+Step #5. Click Import. (On free account at Heroku, creates an error so have to wait a bit (minute or so) for app to respond again)
 
-Rails 7.0.1
+Rails 7.0.2
 Ruby 3.1.0
 Postgres. Using a view, but that may be not necessary if use Rails 7 changes. Would require add stattime to main table. But this change would probably make it easier to use other databases.
 Sprockets, not Webpacker or Import Maps. 3 JavaScript handled by CDN in application.html.erb
@@ -24,8 +24,6 @@ Sprockets, not Webpacker or Import Maps. 3 JavaScript handled by CDN in applicat
 I'm using (Withings) Health Mate and getting data from Withings to iOS Health is flaky. I'm almost sure one has to open (Withings) Health Mate app to get data from the device to Health Mate on the iPhone. That seems to work fairly reliably. But getting from Health Mate to iOS Health is not reliably fast. Seconds to days.  Important to note because sometimes one goes through the steps and data is missing. It's because it hasn't gotten from Health Mate to Health.
 
 ## ToDo
-
-Fix export to Heroku !!!
 
 Make sure works on empty database for new set ups
 
