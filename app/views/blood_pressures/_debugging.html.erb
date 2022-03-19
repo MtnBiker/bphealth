@@ -3,7 +3,7 @@
 
 <p>&#10062; last_record: <strong><%= last_record = BloodPressure.order('statdate asc').last.statdate %></strong>. This is correct and the same on localhost and server. <em>Bolded because used as reference for debugging.</em><p>
   <p class="fw-bold">Note that time zone is not shown with last record, but statdate does have timezone in PG</p>
-<p>&#10060; last_record_zone = BloodPressure.order('statdate asc').last.statzone: <%= last_record_zone = BloodPressure.order('statdate asc').last.statzone %>. 8 localhost. 0 server. </p>
+<p>&#10060; last_record_zone = BloodPressure.order('statdate asc').last.statzone: <%= last_record_zone = BloodPressure.order('statdate asc').last.statzone %>. -8,-7 localhost. 0 server. <strong>In other words it's just the zone of the server as of Mar 2022—definition is wrong. Made a change 2022.03.18. Try</strong></p>
 <!-- Prefer "America/Los_Angeles" other go pot luck. Other zones may have different daylight saving -->
 <p>&#10060; last_record.utc_offset: <%= last_record.utc_offset %>.  0 on both and not doing what would be expected from the name of the method </p>
 <!-- <p>CCCC<%#= last_record_zone_name = pg_timezone_names.where(name: "America/Los_Angeles") %></p> -->
