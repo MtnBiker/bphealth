@@ -22,18 +22,19 @@
     <tbody>
       <% @blood_pressures.each do |blood_pressure| %>
         <%= turbo_frame_tag blood_pressure do %> <!-- Ending up at the top level of the table -->
-          <tr>
-              <%
+          <tr>            
+            <!-- Should be in a helper or something, but why do I need the crazy .in_time_zone(timeZone) work around? -->
+              <!-- <%
                 timeZone = case blood_pressure.statzone
                   when -8 then "America/Los_Angeles"
                   when -7 then "America/Los_Angeles"
                   when  0 then "Europe/London"
                 end
-              %>
-             <% day_num = blood_pressure.statdate.in_time_zone(timeZone).strftime("%u").to_i %>
+              %> -->
+             <% day_num = blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%u").to_i %>
             <!-- The date and Setting the color background to denote days of the week -->
             <td class="text-end <%= systolic_icon_level(blood_pressure.systolic) %> background-color-day-<%= blood_pressure.statdate.in_time_zone(timeZone).strftime("%u") %> ">
-              <%= blood_pressure.statdate.in_time_zone(timeZone).strftime("%a %d %b %Y") %>
+              <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%a %d %b %Y") %>
             </td>
             <!-- The Time -->
             <td class="text-start"> <%= blood_pressure.statdate.in_time_zone(timeZone).strftime("%_l:%M %P") %></td>
