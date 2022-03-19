@@ -15,7 +15,7 @@
 
     <!-- The following two divs supply extra information but is conflicted with modal which had other problems too.  -->
     <div class="field form-label" for="formControlReadonly">
-     <strong>At <%= blood_pressure.statdate.localtime.strftime("%a %d %b %Y %_I:%M %P")%></strong>
+     <strong>At <%= blood_pressure.statdate.strftime("%a %d %b %Y %_I:%M %P")%></strong>
     </div>
 
     <div class="field">
