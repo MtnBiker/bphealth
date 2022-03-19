@@ -13,18 +13,9 @@
       </div>
     <% end %>
 
-
-              <%
-                timeZone = case blood_pressure.statzone
-                  when -8 then "America/Los_Angeles"
-                  when -7 then "America/Los_Angeles"
-                  when  0 then "Europe/London"
-                end
-              %>
-
     <!-- The following two divs supply extra information but is conflicted with modal which had other problems too.  -->
     <div class="field form-label" for="formControlReadonly">
-      <strong>At <%= blood_pressure.statdate.in_time_zone(timeZone).strftime("%a %d %b %Y %_I:%M %P")%></strong>
+      <strong>At <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%a %d %b %Y %_I:%M %P")%></strong>
     </div>
 
     <div class="field">
