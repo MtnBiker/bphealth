@@ -3,7 +3,7 @@
 <%#= render 'debugging', locals: {last_record: @last_record} %>
 <%# timeZone = last_record.localtime.formatted_offset(false).slice!(0, 3).to_i %>
 <!-- timeZone is hours as integer -->
-<% timeZone =BloodPressure.order('statdate asc').last.statzone %>
+<% timeZone = BloodPressure.order('statdate asc').last.statzone %>
 <% last_record_zone = BloodPressure.order('statdate asc').last.statzone  %>
 <% last_record_zone_in_seconds = last_record_zone*3600 %>
 <% last_record_midnight = last_record + last_record_zone_in_seconds - (last_record.min*60) - (last_record.sec) %>
