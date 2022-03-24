@@ -16,7 +16,7 @@
 <p>&#10062; last_record.in_time_zone("America/Los_Angeles"):  <%= last_record.in_time_zone("America/Los_Angeles") %>. Works, but is manually entered </p>
 <p>&#10062; last_record-8.hour : <%= last_record-8.hour %>. This is just taking 8 hours off UTC. </p>
 
-<p><%= timeZone =BloodPressure.order('statdate asc').last.statzone %></p>
+<p><%= timeZone = BloodPressure.order('statdate asc').last.statzone %></p>
 <p><%= last_record_zone = BloodPressure.order('statdate asc').last.statzone  %></p>
 <p><%= last_record_zone_in_seconds = last_record_zone*3600 %></p>
 <p>last_record_midnight: <%=  last_record + last_record_zone_in_seconds - (last_record.min*60) - (last_record.sec) %></p>
