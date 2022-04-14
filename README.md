@@ -63,6 +63,8 @@ Created login using http://railscasts.com/episodes/250-authentication-from-scrat
 
 [HealthKit Documentation—Apple](https://developer.apple.com/documentation/healthkit)
 
+[Ruby on Rails inline CRUD with Hotwire—Mix&Go](https://www.youtube.com/watch?v=hyV-J-sA1ng) Inline editing of comments
+
 #### Notes
 
 

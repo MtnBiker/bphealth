@@ -1,66 +1,92 @@
-<div class="table-responsive ">
-  <div class="table table-sm table-hover align-middle">  <!-- table-striped table-responsive pretty datetimes --> 
-    <!-- Add .table-sm to make any .table more compact by cutting all cell padding in half. -->
-    <div>  <!-- class="sticky-header" -->
-      <div>
-        <!-- Col widths go in the th -->
-        <!--Not sure what scope is about -->
-        <!-- <div scope="col" class="col-sm-1 text-end">ID</div> -->
-        <span scope="col" class="text-center col-lg-2" colspan="2">Date</span>
-        </i>
-        <span scope="col" class="text-end col-lg-1">Systolic /</span><!-- text-uppercase is to see if bootstrap is working -->
-        <span scope="col" class="text-start col-lg-1">Diastolic</span>
-        <span scope="col" class="col-lg-1">HR</span>
-        <!-- <span scope="col" class="text-center col-lg-2" colspan="2">Time only</span>  --><!-- Only need for debugging 24 hour chart -->
-        <!-- <span scope="col" class="col-md-1">Weight</span> -->
-        <span scope="col" class="col-lg-3">Comment</span>
-        <span scope="col" class="col-lg-2" colspan="2"></span>
-        <!-- <span>Debugging</span> -->
-      </div>
+<!-- <h4>For testing-works without container</h4> -->
+<!-- <div class="container"> -->
+  <!-- <div class="row">
+    <div class="col">
+      Column
     </div>
-    <%= turbo_frame_tag "new-bp-form", src: new_blood_pressure_path %>
-    <div class="table">
-      <% @blood_pressures.each do |blood_pressure| %>
-        <%= turbo_frame_tag blood_pressure do %> <!-- Ending up at the top level of the table -->
-          <div>
-            <!-- Should be in a helper or something, but why do I need the crazy .in_time_zone(timeZone) work around?. Later found using blood_pressure.statzone which is a number works. But statzone does have to be calculated from statdate and recorded in database. Maybe should do when needed and avoid putting in database. But if it isn't broken don't fix it.  -->
-              <%#
-                timeZone = case blood_pressure.statzone
-                  when -8 then "America/Los_Angeles"
-                  when -7 then "America/Los_Angeles"
-                  when  0 then "Europe/London"
-                end
-              %>
-             <% day_num = blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%u").to_i %>
-            <!-- The date and Setting the color background to denote days of the week -->
-            <span class="text-end <%= systolic_icon_level(blood_pressure.systolic) %> background-color-day-<%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%u") %> ">
-              <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%a %d %b %Y") %>
-            </span>
-            <!-- The Time -->
-            <span class="text-start"> <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%_l:%M %P") %></span>
-            <!-- <span><%#= vert_lines(day_num) %></span> -->
-            <span class="text-end <%= systolic_icon_level(blood_pressure.systolic) %> <%= systolic_text_color(blood_pressure.systolic) %> "> <%= blood_pressure.systolic %> / </span> <!-- /helpers/blood_pressures_helper.rb -->
-            <span class="text-start">  <%= blood_pressure.diastolic %></span>
-            <span class="text-center"> <%= blood_pressure.heartrate %></span>
-            <span><%= link_to edit_blood_pressure_path(blood_pressure) do %><%= blood_pressure.comment %><% end %></span>
-            <span>
-              <%= link_to edit_blood_pressure_path(blood_pressure) do %>
-              <svg class="inline-block w-4 h-4" fill="none" stroke="currentColor"  width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-              <% end %>
-            </span>
-            <span>
-              <%= link_to blood_pressure, method: :delete, data: { confirm: 'Are you sure?' } do %>
-              <svg class="" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-              <% end %>
-            </span>
-            <!-- <span>timeZone: <%#= blood_pressure.statzone %></span> -->
-          </div>
-        <% end %>
-      <% end %>
+    <div class="col">
+      Column
+    </div>
+    <div class="col">
+      Column
     </div>
   </div>
-</div>
+  <div class="row">
+    <div class="col">
+      Column in second row
+    </div>
+    <div class="col">
+      Column in second row
+    </div>
+    <div class="col">
+      Column in second row
+    </div>
+  </div>  -->
+<!-- </div> -->
 
+
+<!-- Wrapped in container on index.html.erb -->
+<!-- <div class="table-responsive ">
+  <div class="table table-sm table-hover align-middle"> -->  <!-- table-striped table-responsive pretty datetimes --> 
+    <!-- Add .table-sm to make any .table more compact by cutting all cell padding in half. -->
+<div class="row">
+  <h5>Add data</h5>
+  <%= turbo_frame_tag "new-bp-form", src: new_blood_pressure_path %>
+</div>
+<div class="row">
+  <div class="col text-center col-lg-3">Date</div>
+  <div class="col text-end    col-lg-1">Systolic</div>/
+  <div class="col text-start  col-lg-1">Diastolic</div>
+  <div class="col text-center col-lg-1">HR</div>
+  <div class="col col-lg-3">Comment</div>
+  <div class="col col-lg-2"></div>
+  <!-- <div>Debugging</div> -->
+</div>
+<!-- End of header, now the table (although not using table HTML because of turbo?) -->
+<% @blood_pressures.each do |blood_pressure| %>
+  <%= turbo_frame_tag blood_pressure do %>
+    <div class="row"> <!-- Can't put this above the do -->
+    <!-- Should be in a helper or something, but why do I need the crazy .in_time_zone(timeZone) work around?. Later found using blood_pressure.statzone which is a number works. But statzone does have to be calculated from statdate and recorded in database. Maybe should do when needed and avoid putting in database. But if it isn't broken don't fix it.  -->
+      <%#
+        timeZone = case blood_pressure.statzone
+          when -8 then "America/Los_Angeles"
+          when -7 then "America/Los_Angeles"
+          when  0 then "Europe/London"
+        end
+      %>
+      <% day_num = blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%u").to_i %> <!-- Puts in smiley face -->
+      <!-- The date and Setting the color background to denote days of the week -->
+      <div class="col text-end col-lg-2 <%= systolic_icon_level(blood_pressure.systolic) %>
+                  background-color-day-<%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%u") %> ">
+        <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%a %d %b %Y") %>
+      </div>
+      <!-- The Time -->
+      <div class="col text-start col-lg-1"> <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%_l:%M %P") %></div>
+
+      <!-- <div class="col><%#= vert_lines(day_num) %></div> -->
+      <div class="col text-end col-lg-1 <%= systolic_icon_level(blood_pressure.systolic) %>
+        <%= systolic_text_color(blood_pressure.systolic) %> "> <%= blood_pressure.systolic %>
+      </div>/ <!-- /helpers/blood_pressures_helper.rb -->
+      <div class="col text-start  col-lg-1"> <%= blood_pressure.diastolic %></div>
+      <div class="col text-center col-lg-1"> <%= blood_pressure.heartrate %></div>
+      <div class="col col-lg-3"><%= link_to edit_blood_pressure_path(blood_pressure) do %><%= blood_pressure.comment %><% end %></div>
+      <!-- Edit icon/action -->
+      <div class="col">
+        <%= link_to edit_blood_pressure_path(blood_pressure) do %>
+        <svg class="inline-block w-4 h-4" fill="none" stroke="currentColor"  width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+        <% end %> <!-- of link_to svg -->
+
+        <!-- Delete icon/action No error checking-->
+        <%#= link_to blood_pressure, method: :delete, data: { confirm: 'Are you sure?' } do %>
+        <svg class="" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        <%# end %> <!-- of link_to svg -->
+      </div>
+      <!-- <div class="col">timeZone: <%#= blood_pressure.statzone %></div> -->
+      </div>
+  <% end %> <!-- turbo_frame_tag -->
+<% end %> <!-- bloodpressure -->
+    </div> <!-- row -->
+<br>
 <%== pagy_bootstrap_nav(@pagy) %>
 
 <!-- Precise control, must add to 100%. An example below -->
