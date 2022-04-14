@@ -1,28 +1,28 @@
 <div class="table-responsive ">
-  <table class="table table-sm table-hover align-middle">  <!-- table-striped table-responsive pretty datetimes --> 
+  <div class="table table-sm table-hover align-middle">  <!-- table-striped table-responsive pretty datetimes --> 
     <!-- Add .table-sm to make any .table more compact by cutting all cell padding in half. -->
-    <thead>  <!-- class="sticky-header" -->
-      <tr>
+    <div>  <!-- class="sticky-header" -->
+      <div>
         <!-- Col widths go in the th -->
         <!--Not sure what scope is about -->
-        <!-- <th scope="col" class="col-sm-1 text-end">ID</th> -->
-        <th scope="col" class="text-center col-lg-2" colspan="2">Date</th>
+        <!-- <div scope="col" class="col-sm-1 text-end">ID</div> -->
+        <span scope="col" class="text-center col-lg-2" colspan="2">Date</span>
         </i>
-         <th scope="col" class="text-end col-lg-1">Systolic /</th><!-- text-uppercase is to see if bootstrap is working -->
-        <th scope="col" class="text-start col-lg-1">Diastolic</th>
-        <th scope="col" class="col-lg-1">HR</th>
-        <!-- <th scope="col" class="text-center col-lg-2" colspan="2">Time only</th>  --><!-- Only need for debugging 24 hour chart -->
-        <!-- <th scope="col" class="col-md-1">Weight</th> -->
-        <th scope="col" class="col-lg-3">Comment</th>
-        <th scope="col" class="col-lg-2" colspan="2"></th>
-        <td>Debugging</td>
-      </tr>
-    </thead>
-
-    <tbody>
+        <span scope="col" class="text-end col-lg-1">Systolic /</span><!-- text-uppercase is to see if bootstrap is working -->
+        <span scope="col" class="text-start col-lg-1">Diastolic</span>
+        <span scope="col" class="col-lg-1">HR</span>
+        <!-- <span scope="col" class="text-center col-lg-2" colspan="2">Time only</span>  --><!-- Only need for debugging 24 hour chart -->
+        <!-- <span scope="col" class="col-md-1">Weight</span> -->
+        <span scope="col" class="col-lg-3">Comment</span>
+        <span scope="col" class="col-lg-2" colspan="2"></span>
+        <!-- <span>Debugging</span> -->
+      </div>
+    </div>
+    <%= turbo_frame_tag "new-bp-form", src: new_blood_pressure_path %>
+    <div class="table">
       <% @blood_pressures.each do |blood_pressure| %>
         <%= turbo_frame_tag blood_pressure do %> <!-- Ending up at the top level of the table -->
-          <tr>            
+          <div>
             <!-- Should be in a helper or something, but why do I need the crazy .in_time_zone(timeZone) work around?. Later found using blood_pressure.statzone which is a number works. But statzone does have to be calculated from statdate and recorded in database. Maybe should do when needed and avoid putting in database. But if it isn't broken don't fix it.  -->
               <%#
                 timeZone = case blood_pressure.statzone
@@ -33,37 +33,45 @@
               %>
              <% day_num = blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%u").to_i %>
             <!-- The date and Setting the color background to denote days of the week -->
-            <td class="text-end <%= systolic_icon_level(blood_pressure.systolic) %> background-color-day-<%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%u") %> ">
+            <span class="text-end <%= systolic_icon_level(blood_pressure.systolic) %> background-color-day-<%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%u") %> ">
               <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%a %d %b %Y") %>
-            </td>
+            </span>
             <!-- The Time -->
-            <td class="text-start"> <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%_l:%M %P") %></td>
-            <!-- <td><%#= vert_lines(day_num) %></td> -->
-            <td class="text-end <%= systolic_icon_level(blood_pressure.systolic) %> <%= systolic_text_color(blood_pressure.systolic) %> "> <%= blood_pressure.systolic %> / </td> <!-- /helpers/blood_pressures_helper.rb -->
-            <td class="text-start">  <%= blood_pressure.diastolic %></td>
-            <td class="text-center"> <%= blood_pressure.heartrate %></td>
-            <td><%= link_to edit_blood_pressure_path(blood_pressure) do %><%= blood_pressure.comment %><% end %></td>
-            <td><%= link_to 'Edit comment', edit_blood_pressure_path(blood_pressure) %></td>
-            <td><%= link_to 'Delete this record', blood_pressure, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-            <td>timeZone: <%= blood_pressure.statzone %></td>
-          </tr>
+            <span class="text-start"> <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%_l:%M %P") %></span>
+            <!-- <span><%#= vert_lines(day_num) %></span> -->
+            <span class="text-end <%= systolic_icon_level(blood_pressure.systolic) %> <%= systolic_text_color(blood_pressure.systolic) %> "> <%= blood_pressure.systolic %> / </span> <!-- /helpers/blood_pressures_helper.rb -->
+            <span class="text-start">  <%= blood_pressure.diastolic %></span>
+            <span class="text-center"> <%= blood_pressure.heartrate %></span>
+            <span><%= link_to edit_blood_pressure_path(blood_pressure) do %><%= blood_pressure.comment %><% end %></span>
+            <span>
+              <%= link_to edit_blood_pressure_path(blood_pressure) do %>
+              <svg class="inline-block w-4 h-4" fill="none" stroke="currentColor"  width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+              <% end %>
+            </span>
+            <span>
+              <%= link_to blood_pressure, method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <svg class="" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              <% end %>
+            </span>
+            <!-- <span>timeZone: <%#= blood_pressure.statzone %></span> -->
+          </div>
         <% end %>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  </div>
 </div>
 
 <%== pagy_bootstrap_nav(@pagy) %>
 
 <!-- Precise control, must add to 100%. An example below -->
 <!-- <table>
-  <thead>
-    <tr>
-        <th style="width:10%">Size</th>
-        <th style="width:30%">Bust</th>
-        <th style="width:50%">Waist</th>
-        <th style="width:10%">Hips</th>
-    </tr>
-    <tr>table body</tr>
-  </thead>
-</table> -->
+  <div>
+    <div>
+        <div style="width:10%">Size</div>
+        <div style="width:30%">Bust</div>
+        <div style="width:50%">Waist</div>
+        <div style="width:10%">Hips</div>
+    </div>
+    <div>table body</div>
+  </div>
+</div> -->

@@ -1,31 +1,30 @@
-<%= form_with(model: blood_pressure) do |form| %>
-
-  <div class="field">
-    <%= form.label :statdate %>
+<%= form_with model: blood_pressure, id: dom_id(blood_pressure, "form") do |form| %>
+  <span>
     <%= form.date_select :statdate %>
-  </div>
+    <%= inline_error_for(:statdate, blood_pressure) %>
+  </span>
 
-  <div class="field">
-    <%= form.label :systolic %>
-    <%= form.number_field :systolic %>
-  </div>
+  <span>
+    <%= form.text_field :systolic %>
+    <%= inline_error_for(:statdate, blood_pressure) %>
+  </span>
+/
+  <span>
+    <%= form.text_field :diastolic %>
+    <%= inline_error_for(:diastolic, blood_pressure) %>
+  </span>
 
-  <div class="field">
-    <%= form.label :comment%>
+  <span>
+    <%= form.text_field :heartrate %>
+    <%= inline_error_for(:heartrate, blood_pressure) %>
+  </span>
+
+  <span>
     <%= form.text_field :comment%>
-  </div>
+    <%= inline_error_for(:statdate, blood_pressure) %>
+  </span>
 
-  <div class="field">
-    <%= form.label :sourceName %>
-    <%= form.text_field :sourceName %>
-  </div>
-
-  <div class="field">
-    <%= form.label :sourceVersion %>
-    <%= form.text_field :sourceVersion %>
-  </div>
-
-  <div class="actions">
+  <span class="actions">
     <%= form.submit %>
-  </div>
+  </span>
 <% end %>

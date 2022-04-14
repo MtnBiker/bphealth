@@ -36,14 +36,19 @@ class BloodPressuresController < ApplicationController
   def create
     @blood_pressure = BloodPressure.new(blood_pressure_params)
 
-    respond_to do |format|
-      if @blood_pressure.save
-        format.html { redirect_to @blood_pressure, notice: "Blood stat was successfully created." }
-        format.json { render :show, status: :created, location: @blood_pressure }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @blood_pressure.errors, status: :unprocessable_entity }
-      end
+    if @blood_pressure.save
+      flash.now[:notice] = "New entry was successfully created."
+      render turbo_stream: [
+        turbo_stream.prepend("blood_pressures", @blood_pressure),
+        turbo_stream.replace(
+          "form_blood_pressure",
+          partial: "form",
+          locals: { blood_pressure: blood_pressure.new }
+        ),
+        turbo_stream.replace("notice", partial: "layouts/flash")
+      ]
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -94,7 +99,7 @@ class BloodPressuresController < ApplicationController
         fpath = File.join(unzip_dir, f.name)
         # fpath is the output filepath and the first file will be export.xml
         puts "#{lineNum}. File.exist?(file in zip_file): #{File.exist?(file)}"
-        puts "#{lineNum}. Next step is 'zip_file.extract(f, fpath)' where f: #{f} and \n  fpath: #{fpath}" # /Users/gscar/Documents iMac only/Ruby/Rails 7 Trials/bloodpressure/app//tmp/import/apple_health_export/export.xml
+        puts "#{lineNum}. Next step is 'zip_file.extract(f, fpath)' where f: #{f} and \n  fpath: #{fpath}" # /blood_pressures/gscar/Documents iMac only/Ruby/Rails 7 Trials/bloodpressure/app//tmp/import/apple_health_export/export.xml
         puts "#{lineNum}. File.exist?(unzip_dir), i.e., some sort of tmp folder: #{File.exist?(unzip_dir)}"
         FileUtils.mkdir(destination) unless File.exist?(destination)
         puts "#{lineNum}. destination: #{destination}"
@@ -218,7 +223,7 @@ class BloodPressuresController < ApplicationController
   #   tempfile_path = tempfile_path.to_s.slice!(0..indexEnd) # slice off the end of params and left with path
   #   puts "\n#{lineNum}: tempfile_path is now the path to the Tempfile for export.zip: #{tempfile_path}"
   #   # health_exported_zip_file = params[:health_exported_zip].path # need to look at Better if worked using Rails https://api.rubyonrails.org/v7.0.0/classes/ActionDispatch/Http/UploadedFile.html to get this right
-  #   # health_exported_zip_file = "/Users/gscar/Downloads/export.zip" # changed to
+  #   # health_exported_zip_file = "/blood_pressures/gscar/Downloads/export.zip" # changed to
     # tempfile_path = "/var/folders/f6/59hv1f7923z2rx7yl3hjl8pm0000gn/T/RackMultipart20220110-56077-ecytji.zip"
     # unzip_import_data(tempfile_path) # which will unzip and then import the new data
     require 'zip' # and this does what it needs to do here
