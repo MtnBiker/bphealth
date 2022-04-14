@@ -22,12 +22,12 @@
 
 <!-- Date and in days before in words -->
 <% title0 = "#{last_record.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record)} ago" %>
-<% title1 = "#{last_record_1_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_1_day_ago)} before last reading</em>" %>
-<% title2 = "#{last_record_2_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_2_day_ago)} before last reading</em>" %>
-<% title3 = "#{last_record_3_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_3_day_ago)} before last reading</em>" %>
-<% title4 = "#{last_record_4_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_4_day_ago)} before last reading</em>" %>
-<% title5 = "#{last_record_5_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_5_day_ago)} before last reading</em>" %>
-<% title6 = "#{last_record_6_day_ago.strftime("%a, %b. %-d")}. <em>#{time_ago_in_words(last_record_6_day_ago)} before last reading</em>" %>
+<% title1 = "#{last_record_1_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_1_day_ago)} before last reading" %>
+<% title2 = "#{last_record_2_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_2_day_ago)} before last reading" %>
+<% title3 = "#{last_record_3_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_3_day_ago)} before last reading" %>
+<% title4 = "#{last_record_4_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_4_day_ago)} before last reading" %>
+<% title5 = "#{last_record_5_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_5_day_ago)} before last reading" %>
+<% title6 = "#{last_record_6_day_ago.strftime("%a, %b. %-d")}. #{time_ago_in_words(last_record_6_day_ago)} before last reading" %>
 
 <!-- The range for each day -->
 <% span00 = last_record_midnight-0.day..last_record %>
@@ -38,10 +38,10 @@
 <% span54 = last_record_midnight-5.day..last_record_midnight-4.day %>
 <% span65 = last_record_midnight-6.day..last_record_midnight-5.day %>
 
-Trying for start and end of the days for the graphs, but being ignored by Chartkick
-<%= last_record_midnight0 = last_record_midnight-0.day %>
-<%= last_record_midnight1 = last_record_midnight-1.day %>
-<%= last_record_midnight2 = last_record_midnight-2.day %>
+<!-- Trying for start and end of the days for the graphs, but being ignored by Chartkick -->
+<% last_record_midnight0 = last_record_midnight-0.day %>
+<% last_record_midnight1 = last_record_midnight-1.day %>
+<% last_record_midnight2 = last_record_midnight-2.day %>
 <% last_record_midnight3 = last_record_midnight-3.day %>
 <% last_record_midnight4 = last_record_midnight-4.day %>
 <% last_record_midnight5 = last_record_midnight-5.day %>

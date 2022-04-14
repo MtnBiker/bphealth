@@ -9,19 +9,19 @@
   </div>
 </div>
 
-Above works, below redirects to the wrong place
+<!-- Above works, below redirects to the wrong place -->
 
 <!-- With some Turbo but not rendering correctly -->
-<div class="m-3">
+<!-- <div class="m-3">
   <h1>Edit blood stat</h1>
-  <%= turbo_frame_tag @blood_pressure do %>
-    <%= form_with(model: @blood_pressure) do |form| %>
+  <%#= turbo_frame_tag @blood_pressure do %>
+    <%#= form_with(model: @blood_pressure) do |form| %>
       <div class="inline-field">
-       <%= render "comment", blood_pressure: @blood_pressure %>
-      </div>
-      <!-- <div class="actions">
-        <%#= form.submit %> This is in the render except that redirect isn't working righ
+       <%#= render "comment", blood_pressure: @blood_pressure %>
       </div> -->
-    <% end %>
-  <% end %>
+      <!-- <div class="actions">
+        <%#= form.submit %> This is in the render except that redirect isn't correctly
+      </div> -->
+    <!-- <%# end %>
+  <%# end %> -->
 </div>
