@@ -1,23 +1,20 @@
+<!-- Columns not respected. HR hidden to simplify until get columns working -->
 <%= form_with model: blood_pressure, id: dom_id(blood_pressure, "form") do |form| %>
-  <span>
-    <%= form.date_select :statdate %>
-    <%= inline_error_for(:statdate, blood_pressure) %>
+  <span class="col text-center col-lg-3">
+    <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%a %d %b %Y %_l:%M %P") %>,
   </span>
 
-  <span>
-    <%= form.text_field :systolic %>
-    <%= inline_error_for(:statdate, blood_pressure) %>
+  <span class="col text-end col-lg-1">
+     BP: <%= blood_pressure.systolic %>
   </span>
 /
-  <span>
-    <%= form.text_field :diastolic %>
-    <%= inline_error_for(:diastolic, blood_pressure) %>
+  <span class="col text-start col-lg-1">
+    <%= blood_pressure.diastolic %>
   </span>
 
-  <span>
-    <%= form.text_field :heartrate %>
-    <%= inline_error_for(:heartrate, blood_pressure) %>
-  </span>
+  <!-- <span class="col text-center col-lg-1">
+    <%#= blood_pressure.heartrate %>
+  </span> -->
 
   <span>
     <%= form.text_field :comment%>
@@ -25,6 +22,6 @@
   </span>
 
   <span class="actions">
-    <%= form.submit %>
+    <%= form.submit "Update Comment" %>
   </span>
 <% end %>

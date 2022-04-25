@@ -263,6 +263,13 @@ CREATE INDEX index_blood_pressures_on_statdate ON public.blood_pressures USING b
 
 
 --
+-- Name: index_blood_pressures_on_statdate_and_systolic_and_diastolic; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_blood_pressures_on_statdate_and_systolic_and_diastolic ON public.blood_pressures USING btree (statdate, systolic, diastolic);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -294,6 +301,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220131162913'),
 ('20220131163056'),
 ('20220203210247'),
-('20220207154556');
+('20220207154556'),
+('20220414225356'),
+('20220414230523'),
+('20220414231620');
 
 

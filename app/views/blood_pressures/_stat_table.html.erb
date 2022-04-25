@@ -29,10 +29,12 @@
 <!-- <div class="table-responsive ">
   <div class="table table-sm table-hover align-middle"> -->  <!-- table-striped table-responsive pretty datetimes --> 
     <!-- Add .table-sm to make any .table more compact by cutting all cell padding in half. -->
-<div class="row">
+
+<!-- For add data row to work, need to create a new form, the _form is now set up for editing comment -->
+<!-- <div class="row">
   <h5>Add data</h5>
-  <%= turbo_frame_tag "new-bp-form", src: new_blood_pressure_path %>
-</div>
+  <%#= turbo_frame_tag "new-bp-form", src: new_blood_pressure_path %>
+</div> -->
 <div class="row">
   <div class="col text-center col-lg-3">Date</div>
   <div class="col text-end    col-lg-1">Systolic</div>/
@@ -69,17 +71,17 @@
       </div>/ <!-- /helpers/blood_pressures_helper.rb -->
       <div class="col text-start  col-lg-1"> <%= blood_pressure.diastolic %></div>
       <div class="col text-center col-lg-1"> <%= blood_pressure.heartrate %></div>
-      <div class="col col-lg-3"><%= link_to edit_blood_pressure_path(blood_pressure) do %><%= blood_pressure.comment %><% end %></div>
-      <!-- Edit icon/action -->
+      <div class="col col-lg-3"><%= blood_pressure.comment %></div>
+      <!-- Edit icon/action which will change the line to edit mode. Uses  -->
       <div class="col">
         <%= link_to edit_blood_pressure_path(blood_pressure) do %>
-        <svg class="inline-block w-4 h-4" fill="none" stroke="currentColor"  width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+          <svg class="" fill="none" stroke="currentColor"  width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
         <% end %> <!-- of link_to svg -->
 
-        <!-- Delete icon/action No error checking-->
-        <%#= link_to blood_pressure, method: :delete, data: { confirm: 'Are you sure?' } do %>
-        <svg class="" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-        <%# end %> <!-- of link_to svg -->
+        <!-- Delete icon/action No error checking. Not really deleting-->
+        <%= link_to blood_pressure, method: :delete, data: { confirm: 'Are you sure?' } do %>
+          <svg class="" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        <% end %> <!-- of link_to svg -->
       </div>
       <!-- <div class="col">timeZone: <%#= blood_pressure.statzone %></div> -->
       </div>
