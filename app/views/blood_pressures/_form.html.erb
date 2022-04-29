@@ -1,27 +1,26 @@
-<!-- Columns not respected. HR hidden to simplify until get columns working. embedded (partial) in edit (maybe should move to edit.html.erb since customized) and  -->
-<%= form_with model: blood_pressure, id: dom_id(blood_pressure, "form") do |form| %>
-  <span class="col text-center col-lg-3">
-    <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%a %d %b %Y %_l:%M %P") %>,
-  </span>
+<%= form_with model: blood_pressure, id: dom_id(blood_pressure, "form"), class: "row" do |form| %>
+  <div class="col text-center col-lg-3">
+    <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%a %d %b %Y %_l:%M %P") %>
+  </div>
 
-  <span class="col text-end col-lg-1">
-     BP: <%= blood_pressure.systolic %>
-  </span>
+  <div class="col text-end col-lg-1">
+     <%= blood_pressure.systolic %>
+  </div>
 /
-  <span class="col text-start col-lg-1">
+  <div class="col text-start col-lg-1">
     <%= blood_pressure.diastolic %>
-  </span>
+  </div>
 
-  <!-- <span class="col text-center col-lg-1">
-    <%#= blood_pressure.heartrate %>
-  </span> -->
+  <div class="col text-center col-lg-1">
+    <%= blood_pressure.heartrate %>
+  </div>
 
-  <span class="col col-lg-6"> <!-- FIXME column needs to be wider -->
-    <%= form.text_field :comment%>
+  <div class="col col-lg-4"> <!-- FIXME column needs to be wider. Change from text_field at least makes it large enough, but rather was wider -->
+    <%= form.text_area :comment, size: "45x2" %>
     <%= inline_error_for(:statdate, blood_pressure) %>
-  </span>
+  </div>
 
-  <span class="actions">
+  <div class="actions col col-lg-1">
     <%= form.submit "Update Comment" %>
-  </span>
+  </div>
 <% end %>
