@@ -73,16 +73,18 @@
       <div class="col text-center col-lg-1"> <%= blood_pressure.heartrate %></div>
       <div class="col col-lg-3"><%= blood_pressure.comment %></div>
       <!-- Edit icon/action which will change the line to edit mode. Uses  -->
-      <div class="col">
+      <div class="col col-sm-1 text-end">
         <%= link_to edit_blood_pressure_path(blood_pressure) do %>
-          <svg class="" fill="none" stroke="currentColor"  width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+          <svg fill="none" stroke="currentColor" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
         <% end %> <!-- of link_to svg -->
+      </div>
 
         <!-- Sort of copied from MixAndGo, but messes up icon. Delete confirmation from stackoverflow below -->
-        <%= button_to blood_pressure_path(blood_pressure), method: :delete, form: { data: { turbo_confirm: 'Are you sure?' } } do %>
         <%#= button_to 'Destroy', @blood_pressure, method: :delete, form: { data: { turbo_confirm: 'Are you sure?' } } do %> <!-- https://stackoverflow.com/questions/70994322/how-to-call-confirm-prompt-using-button-to-in-rails-with-turbo  Modified to fit what I got from Cezar-->
-          <svg class="" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-        <% end %> <!-- of link_to svg -->
+      <div class="col col-sm-1 text-start"> <!-- FIXME Why the black box? -->
+        <%= button_to blood_pressure_path(blood_pressure), method: :delete, form: { data: { turbo_confirm: 'Are you sure?' } } do %>
+          <svg fill="none" stroke="red" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        <% end %> <!-- of button_to svg delete -->
       </div>
       <!-- <div class="col">timeZone: <%#= blood_pressure.statzone %></div> -->
       </div>
