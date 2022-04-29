@@ -70,10 +70,16 @@ class BloodPressuresController < ApplicationController
   # DELETE /blood_pressures/1 or /blood_pressures/1.json
   def destroy
     @blood_pressure.destroy
-    respond_to do |format|
-      redirect_to blood_pressures_url, notice: "Blood stat was successfully destroyed."
-      format.json { head :no_content }
-    end
+    # Was before Turbo and 
+    # respond_to do |format|
+    #   redirect_to blood_pressures_url, notice: "Blood stat was successfully destroyed."
+    #   format.json { head :no_content }
+    # end
+    flash.now[:notice] = "Data was successfully destroyed."
+    render turbo_stream: [
+      turbo_stream.remove(@blood_pressure),
+      turbo_stream.replace("notice", partial: "layouts/flash")
+    ]
   end
 
   def lineNum()

@@ -1,4 +1,4 @@
-<!-- Columns not respected. HR hidden to simplify until get columns working -->
+<!-- Columns not respected. HR hidden to simplify until get columns working. embedded (partial) in edit (maybe should move to edit.html.erb since customized) and  -->
 <%= form_with model: blood_pressure, id: dom_id(blood_pressure, "form") do |form| %>
   <span class="col text-center col-lg-3">
     <%= blood_pressure.statdate.in_time_zone(blood_pressure.statzone).strftime("%a %d %b %Y %_l:%M %P") %>,
